@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(psql:*)",
+      "Bash(python3:*)",
+      "Read(//usr/bin/**)"
+    ]
+  }
+}

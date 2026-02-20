@@ -1,0 +1,37 @@
+# Core framework
+quart==0.20.0
+hypercorn==0.17.3
+quart-cors==0.7.0
+
+# Validation
+pydantic==2.10.0
+pydantic-settings==2.7.0
+
+# Async HTTP client
+httpx==0.28.0
+
+# OpenAI SDK (for Realtime voice API only)
+openai==1.60.0
+
+# Google Gemini SDK (primary LLM for Feature 1 & 2)
+google-genai==1.5.0
+
+# MongoDB async driver (conversation logs only)
+motor==3.6.0
+
+# PostgreSQL async (primary relational data)
+sqlalchemy[asyncio]==2.0.36
+asyncpg==0.30.0
+alembic==1.14.1
+
+# Structured logging
+structlog==24.4.0
+
+# Environment
+python-dotenv==1.0.1
+
+# WebSocket client (for OpenAI Realtime relay)
+websockets==13.1
+
+# Utilities
+orjson==3.10.12

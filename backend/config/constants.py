@@ -1,0 +1,27 @@
+API_V1_PREFIX = "/api/v1"
+
+# Timeout defaults (seconds)
+EXTERNAL_CONNECT_TIMEOUT = 2.0
+EXTERNAL_READ_TIMEOUT = 30.0
+EXTERNAL_TOTAL_TIMEOUT = 35.0
+LLM_VISION_TIMEOUT = 50.0
+LLM_TEXT_TIMEOUT = 30.0
+WS_OPENAI_CONNECT_TIMEOUT = 10.0
+
+# Rate limiting
+DEFAULT_RATE_LIMIT_PER_MINUTE = 60
+
+# Upload limits
+MAX_IMAGE_SIZE_MB = 10
+MAX_SCENE_DESCRIPTION_LENGTH = 2000
+MAX_CHAT_TEXT_LENGTH = 5000
+
+# Supported image formats (base64 prefix detection)
+SUPPORTED_IMAGE_PREFIXES = ("data:image/jpeg", "data:image/png", "data:image/webp")
+
+# WebSocket
+WS_HEARTBEAT_INTERVAL = 20
+WS_HEARTBEAT_TIMEOUT = 10
+
+# Voice coach session
+VOICE_COACH_SESSION_TTL_SECONDS = 1800  # 30 minutes

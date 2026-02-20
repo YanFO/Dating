@@ -1,0 +1,32 @@
+{
+  "icebreaker_girl_1": {
+    "success": true,
+    "status_code": 200,
+    "elapsed_seconds": 27.74
+  },
+  "icebreaker_girl_2": {
+    "success": true,
+    "status_code": 200,
+    "elapsed_seconds": 22.2
+  },
+  "icebreaker_girl_3": {
+    "success": true,
+    "status_code": 200,
+    "elapsed_seconds": 27.32
+  },
+  "reply_chat_1": {
+    "success": true,
+    "status_code": 200,
+    "elapsed_seconds": 25.03
+  },
+  "reply_chat_2": {
+    "success": true,
+    "status_code": 200,
+    "elapsed_seconds": 33.89
+  },
+  "reply_chat_3": {
+    "success": true,
+    "status_code": 200,
+    "elapsed_seconds": 29.65
+  }
+}
