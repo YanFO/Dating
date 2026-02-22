@@ -23,7 +23,8 @@ if __name__ == "__main__":
     from hypercorn.config import Config
 
     config = Config()
-    config.bind = [f"{settings.HOST}:{settings.PORT}"]
+    # Bind dual-stack (IPv4 + IPv6) for VS Code port forwarding compatibility
+    config.bind = [f"[::]:{settings.PORT}"]
     config.accesslog = "-"
 
     asyncio.run(serve(app, config))

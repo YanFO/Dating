@@ -3,7 +3,36 @@
     "allow": [
       "Bash(psql:*)",
       "Bash(python3:*)",
-      "Read(//usr/bin/**)"
+      "Read(//usr/bin/**)",
+      "Read(//tmp/**)",
+      "Bash(ls:*)",
+      "Bash(kill:*)",
+      "Bash(xargs:*)",
+      "WebFetch(domain:thepowermoves.com)",
+      "WebFetch(domain:www.girlschase.com)",
+      "WebFetch(domain:www.limitlessmindset.com)",
+      "WebFetch(domain:coachkyledating.com)",
+      "WebFetch(domain:www.zec99.com)",
+      "WebFetch(domain:socialpsychologymasters.com)",
+      "WebFetch(domain:textingprince.com)",
+      "WebFetch(domain:theattractiveman.com)",
+      "Bash(wc:*)",
+      "Bash(flutter --version:*)",
+      "Bash(adb devices:*)",
+      "Read(//usr/lib/**)",
+      "Read(//home/ubuntu/quant_flutter/**)",
+      "Read(//home/ubuntu/snap/**)",
+      "Read(//home/ubuntu/**)",
+      "Bash(export PATH=\"/home/ubuntu/flutter/bin:$PATH\")",
+      "Bash(/home/ubuntu/flutter/bin/flutter:*)",
+      "Bash(tar xf:*)",
+      "Bash(java -version:*)",
+      "Bash(sudo apt-get update:*)",
+      "Bash(sudo apt-get install:*)",
+      "Bash(pm2:*)"
+    ],
+    "additionalDirectories": [
+      "/home/ubuntu"
     ]
   }
 }

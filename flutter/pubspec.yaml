@@ -1,0 +1,76 @@
+name: dating_lens
+description: "Dating Lens - AI-powered dating coach"
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.10.7
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI
+  shadcn_ui:
+    path: ../flutter-shadcn-ui
+  cupertino_icons: ^1.0.8
+  lucide_icons: ^0.257.0
+  google_fonts: ^6.2.1
+
+  # State Management
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
+
+  # Navigation
+  go_router: ^14.8.1
+
+  # Network
+  dio: ^5.8.0+1
+  web_socket_channel: ^3.0.1
+
+  # Data
+  freezed_annotation: ^3.0.0
+  json_annotation: ^4.9.0
+
+  # Camera & Images
+  image_picker: ^1.1.2
+
+  # Audio Recording
+  record: ^5.1.2
+
+  # Web Audio API (for web platform PCM16 recording)
+  web: ^1.1.1
+
+  # Local Storage
+  shared_preferences: ^2.5.3
+
+  # Markdown rendering
+  flutter_markdown: ^0.7.6
+
+  # Utilities
+  fpdart: ^1.1.0
+  intl: ^0.20.2
+  equatable: ^2.0.7
+  uuid: ^4.5.1
+  url_launcher: ^6.2.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+  # Code Generation
+  build_runner: ^2.4.15
+  riverpod_generator: ^2.6.5
+  freezed: ^3.1.0
+  json_serializable: ^6.9.5
+
+  # App Icon & Splash Screen
+  flutter_launcher_icons: ^0.14.3
+  flutter_native_splash: ^2.4.4
+
+dependency_overrides:
+  record_linux: ^1.0.0
+
+flutter:
+  uses-material-design: true

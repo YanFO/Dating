@@ -1,0 +1,65 @@
+{
+  "success": true,
+  "data": {
+    "emotion_analysis": {
+      "detected_emotion": "輕鬆自嘲、尋求共鳴",
+      "subtext": "對方主動附和妳的吐槽（廣角），並加碼自嘲（災難、死亡燈光），這是一種『展現親和力』並試圖延續話題的訊號。他前面提到的『下週也可以 airdrop 給你』已經埋下了『未來邀約/見面』的種子，現在是在鞏固這個連結。",
+      "confidence": 0.95
+    },
+    "reply_options": [
+      {
+        "text": "看來攝影技術有待加強喔，下週給你個平反的機會 😏",
+        "intent": "推進好感",
+        "strategy": "利用『打壓+給予機會』的推拉技巧。先調侃他的技術（推），再用『下週』確認未來的互動（拉），展現自信框架。",
+        "framework_technique": "推拉 (Push-Pull) + 未來式邀約"
+      },
+      {
+        "text": "真的，這光線根本是公開處刑💀 下週如果不幫我拍好看點，我就拒收 Airdrop 喔",
+        "intent": "幽默化解",
+        "strategy": "順著對方的話題進行誇張化的吐槽（鏡面效應），並設立一個可愛的『威脅』邊界，增加互動的趣味性。",
+        "framework_technique": "鏡面效應 + 框架設定 (Setting Boundaries)"
+      },
+      {
+        "text": "沒事，這種崩壞照留著以後才可以勒索你 🤣",
+        "intent": "維持友善/調情",
+        "strategy": "將『醜照』重新定義（Reframing）為『兩人的秘密/勒索素材』，瞬間拉近心理距離，製造一種共謀感。",
+        "framework_technique": "Reframing (重新定義) + 共謀感建立"
+      },
+      {
+        "text": "這根本是顏值壓力測試吧！還好我們撐住了（？",
+        "intent": "自信幽默",
+        "strategy": "把災難照片解釋為對顏值的考驗，間接稱讚自己也稱讚對方（雖然加了問號表示謙虛），展現高價值心態。",
+        "framework_technique": "冷讀假設 + 自信框架"
+      }
+    ],
+    "coach_panel": {
+      "female_perspective_note": "男生會主動傳照片並自嘲，通常是想建立『好相處』的形象。他提到『下週』表示你們有共同圈子或已約好，這時候妳可以大方一點，把這當作一個『互虧』的梗，不用太客氣去安慰他。",
+      "dos": [
+        "順著他的自嘲繼續開玩笑",
+        "自然地確認下週的見面/互動",
+        "保持輕鬆語氣，多用 emoji 增加情緒傳遞"
+      ],
+      "donts": [
+        "認真安慰他說『不會啦很好看』(會讓氣氛變乾)",
+        "只回『哈哈對啊』(會句點話題)",
+        "過度嫌棄導致對方覺得受傷"
+      ]
+    },
+    "stage_coaching": {
+      "current_stage": "early",
+      "stage_strategy": "利用『共同經歷的趣事』（這裡指醜照）來建立內部笑話（Inside Joke），並自然過渡到下一次的見面。",
+      "technique_used": "串連記憶 + 未來式邀約",
+      "stage_warnings": [
+        "避免在此階段過度依賴文字閒聊，重點應放在『見面時的互動』鋪陳。",
+        "注意對方是否只會傳照片而不會開新話題，若話題乾掉需適時主導。"
+      ]
+    }
+  },
+  "error": null,
+  "request_id": "test-chat_1-early",
+  "_meta": {
+    "source_image": "chat_1.jpg",
+    "stage": "early",
+    "elapsed_seconds": 26.69
+  }
+}

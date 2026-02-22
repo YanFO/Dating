@@ -8,7 +8,7 @@ pydantic==2.10.0
 pydantic-settings==2.7.0
 
 # Async HTTP client
-httpx==0.28.0
+httpx==0.28.1
 
 # OpenAI SDK (for Realtime voice API only)
 openai==1.60.0
@@ -31,7 +31,7 @@ structlog==24.4.0
 python-dotenv==1.0.1
 
 # WebSocket client (for OpenAI Realtime relay)
-websockets==13.1
+websockets==15.0.1
 
 # Utilities
 orjson==3.10.12

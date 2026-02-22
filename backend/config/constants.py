@@ -1,4 +1,6 @@
-API_V1_PREFIX = "/api/v1"
+"""全局常量定义模块，包含超时、限流、上传限制、WebSocket 等配置常量。"""
+
+API_PREFIX = "/api"
 
 # Timeout defaults (seconds)
 EXTERNAL_CONNECT_TIMEOUT = 2.0
@@ -6,6 +8,8 @@ EXTERNAL_READ_TIMEOUT = 30.0
 EXTERNAL_TOTAL_TIMEOUT = 35.0
 LLM_VISION_TIMEOUT = 50.0
 LLM_TEXT_TIMEOUT = 30.0
+LLM_CHAT_STREAM_CHUNK_TIMEOUT = 30.0   # 單一 chunk 間最大等待秒數
+LLM_CHAT_STREAM_TOTAL_TIMEOUT = 120.0  # 串流整體最大秒數
 WS_OPENAI_CONNECT_TIMEOUT = 10.0
 
 # Rate limiting
@@ -25,3 +29,13 @@ WS_HEARTBEAT_TIMEOUT = 10
 
 # Voice coach session
 VOICE_COACH_SESSION_TTL_SECONDS = 1800  # 30 minutes
+
+# Match 模組
+MAX_MATCH_NAME_LENGTH = 128
+MAX_CONTEXT_TAG_LENGTH = 128
+
+# Persona 模組
+MAX_SANDBOX_TEXT_LENGTH = 500
+
+# Love Coach 模組
+MAX_LOVE_COACH_MESSAGE_LENGTH = 2000

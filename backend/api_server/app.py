@@ -1,3 +1,5 @@
+"""应用工厂模块，创建并配置 Quart 应用实例。"""
+
 from quart import Quart
 
 from api_server.http import register_http_routes
@@ -12,6 +14,7 @@ from config.feature_flags import FeatureFlags
 
 
 def create_app(settings, feature_flags: FeatureFlags = None) -> Quart:
+    """创建 Quart 应用，注册中间件、路由和生命周期钩子。"""
     app = Quart(__name__)
     app.config["SETTINGS"] = settings
     app.config["FEATURE_FLAGS"] = feature_flags or FeatureFlags()
@@ -19,12 +22,13 @@ def create_app(settings, feature_flags: FeatureFlags = None) -> Quart:
 
     # Middleware registration order matters:
     # 1. tracing (request_id) first
-    # 2. auth
-    # 3. rate limit
+    # 2. CORS (must be before auth so OPTIONS preflight is handled)
+    # 3. auth
+    # 4. rate limit
     register_tracing(app)
+    configure_cors(app, settings)
     register_auth(app)
     register_rate_limit(app)
-    configure_cors(app, settings)
     register_security_headers(app)
 
     # Routes

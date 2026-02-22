@@ -1,3 +1,5 @@
+"""异步任务路由模块，提供任务创建和状态查询端点。"""
+
 from dataclasses import asdict
 
 from quart import Blueprint, current_app, g, request
@@ -10,12 +12,14 @@ bp = Blueprint("jobs", __name__, url_prefix="/jobs")
 
 @bp.route("", methods=["POST"])
 async def create_job():
+    """创建异步任务并返回任务信息。
+
+    Request: {"job_type": str, "payload": dict}
+    Response: {"success": true, "data": {"job_id": str, "status": str, ...}}
+    """
     request_id = g.request_id
-    try:
-        body = await request.get_json(force=True)
-        req = JobCreateRequest(**body)
-    except Exception as e:
-        return error_response("VALIDATION_ERROR", str(e), request_id, 422)
+    body = await request.get_json(force=True)
+    req = JobCreateRequest(**body)
 
     service = current_app.config.get("job_service")
     if not service:
@@ -27,6 +31,10 @@ async def create_job():
 
 @bp.route("/<job_id>", methods=["GET"])
 async def get_job(job_id: str):
+    """根据任务 ID 查询任务状态和结果。
+
+    Response: {"success": true, "data": {"job_id": str, "status": str, "result": dict|null}}
+    """
     request_id = g.request_id
     service = current_app.config.get("job_service")
     if not service:

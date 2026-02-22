@@ -1,3 +1,5 @@
+"""PostgreSQL 引擎模块，创建 SQLAlchemy 异步引擎与会话工厂。"""
+
 import structlog
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
@@ -10,6 +12,7 @@ logger = structlog.get_logger()
 
 
 def create_pg_engine(settings) -> AsyncEngine:
+    """根据配置创建 PostgreSQL 异步引擎，设置连接池参数。"""
     logger.info(
         "pg_engine_creating",
         host=settings.POSTGRES_HOST,
@@ -28,4 +31,5 @@ def create_pg_engine(settings) -> AsyncEngine:
 
 
 def create_pg_session_factory(engine: AsyncEngine) -> async_sessionmaker[AsyncSession]:
+    """创建 PostgreSQL 异步会话工厂。"""
     return async_sessionmaker(engine, expire_on_commit=False)

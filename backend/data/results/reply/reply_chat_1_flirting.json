@@ -1,0 +1,64 @@
+{
+  "success": true,
+  "data": {
+    "emotion_analysis": {
+      "detected_emotion": "輕鬆自嘲、尋求共鳴、建立連結",
+      "subtext": "他主動傳照片並提到『下週』，顯示他希望延續互動並確保未來的見面機會。他在等你回應這個笑點，透過自嘲（災難、死亡燈光）來展現幽默感並降低社交壓力。",
+      "confidence": 0.95
+    },
+    "reply_options": [
+      {
+        "text": "還好你的顏值有撐住，不然這張照片真的沒救 😏",
+        "intent": "推進好感",
+        "strategy": "運用『推拉』技巧，先認同照片很糟（推），再稱讚他好看（拉），製造曖昧張力。",
+        "framework_technique": "推拉 (Push-Pull)"
+      },
+      {
+        "text": "下週換個好位子坐，不然又要被廣角處刑了 😂",
+        "intent": "維持友善/順勢邀約",
+        "strategy": "自然接過對方『下週』的話題，將『下次見面』預設為既定事實，並建立『共同戰線』對抗爛照片。",
+        "framework_technique": "未來式邀約 + 共謀感建立"
+      },
+      {
+        "text": "這根本是考驗顏值的時刻，看來我們都勉強及格？🤔",
+        "intent": "幽默化解/輕微調情",
+        "strategy": "把『災難』重新定義（Reframing）為『顏值測試』，並用問句引導他互動，同時展現自信。",
+        "framework_technique": "Reframing (重新定義) + 冷讀假設"
+      },
+      {
+        "text": "真的很有年代感，完全是毀滅性視角哈哈",
+        "intent": "禮貌回應",
+        "strategy": "單純回應話題，不延伸曖昧，適合想保持距離或純朋友互動。",
+        "framework_technique": "無"
+      }
+    ],
+    "coach_panel": {
+      "female_perspective_note": "男生願意分享自己『醜照』或『災難現場』通常代表他在妳面前很放鬆，沒有偶像包袱。他特別提『下週』是在試探妳對下次見面的反應。",
+      "dos": [
+        "順著他的自嘲幽默回應",
+        "肯定『下週見』這個隱性邀約（如果妳想見他的話）",
+        "保持輕鬆節奏"
+      ],
+      "donts": [
+        "過度認真安慰他（例如：不會啦其實還好）會讓氣氛變乾",
+        "只回『哈哈對啊』這種句點式回覆"
+      ]
+    },
+    "stage_coaching": {
+      "current_stage": "flirting",
+      "stage_strategy": "利用輕鬆的話題（爛照片）製造『只有我們懂』的笑點，並自然地將互動延伸到未來（下週）。",
+      "technique_used": "推拉、未來式邀約",
+      "stage_warnings": [
+        "避免變成純粹的搞笑兄弟，適時加入一點對他外表的肯定（推拉）",
+        "不要讓話題停留在抱怨照片，要導向『人』或『下次行動』"
+      ]
+    }
+  },
+  "error": null,
+  "request_id": "test-chat_1-flirting",
+  "_meta": {
+    "source_image": "chat_1.jpg",
+    "stage": "flirting",
+    "elapsed_seconds": 32.35
+  }
+}

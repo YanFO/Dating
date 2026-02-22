@@ -1,3 +1,5 @@
+"""日志配置模块，设置 structlog 结构化日志与敏感信息脱敏。"""
+
 import logging
 import structlog
 
@@ -6,6 +8,7 @@ SENSITIVE_KEYS = {"key", "token", "password", "secret", "authorization", "api_ke
 
 
 def _redact_sensitive(_, __, event_dict):
+    """structlog 处理器：对日志中包含敏感关键词的字段进行脱敏处理。"""
     for key in list(event_dict.keys()):
         if any(s in key.lower() for s in SENSITIVE_KEYS):
             val = event_dict[key]
@@ -15,6 +18,7 @@ def _redact_sensitive(_, __, event_dict):
 
 
 def setup_logging(settings):
+    """根据配置初始化 structlog 日志系统，设置日志级别与输出格式。"""
     log_level = getattr(logging, settings.LOG_LEVEL.upper(), logging.INFO)
 
     structlog.configure(

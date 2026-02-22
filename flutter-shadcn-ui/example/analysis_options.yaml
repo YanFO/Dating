@@ -1,0 +1,11 @@
+include: package:flutter_lints/flutter.yaml
+
+plugins:
+  solidart_lint: ^3.0.0
+
+formatter:
+  trailing_commas: preserve
+
+linter:
+  rules:
+    avoid_print: false

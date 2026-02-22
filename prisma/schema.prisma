@@ -1,0 +1,145 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── 用戶帳號 ─────────────────────────────────────
+
+model User {
+  id          String   @id @default(cuid())              // 主鍵，CUID 格式
+  email       String?  @unique @db.VarChar(255)           // 電子郵件（唯一，可為空）
+  displayName String?  @map("display_name") @db.VarChar(128) // 顯示名稱
+  role        String   @default("user") @db.VarChar(32)   // 角色：user / admin
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz() // 建立時間
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz()     // 最後更新時間
+
+  persona      UserPersona?  // 一對一：數位人格設定
+  sessions     Session[]     // 一對多：分析 session
+  analysisLogs AnalysisLog[] // 一對多：分析日誌
+  matches      Match[]       // 一對多：約會管線
+  dateReports  DateReport[]  // 一對多：約會報告
+  jobs         Job[]         // 一對多：非同步任務
+
+  @@map("users")
+}
+
+// ─── 數位人格（Profile 頁 AI Clone + 語調滑桿）─────
+
+model UserPersona {
+  id             String   @id @default(cuid())              // 主鍵
+  userId         String   @unique @map("user_id")           // 所屬用戶 ID（唯一，一對一）
+  syncPct        Float    @default(0) @map("sync_pct")      // AI 分身同步百分比 0-100
+  emojiUsage     Float    @default(50) @map("emoji_usage")  // Emoji 使用量滑桿 0-100
+  sentenceLength Float    @default(50) @map("sentence_length") // 句子長度滑桿 0-100
+  colloquialism  Float    @default(50)                      // 口語程度滑桿 0-100
+  trainingFiles  Json     @default("[]") @map("training_files") // 已上傳訓練檔案 [{name,url,size,uploadedAt}]
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz() // 建立時間
+  updatedAt      DateTime @updatedAt @map("updated_at") @db.Timestamptz()     // 最後更新時間
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade) // 外鍵關聯用戶
+
+  @@map("user_personas")
+}
+
+// ─── Match 管線（Home 頁 Active Pipeline）─────────
+
+model Match {
+  id         String   @id @default(cuid())              // 主鍵
+  userId     String   @map("user_id")                   // 所屬用戶 ID
+  name       String   @db.VarChar(128)                  // 對方姓名或暱稱
+  contextTag String?  @map("context_tag") @db.VarChar(128) // 場景標籤，如 "Art Gallery"
+  status     String   @default("active") @db.VarChar(32)   // 狀態：active / archived
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz() // 建立時間
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamptz()     // 最後更新時間
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade) // 外鍵關聯用戶
+
+  @@index([userId]) // 按用戶查詢索引
+  @@map("matches")
+}
+
+// ─── 約會報告（Insights 頁雷達圖 + Post-Date Report）
+
+model DateReport {
+  id          String   @id @default(cuid())              // 主鍵
+  userId      String   @map("user_id")                   // 所屬用戶 ID
+  sessionId   String?  @map("session_id")                // 關聯的 voice_coach session ID（可選）
+  score       Int                                        // 總分 0-100
+  skills      Json     @default("{}")                    // 6 維技能快照 {emotionalValue,listening,...}
+  goodPoints  Json     @default("[]") @map("good_points")  // 做得好的項目 string[]
+  toImprove   Json     @default("[]") @map("to_improve")   // 待改進項目 string[]
+  actionItems Json     @default("[]") @map("action_items") // 行動建議 string[]
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz() // 建立時間
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)  // 外鍵關聯用戶
+  session Session? @relation(fields: [sessionId], references: [id], onDelete: SetNull) // 外鍵關聯 session
+
+  @@index([userId]) // 按用戶查詢索引
+  @@map("date_reports")
+}
+
+// ─── 分析 Session ─────────────────────────────────
+
+model Session {
+  id           String   @id @default(cuid())              // 主鍵
+  userId       String   @map("user_id")                   // 所屬用戶 ID
+  feature      String   @db.VarChar(32)                   // 功能類型：icebreaker / reply / voice_coach
+  status       String   @default("active") @db.VarChar(32) // 狀態：active / completed / failed
+  metadataJson Json?    @map("metadata_json")             // 額外元數據（彈性 JSON）
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz() // 建立時間
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz()     // 最後更新時間
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade) // 外鍵關聯用戶
+  dateReports DateReport[] // 一對多：約會報告
+
+  @@index([userId]) // 按用戶查詢索引
+  @@map("sessions")
+}
+
+// ─── 分析日誌 ─────────────────────────────────────
+
+model AnalysisLog {
+  id           String   @id @default(cuid())              // 主鍵
+  userId       String   @map("user_id")                   // 所屬用戶 ID
+  sessionId    String?  @map("session_id")                // 關聯 session ID（可選）
+  feature      String   @db.VarChar(32)                   // 功能類型：icebreaker / reply / voice_coach
+  inputType    String   @map("input_type") @db.VarChar(32) // 輸入類型：text / image / screenshot
+  inputSummary String?  @map("input_summary") @db.Text    // 輸入摘要（截斷後的原文）
+  outputJson   Json?    @map("output_json")               // LLM 回應完整 JSON
+  llmModel     String?  @map("llm_model") @db.VarChar(64) // 使用的 LLM 模型名稱
+  latencyMs    Int?     @map("latency_ms")                // 請求耗時（毫秒）
+  status       String   @default("success") @db.VarChar(32) // 狀態：success / error
+  errorMessage String?  @map("error_message") @db.Text    // 錯誤訊息（當 status=error）
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz() // 建立時間
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade) // 外鍵關聯用戶
+
+  @@index([userId]) // 按用戶查詢索引
+  @@map("analysis_logs")
+}
+
+// ─── 非同步任務 ───────────────────────────────────
+
+model Job {
+  id           String   @id @default(cuid())              // 主鍵
+  userId       String?  @map("user_id")                   // 所屬用戶 ID（可選，系統任務無用戶）
+  jobType      String   @map("job_type") @db.VarChar(64)  // 任務類型：icebreaker_analyze / reply_analyze
+  status       String   @default("PENDING") @db.VarChar(32) // 狀態：PENDING / RUNNING / SUCCEEDED / FAILED / CANCELED
+  progress     Int      @default(0)                       // 進度百分比 0-100
+  payloadJson  Json?    @map("payload_json")              // 任務輸入參數 JSON
+  resultJson   Json?    @map("result_json")               // 任務結果 JSON
+  errorSummary String?  @map("error_summary") @db.Text    // 錯誤摘要
+  retryCount   Int      @default(0) @map("retry_count")   // 已重試次數
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz() // 建立時間
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz()     // 最後更新時間
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull) // 外鍵關聯用戶（可選）
+
+  @@index([status]) // 按狀態查詢索引
+  @@index([userId]) // 按用戶查詢索引
+  @@map("jobs")
+}

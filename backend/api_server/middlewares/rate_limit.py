@@ -13,6 +13,10 @@ def register_rate_limit(app: Quart) -> None:
 
     @app.before_request
     async def check_rate_limit():
+        # Skip rate limiting for static files and non-API routes
+        if not request.path.startswith("/api/"):
+            return
+
         client_ip = request.remote_addr or "unknown"
         now = time.time()
         window = _windows[client_ip]

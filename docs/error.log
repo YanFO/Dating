@@ -1,0 +1,158 @@
+# Error Log
+
+## 2026-02-21 — Frontend API requests not reaching backend
+
+### Symptom
+- Icebreaker analysis stuck on loading, never returns result
+- Backend log shows zero incoming requests after startup
+- Flutter Web console: CORS preflight failure (OPTIONS blocked)
+
+### Root Cause
+1. **CORS OPTIONS preflight not handled**: Browser sends an OPTIONS request before any cross-origin POST. The backend `cors.py` only had `after_request` headers but no `before_request` handler to respond to OPTIONS with 204.
+2. **Middleware registration order wrong**: `configure_cors()` was registered AFTER `register_auth()` in `app.py`. The auth middleware's `before_request` ran first on OPTIONS requests and blocked them before CORS could respond.
+3. **baseUrl hardcoded to localhost**: `api_endpoints.dart` had `static const String baseUrl = 'http://localhost:8000'`. When Flutter Web runs in the browser on a remote server, `localhost` refers to the user's local machine, not the server.
+
+### Fix
+1. **`backend/api_server/middlewares/cors.py`** — Added `@app.before_request` handler that intercepts OPTIONS requests and immediately returns 204 with CORS headers, bypassing auth/rate-limit.
+2. **`backend/api_server/app.py`** — Moved `configure_cors(app, settings)` before `register_auth(app)` so CORS preflight is handled first.
+3. **`flutter/lib/core/constants/api_endpoints.dart`** — Changed `baseUrl` from hardcoded `const` to dynamic getter using `Uri.base.host` on Flutter Web, so it auto-detects the correct server hostname.
+
+### Files Changed
+- `backend/api_server/middlewares/cors.py`
+- `backend/api_server/app.py`
+- `flutter/lib/core/constants/api_endpoints.dart`
+
+---
+
+## 2026-02-21 — All API requests timeout at 30s (0 bytes returned)
+
+### Symptom
+- Browser Network tab: all XHR requests (matches, skills, reports, persona, analyze) show 30.00s timeout, 0 byte, no HTTP status
+- Backend log shows zero incoming requests
+- Backend responds instantly when tested via curl from the server
+
+### Root Cause
+**SSH port forwarding gap**: The user accesses Flutter Web via SSH port-forward on port 3001 (Flutter dev server). The Flutter app constructs API URLs as `http://localhost:8000`. However, port 8000 is NOT forwarded to the user's local machine, so the browser cannot reach the backend.
+
+- `curl http://localhost:8000/api/icebreaker/analyze` from EC2 → responds in ~5s ✅
+- Browser on user's machine → `localhost:8000` → nothing listening → 30s connect timeout ❌
+
+### Fix
+User must forward port 8000 in addition to port 3001:
+```
+ssh -L 3001:localhost:3001 -L 8000:localhost:8000 <ec2-instance>
+```
+Or in VS Code Remote SSH, add port 8000 to forwarded ports.
+
+### Backend API Verification (all passing)
+- `GET /api/health` → 404 (expected, health route not registered)
+- `OPTIONS /api/icebreaker/analyze` → 204 with CORS headers ✅
+- `POST /api/icebreaker/analyze` → 200 with full JSON response ✅
+- `GET /api/matches` → 200 with match data ✅
+
+---
+
+## 2026-02-21 — VS Code port forwarding uses IPv6 but backend only binds IPv4
+
+### Symptom
+- Port 8000 is forwarded in VS Code, but browser requests still timeout
+- `curl http://127.0.0.1:8000` from server → 200 ✅
+- `curl http://[::1]:8000` from server → Connection refused ❌
+- VS Code port forwarding may route through `::1` (IPv6 loopback)
+
+### Root Cause
+Backend `main.py` bound Hypercorn to `0.0.0.0:8000` (IPv4 only). VS Code Remote SSH port forwarding can use IPv6 `::1` internally, which has no listener.
+
+Initial fix attempt — binding to BOTH `0.0.0.0:8000` and `[::]:8000` — crashed with `OSError: [Errno 98] Address already in use` because Linux dual-stack sockets make `[::]` implicitly cover IPv4 too.
+
+### Fix
+Changed `backend/main.py` to bind only to `[::]:8000` (dual-stack). On Linux, this accepts both IPv4 and IPv6 connections:
+```python
+config.bind = [f"[::]:{settings.PORT}"]
+```
+
+### Verification
+- `curl http://127.0.0.1:8000/api/health` → 200 ✅
+- `curl http://[::1]:8000/api/health` → 200 ✅
+- CORS OPTIONS preflight via IPv6 → 204 ✅
+- POST /api/icebreaker/analyze via IPv6 → 200 with full data ✅
+
+### Files Changed
+- `backend/main.py`
+
+---
+
+## 2026-02-21 — Two-port architecture causes persistent timeout (port 8000 unreachable from browser)
+
+### Symptom
+- Even after IPv6 fix and VS Code showing port 8000 as "forwarded", all API requests from the browser still timeout at 30s with 0 response headers
+- Request URL: `http://localhost:8000/api/icebreaker/analyze`
+- Referer: `http://localhost:3001/` (Flutter dev server)
+- Backend responds instantly via `curl` from server (both IPv4 and IPv6)
+- Network tab shows 0 bytes, no HTTP status code
+
+### Root Cause
+**VS Code port forwarding for port 8000 is unreliable.** Despite showing "forwarded" in the Ports panel, the browser cannot actually connect. Possible causes:
+1. VS Code may wrap forwarded ports in HTTPS (devtunnel), causing mixed-content block when Flutter calls `http://localhost:8000`
+2. The forwarding may not actually be working despite the UI indicating it is
+3. Two-port architecture (3001 for Flutter, 8000 for API) is inherently fragile with VS Code Remote SSH
+
+### Fix
+**Switched to single-port architecture**: Backend serves both API and Flutter Web static files on port 8000. No cross-port, no CORS needed.
+
+1. **`flutter/lib/core/constants/api_endpoints.dart`** — Changed `baseUrl` to `Uri.base.origin` (same-origin). No port replacement needed since Flutter Web is served from the backend.
+2. **`backend/api_server/http.py`** — Already configured to serve Flutter Web build from `flutter/build/web/`.
+3. **Build step**: `cd flutter && flutter build web --release` → backend serves the output.
+
+User accesses `http://localhost:8000` (one forwarded port) → gets Flutter Web app → API calls go to same origin → no CORS, no mixed content, no second port.
+
+### Verification
+- `GET http://[::1]:8000/` → 200 (serves Flutter index.html) ✅
+- `GET http://[::1]:8000/api/health` → 200 ✅
+- `OPTIONS http://[::1]:8000/api/icebreaker/analyze` → 204 ✅
+
+### Trade-off
+Flutter Web changes now require `flutter build web` (~44s) instead of hot-reload. For rapid UI iteration, temporarily switch back to Flutter dev server by reverting `api_endpoints.dart` to use `:3001` → `:8000` port replacement.
+
+### Files Changed
+- `flutter/lib/core/constants/api_endpoints.dart`
+
+---
+
+## 2026-02-21 — Port 8000 無法從瀏覽器訪問 (ERR_CONNECTION_REFUSED)
+
+### Symptom
+- 瀏覽器開 `http://localhost:8000/health` 顯示 `ERR_CONNECTION_REFUSED`
+- VSCode PORTS 面板顯示 port 8000 已 forwarded（綠燈），但瀏覽器完全連不上
+- 從 EC2 server 上 `curl http://localhost:8000/health` → 200 正常
+- 瀏覽器 Network tab 只有 MSN/Bing 的 ping 請求，沒有任何對 localhost:8000 的請求
+
+### Root Cause
+**Hypercorn 綁定 `[::]:8000`（純 IPv6），VSCode port forwarding 無法正確轉發。**
+
+排查過程：
+1. 發現 server 沒有啟動 → 手動啟動 `python main.py`，綁在 `[::]:8000`
+2. Server 從 EC2 本機 curl 正常回應，但瀏覽器透過 VSCode port forwarding 完全連不上
+3. 嘗試同時綁 `0.0.0.0:8000` + `[::]:8000` → 失敗，`OSError: [Errno 98] Address already in use`（Linux dual-stack 下 `[::]` 已隱含覆蓋 IPv4，導致第二個 bind 衝突）
+4. 改為只綁 `0.0.0.0:8000`（純 IPv4）→ 成功啟動，VSCode port forwarding 正常轉發
+
+**根本原因**：VSCode Remote SSH 的 port forwarding 偵測和轉發機制對純 IPv6 binding (`[::]`) 支持不一致。當 server 只綁 IPv6 時，VSCode 面板雖然顯示已 forwarded，但實際上瀏覽器的 `localhost` 解析到 `127.0.0.1`（IPv4），轉發通道卻指向 IPv6，導致連線失敗。
+
+### Fix
+**`backend/main.py`** — 將 Hypercorn bind 從 `[::]` 改為 `0.0.0.0`（IPv4）：
+
+```python
+# Before (IPv6 only — VSCode port forwarding 不相容)
+config.bind = [f"[::]:{settings.PORT}"]
+
+# After (IPv4 — VSCode port forwarding 正常運作)
+config.bind = [f"0.0.0.0:{settings.PORT}"]
+```
+
+### Verification
+- `ss -tlnp | grep 8000` → `0.0.0.0:8000` LISTEN ✅
+- `curl http://127.0.0.1:8000/health` → 200 ✅
+- 瀏覽器 `http://localhost:8000/health` → 200 ✅ (待用戶確認)
+
+### Files Changed
+- `backend/main.py`
