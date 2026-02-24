@@ -1,0 +1,640 @@
+{"env": "dev", "event": "startup_begin", "level": "info", "logger": "api_server.lifecycle", "timestamp": "2026-02-23T13:26:58.642815Z"}
+{"host": "localhost", "port": 5433, "database": "lens_dating", "event": "pg_engine_creating", "level": "info", "logger": "infra.database.postgres", "timestamp": "2026-02-23T13:26:58.643023Z"}
+2026-02-23 13:26:58,664 INFO sqlalchemy.engine.Engine select pg_catalog.version()
+select pg_catalog.version()
+2026-02-23 13:26:58,664 INFO sqlalchemy.engine.Engine [raw sql] ()
+[raw sql] ()
+2026-02-23 13:26:58,666 INFO sqlalchemy.engine.Engine select current_schema()
+select current_schema()
+2026-02-23 13:26:58,666 INFO sqlalchemy.engine.Engine [raw sql] ()
+[raw sql] ()
+2026-02-23 13:26:58,667 INFO sqlalchemy.engine.Engine show standard_conforming_strings
+show standard_conforming_strings
+2026-02-23 13:26:58,667 INFO sqlalchemy.engine.Engine [raw sql] ()
+[raw sql] ()
+2026-02-23 13:26:58,667 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 13:26:58,671 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-02-23 13:26:58,671 INFO sqlalchemy.engine.Engine [generated in 0.00021s] ('users', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+[generated in 0.00021s] ('users', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-02-23 13:26:58,673 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-02-23 13:26:58,673 INFO sqlalchemy.engine.Engine [cached since 0.002378s ago] ('user_personas', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+[cached since 0.002378s ago] ('user_personas', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-02-23 13:26:58,673 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-02-23 13:26:58,673 INFO sqlalchemy.engine.Engine [cached since 0.002895s ago] ('matches', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+[cached since 0.002895s ago] ('matches', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-02-23 13:26:58,674 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-02-23 13:26:58,674 INFO sqlalchemy.engine.Engine [cached since 0.003357s ago] ('match_memories', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+[cached since 0.003357s ago] ('match_memories', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-02-23 13:26:58,674 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-02-23 13:26:58,674 INFO sqlalchemy.engine.Engine [cached since 0.003762s ago] ('date_reports', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+[cached since 0.003762s ago] ('date_reports', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-02-23 13:26:58,675 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-02-23 13:26:58,675 INFO sqlalchemy.engine.Engine [cached since 0.004167s ago] ('love_coach_conversations', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+[cached since 0.004167s ago] ('love_coach_conversations', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-02-23 13:26:58,675 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-02-23 13:26:58,675 INFO sqlalchemy.engine.Engine [cached since 0.00457s ago] ('love_coach_messages', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+[cached since 0.00457s ago] ('love_coach_messages', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-02-23 13:26:58,675 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-02-23 13:26:58,675 INFO sqlalchemy.engine.Engine [cached since 0.004896s ago] ('sessions', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+[cached since 0.004896s ago] ('sessions', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-02-23 13:26:58,676 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-02-23 13:26:58,676 INFO sqlalchemy.engine.Engine [cached since 0.005225s ago] ('analysis_logs', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+[cached since 0.005225s ago] ('analysis_logs', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-02-23 13:26:58,676 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-02-23 13:26:58,676 INFO sqlalchemy.engine.Engine [cached since 0.005562s ago] ('jobs', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+[cached since 0.005562s ago] ('jobs', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-02-23 13:26:58,676 INFO sqlalchemy.engine.Engine COMMIT
+COMMIT
+{"event": "pg_tables_created", "level": "info", "logger": "api_server.lifecycle", "timestamp": "2026-02-23T13:26:58.677335Z"}
+{"database": "Lens", "event": "motor_client_creating", "level": "info", "logger": "infra.database.engine", "timestamp": "2026-02-23T13:26:58.677470Z"}
+{"model": "gemini-3-pro-preview", "event": "gemini_client_initialized", "level": "info", "logger": "api_server.lifecycle", "timestamp": "2026-02-23T13:26:58.807097Z"}
+{"model": "gpt-5.2", "event": "openai_client_initialized", "level": "info", "logger": "api_server.lifecycle", "timestamp": "2026-02-23T13:26:58.830140Z"}
+{"event": "love_coach_service_initialized", "level": "info", "logger": "api_server.lifecycle", "timestamp": "2026-02-23T13:26:58.830369Z"}
+2026-02-23 13:26:58,831 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 13:26:58,837 INFO sqlalchemy.engine.Engine SELECT date_reports.id, date_reports.user_id, date_reports.session_id, date_reports.score, date_reports.skills, date_reports.good_points, date_reports.to_improve, date_reports.action_items, date_reports.created_at 
+FROM date_reports 
+WHERE date_reports.user_id = $1::VARCHAR 
+ LIMIT $2::INTEGER
+SELECT date_reports.id, date_reports.user_id, date_reports.session_id, date_reports.score, date_reports.skills, date_reports.good_points, date_reports.to_improve, date_reports.action_items, date_reports.created_at 
+FROM date_reports 
+WHERE date_reports.user_id = $1::VARCHAR 
+ LIMIT $2::INTEGER
+2026-02-23 13:26:58,837 INFO sqlalchemy.engine.Engine [generated in 0.00022s] ('anonymous', 1)
+[generated in 0.00022s] ('anonymous', 1)
+2026-02-23 13:26:58,840 INFO sqlalchemy.engine.Engine ROLLBACK
+ROLLBACK
+{"event": "voice_coach_enabled", "level": "info", "logger": "api_server.lifecycle", "timestamp": "2026-02-23T13:26:58.840585Z"}
+{"event": "startup_complete", "level": "info", "logger": "api_server.lifecycle", "timestamp": "2026-02-23T13:26:58.840689Z"}
+[2026-02-23 13:26:58 +0000] [3450800] [INFO] Running on http://[::]:9999 (CTRL + C to quit)
+Running on http://[::]:9999 (CTRL + C to quit)
+{"method": "GET", "path": "/api/health", "status": 200, "duration_ms": 4, "event": "request_completed", "request_id": "2fff08cf-75c2-47a4-b17c-41415a395c10", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:27:01.875815Z"}
+[2026-02-23 13:27:01 +0000] [3450800] [INFO] ::1:39016 - - [23/Feb/2026:13:27:01 +0000] "GET /api/health 1.1" - - "-" "curl/8.5.0"
+[2026-02-23 13:27:01 +0000] [3450800] [INFO] ::1:39016 - - [23/Feb/2026:13:27:01 +0000] "GET /api/health 1.1" 200 3042 "-" "curl/8.5.0"
+{"method": "GET", "path": "/api/health", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "aebf32c9-eb34-4bc6-9880-9af8826da9fb", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:27:07.897563Z"}
+[2026-02-23 13:27:07 +0000] [3450800] [INFO] ::1:44404 - - [23/Feb/2026:13:27:07 +0000] "GET /api/health 1.1" - - "-" "curl/8.5.0"
+[2026-02-23 13:27:07 +0000] [3450800] [INFO] ::1:44404 - - [23/Feb/2026:13:27:07 +0000] "GET /api/health 1.1" 200 3042 "-" "curl/8.5.0"
+{"method": "GET", "path": "/api/health", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "e1105450-0cd0-425a-bbbe-e8a9f7a4d271", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:27:07.931230Z"}
+[2026-02-23 13:27:07 +0000] [3450800] [INFO] ::1:44418 - - [23/Feb/2026:13:27:07 +0000] "GET /api/health 1.1" - - "-" "curl/8.5.0"
+{"method": "GET", "path": "/favicon.ico", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "d20d9cb2-577c-4ffd-9dc8-10794a5099b0", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:34:51.425638Z"}
+[2026-02-23 13:34:51 +0000] [3450800] [INFO] ::ffff:127.0.0.1:58320 - - [23/Feb/2026:13:34:51 +0000] "GET /favicon.ico 1.1" 200 3042 "-" "Go-http-client/1.1"
+{"method": "GET", "path": "/favicon.ico", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "d512f358-4a41-43ce-8c49-7cd45b2ba263", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:34:55.315407Z"}
+[2026-02-23 13:34:55 +0000] [3450800] [INFO] ::ffff:127.0.0.1:58320 - - [23/Feb/2026:13:34:55 +0000] "GET /favicon.ico 1.1" 200 3042 "-" "Go-http-client/1.1"
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "4c953822-f223-47f8-80b1-21dbf4ea10b6", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:35:32.528940Z"}
+[2026-02-23 13:35:32 +0000] [3450800] [INFO] ::ffff:127.0.0.1:48860 - - [23/Feb/2026:13:35:32 +0000] "GET / 1.1" 200 3042 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "34621459-2209-4541-ae8d-93093db92980", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:35:33.314206Z"}
+[2026-02-23 13:35:33 +0000] [3450800] [INFO] ::ffff:127.0.0.1:48860 - - [23/Feb/2026:13:35:33 +0000] "GET / 1.1" 200 3042 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "3548a7e6-8426-4355-b303-26ebb441c6ff", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:35:35.965166Z"}
+[2026-02-23 13:35:35 +0000] [3450800] [INFO] ::ffff:127.0.0.1:48860 - - [23/Feb/2026:13:35:35 +0000] "GET / 1.1" 200 3042 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "90b269ea-c0f2-4cb1-b16e-7d35f3ee4ddc", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:35:39.572762Z"}
+[2026-02-23 13:35:39 +0000] [3450800] [INFO] ::ffff:127.0.0.1:48860 - - [23/Feb/2026:13:35:39 +0000] "GET // 1.1" 200 3042 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "b21e66ec-6eda-4a04-be81-15ed4ebd92d6", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:42:19.313136Z"}
+[2026-02-23 13:42:19 +0000] [3450800] [INFO] ::ffff:127.0.0.1:49392 - - [23/Feb/2026:13:42:19 +0000] "GET / 1.1" 200 3042 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:139.0) Gecko/20100101 Firefox/139.0"
+{"method": "GET", "path": "/@vite/env", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "ec460770-7ff6-4357-98ff-6521af652d5c", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:42:19.483550Z"}
+[2026-02-23 13:42:19 +0000] [3450800] [INFO] ::ffff:127.0.0.1:49392 - - [23/Feb/2026:13:42:19 +0000] "GET /@vite/env 1.1" 200 3042 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:139.0) Gecko/20100101 Firefox/139.0"
+{"method": "GET", "path": "/.vscode/sftp.json", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "6c97842c-23f0-4e2d-a2e7-a405d5256546", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:42:19.630904Z"}
+[2026-02-23 13:42:19 +0000] [3450800] [INFO] ::ffff:127.0.0.1:49392 - - [23/Feb/2026:13:42:19 +0000] "GET /.vscode/sftp.json 1.1" 200 3042 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:139.0) Gecko/20100101 Firefox/139.0"
+{"method": "GET", "path": "/.env", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "87aafaa8-1faa-4461-952e-f131aa442b69", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:42:19.770279Z"}
+[2026-02-23 13:42:19 +0000] [3450800] [INFO] ::ffff:127.0.0.1:49392 - - [23/Feb/2026:13:42:19 +0000] "GET /.env 1.1" 200 3042 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:139.0) Gecko/20100101 Firefox/139.0"
+{"method": "GET", "path": "/.git/config", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "7918a56d-264e-48f7-ad6e-89c0bbf511e5", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:42:19.918394Z"}
+[2026-02-23 13:42:19 +0000] [3450800] [INFO] ::ffff:127.0.0.1:49392 - - [23/Feb/2026:13:42:19 +0000] "GET /.git/config 1.1" 200 3042 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:139.0) Gecko/20100101 Firefox/139.0"
+{"method": "GET", "path": "/robots.txt", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "1c7c4c8d-4b8f-459a-b7c5-02b717a2db88", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:48:40.171486Z"}
+[2026-02-23 13:48:40 +0000] [3450800] [INFO] ::ffff:127.0.0.1:34504 - - [23/Feb/2026:13:48:40 +0000] "GET /robots.txt 1.1" 200 3042 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36; compatible; OAI-SearchBot/1.3; robots.txt; +https://openai.com/searchbot"
+{"method": "GET", "path": "/index.html", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "4360888f-1ec5-4dd9-94ec-73577fa3e079", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:52:41.126841Z"}
+[2026-02-23 13:52:41 +0000] [3450800] [INFO] ::ffff:127.0.0.1:56404 - - [23/Feb/2026:13:52:41 +0000] "GET /index.html 1.1" 200 3042 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/index.html", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "9380c576-bbd3-43ec-b8db-b19a4ec61af9", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:52:41.863404Z"}
+[2026-02-23 13:52:41 +0000] [3450800] [INFO] ::ffff:127.0.0.1:56404 - - [23/Feb/2026:13:52:41 +0000] "GET /index.html 1.1" 200 3042 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/flutter_bootstrap.js", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "c2efef2b-cc80-457d-b72f-a4ee8e1477ba", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:52:42.351092Z"}
+[2026-02-23 13:52:42 +0000] [3450800] [INFO] ::ffff:127.0.0.1:56404 - - [23/Feb/2026:13:52:42 +0000] "GET /flutter_bootstrap.js 1.1" 200 9975 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/flutter.js.map", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "64fa5f34-167e-4e11-90ea-d8920f7f8d2d", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:52:54.544090Z"}
+[2026-02-23 13:52:54 +0000] [3450800] [INFO] ::ffff:127.0.0.1:48906 - - [23/Feb/2026:13:52:54 +0000] "GET /flutter.js.map 1.1" 200 3042 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/flutter_bootstrap.js.map", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "4e6b0569-1c3e-4910-a94e-c67753a1cbaa", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:52:54.983461Z"}
+[2026-02-23 13:52:54 +0000] [3450800] [INFO] ::ffff:127.0.0.1:48906 - - [23/Feb/2026:13:52:54 +0000] "GET /flutter_bootstrap.js.map 1.1" 200 3042 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/checkout", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "d3317f44-73a2-4b7c-ba9e-cdb2c77e7983", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:52:55.480216Z"}
+[2026-02-23 13:52:55 +0000] [3450800] [INFO] ::ffff:127.0.0.1:48906 - - [23/Feb/2026:13:52:55 +0000] "GET /checkout 1.1" 200 3042 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/flutter.js.map", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "efa75fc9-c1eb-41e0-8980-d5a9e57047be", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:52:56.020755Z"}
+[2026-02-23 13:52:56 +0000] [3450800] [INFO] ::ffff:127.0.0.1:48906 - - [23/Feb/2026:13:52:56 +0000] "GET /flutter.js.map 1.1" 200 3042 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/flutter_bootstrap.js.map", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "e00e3f48-f30e-4f37-928a-8dfee70360cc", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:52:56.453815Z"}
+[2026-02-23 13:52:56 +0000] [3450800] [INFO] ::ffff:127.0.0.1:48906 - - [23/Feb/2026:13:52:56 +0000] "GET /flutter_bootstrap.js.map 1.1" 200 3042 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/robots.txt", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "573bb74b-64ff-485e-ac5c-397f7f608527", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:52:57.584839Z"}
+[2026-02-23 13:52:57 +0000] [3450800] [INFO] ::ffff:127.0.0.1:48906 - - [23/Feb/2026:13:52:57 +0000] "GET /robots.txt 1.1" 200 3042 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/flutter.js.map", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "fb778211-a81c-4af6-9199-b6f1ca3fece7", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:53:11.207939Z"}
+[2026-02-23 13:53:11 +0000] [3450800] [INFO] ::ffff:127.0.0.1:46838 - - [23/Feb/2026:13:53:11 +0000] "GET /flutter.js.map 1.1" 200 3042 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/flutter_bootstrap.js.map", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "0c23cec9-361b-4019-9e94-be74f866517e", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:53:12.980882Z"}
+[2026-02-23 13:53:12 +0000] [3450800] [INFO] ::ffff:127.0.0.1:46848 - - [23/Feb/2026:13:53:12 +0000] "GET /flutter_bootstrap.js.map 1.1" 200 3042 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/robots.txt", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "8ad39066-030c-44da-a881-07c87e4003f0", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T13:53:17.279520Z"}
+[2026-02-23 13:53:17 +0000] [3450800] [INFO] ::ffff:127.0.0.1:46856 - - [23/Feb/2026:13:53:17 +0000] "GET /robots.txt 1.1" 200 3042 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/robots.txt", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "4ad4cee9-9940-459b-8294-8f4e891bfe98", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T14:04:36.527065Z"}
+[2026-02-23 14:04:36 +0000] [3450800] [INFO] ::ffff:127.0.0.1:36604 - - [23/Feb/2026:14:04:36 +0000] "GET /robots.txt 1.1" 200 3042 "-" "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)"
+{"method": "GET", "path": "/robots.txt", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "8fa7365a-7c5a-41ed-a938-c992863a9da0", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T14:04:36.712273Z"}
+[2026-02-23 14:04:36 +0000] [3450800] [INFO] ::ffff:127.0.0.1:36604 - - [23/Feb/2026:14:04:36 +0000] "GET /robots.txt 1.1" 200 3042 "-" ""
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "ee84a980-23eb-4e34-910b-4beb7679931f", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T14:04:37.234602Z"}
+[2026-02-23 14:04:37 +0000] [3450800] [INFO] ::ffff:127.0.0.1:36604 - - [23/Feb/2026:14:04:37 +0000] "GET / 1.1" 200 3042 "-" "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)"
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "427ebac2-3491-4b09-885d-9ed7ecf01ba4", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T14:27:08.561480Z"}
+[2026-02-23 14:27:08 +0000] [3450800] [INFO] ::ffff:127.0.0.1:53206 - - [23/Feb/2026:14:27:08 +0000] "GET / 1.1" 200 3042 "-" "Mozilla/5.0 (compatible; CensysInspect/1.1; +https://about.censys.io/)"
+{"method": "GET", "path": "/icons/Icon-192.png", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "922f64d9-7768-4791-b3d2-8516ed0034bc", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T14:27:13.840406Z"}
+[2026-02-23 14:27:13 +0000] [3450800] [INFO] ::ffff:127.0.0.1:53220 - - [23/Feb/2026:14:27:13 +0000] "GET /icons/Icon-192.png 1.1" 200 5292 "-" "Mozilla/5.0 (compatible; CensysInspect/1.1; +https://about.censys.io/)"
+{"method": "GET", "path": "/favicon.png", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "3bb43799-f690-4e54-9473-e538d9e4329d", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T14:27:16.064312Z"}
+[2026-02-23 14:27:16 +0000] [3450800] [INFO] ::ffff:127.0.0.1:53220 - - [23/Feb/2026:14:27:16 +0000] "GET /favicon.png 1.1" 200 917 "-" "Mozilla/5.0 (compatible; CensysInspect/1.1; +https://about.censys.io/)"
+{"method": "GET", "path": "/favicon.ico", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "3f088a65-9521-4adb-8aa7-41afacad0782", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T14:27:20.087653Z"}
+[2026-02-23 14:27:20 +0000] [3450800] [INFO] ::ffff:127.0.0.1:53220 - - [23/Feb/2026:14:27:20 +0000] "GET /favicon.ico 1.1" 200 3042 "-" "Mozilla/5.0 (compatible; CensysInspect/1.1; +https://about.censys.io/)"
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "fd4054e1-321b-46ed-81db-9dde8788614f", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T14:30:31.244311Z"}
+[2026-02-23 14:30:31 +0000] [3450800] [INFO] ::ffff:127.0.0.1:36302 - - [23/Feb/2026:14:30:31 +0000] "GET / 1.1" 200 3042 "-" "Go-http-client/1.1"
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "d3dcdf4e-89da-449f-a90c-0f2c5ee87921", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T14:53:03.978061Z"}
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "e5792247-e7f3-488c-9189-9ecd7eb68ca0", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T14:53:03.979485Z"}
+[2026-02-23 14:53:03 +0000] [3450800] [INFO] ::ffff:127.0.0.1:60778 - - [23/Feb/2026:14:53:03 +0000] "GET / 1.1" 200 3042 "http://dating-api.ask-lens.ai" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.19582"
+[2026-02-23 14:53:03 +0000] [3450800] [INFO] ::ffff:127.0.0.1:60794 - - [23/Feb/2026:14:53:03 +0000] "GET / 1.1" 200 3042 "http://dating-api.ask-lens.ai" "Mozilla/5.0 (Linux; Android 8.0.0; SM-G965U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.111 Mobile Safari/537.36"
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "db1edb3e-40e4-4a65-bea0-8d2ac604d739", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:46.138526Z"}
+[2026-02-23 15:11:46 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44324 - - [23/Feb/2026:15:11:46 +0000] "GET / 1.1" 200 3042 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+{"method": "GET", "path": "/flutter_bootstrap.js", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "890fafdc-2f96-4856-8fbb-57f864729379", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:46.609219Z"}
+{"method": "GET", "path": "/splash/img/light-1x.png", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "2876ba77-8b6b-40d0-af97-14e8492df5c3", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:46.610798Z"}
+[2026-02-23 15:11:46 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44324 - - [23/Feb/2026:15:11:46 +0000] "GET /flutter_bootstrap.js 1.1" 200 9975 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:46 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44334 - - [23/Feb/2026:15:11:46 +0000] "GET /splash/img/light-1x.png 1.1" 200 14885 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+{"method": "GET", "path": "/manifest.json", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "6aa58c0c-3676-4c4e-9d6c-19bc09cf165b", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:46.737671Z"}
+[2026-02-23 15:11:46 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44334 - - [23/Feb/2026:15:11:46 +0000] "GET /manifest.json 1.1" 200 919 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+{"method": "GET", "path": "/main.dart.js", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "0de73567-ad08-46a0-83af-2c0c8ef5782c", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:47.010816Z"}
+[2026-02-23 15:11:47 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44334 - - [23/Feb/2026:15:11:47 +0000] "GET /main.dart.js 1.1" 200 3295219 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+{"method": "GET", "path": "/assets/FontManifest.json", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "317f7d1e-690e-4ac0-ac01-019690e40990", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.243295Z"}
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44334 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/FontManifest.json 1.1" 200 2744 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+{"method": "GET", "path": "/favicon.png", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "a1f61cb7-d53f-44fb-a9a7-3c52653abd5d", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.505040Z"}
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44334 - - [23/Feb/2026:15:11:48 +0000] "GET /favicon.png 1.1" 200 917 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+{"method": "GET", "path": "/icons/Icon-192.png", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "db67b926-a2b7-4c07-98c8-7f8521ac0abe", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.509270Z"}
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44334 - - [23/Feb/2026:15:11:48 +0000] "GET /icons/Icon-192.png 1.1" 200 5292 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+{"method": "GET", "path": "/assets/fonts/MaterialIcons-Regular.otf", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "f46d782a-8f28-4d5c-a0ae-bcb8e99b5c49", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.641594Z"}
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44334 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/fonts/MaterialIcons-Regular.otf 1.1" 200 7908 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+{"method": "GET", "path": "/assets/packages/shadcn_ui/fonts/Geist-Thin.otf", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "85d807c7-4008-4d90-9643-35d6e1f9053f", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.643919Z"}
+{"method": "GET", "path": "/assets/packages/shadcn_ui/fonts/Geist-UltraLight.otf", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "0314fb85-8f78-46bd-b88c-83ac0c6e1e62", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.645039Z"}
+{"method": "GET", "path": "/assets/packages/shadcn_ui/fonts/Geist-Light.otf", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "aa4101fc-2c0b-4c65-9bd7-be26af8b24bc", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.647820Z"}
+{"method": "GET", "path": "/assets/packages/shadcn_ui/fonts/Geist-Medium.otf", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "c60ccfd6-05ea-4ce7-8553-ab52f655688b", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.651671Z"}
+{"method": "GET", "path": "/assets/packages/shadcn_ui/fonts/GeistMono-Thin.otf", "status": 200, "duration_ms": 2, "event": "request_completed", "request_id": "09567fa4-6dd5-4485-b1a5-b9bba7b5acad", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.656131Z"}
+{"method": "GET", "path": "/assets/packages/shadcn_ui/fonts/Geist-Bold.otf", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "af077d16-1e01-4037-b79c-b92cbd628eaf", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.656930Z"}
+{"method": "GET", "path": "/assets/packages/shadcn_ui/fonts/Geist-UltraBlack.otf", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "73bb314d-2560-49d2-8a05-ba039a6f0168", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.659621Z"}
+{"method": "GET", "path": "/assets/packages/shadcn_ui/fonts/Geist-Regular.otf", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "fd6d5e36-cccd-43f1-adaa-8a300e150de4", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.660342Z"}
+{"method": "GET", "path": "/assets/packages/shadcn_ui/fonts/Geist-Black.otf", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "fb273b1c-aec1-4d12-9e94-57b891d9b1ae", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.661091Z"}
+{"method": "GET", "path": "/assets/packages/lucide_icons_flutter/assets/build_font/LucideVariable-w100.ttf", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "c1fce024-7f01-45a6-9294-a787d44dee38", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.664245Z"}
+{"method": "GET", "path": "/assets/packages/shadcn_ui/fonts/GeistMono-Light.otf", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "a0ba4971-8a99-4a2c-9675-fd17613906bd", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.665333Z"}
+{"method": "GET", "path": "/assets/packages/shadcn_ui/fonts/Geist-SemiBold.otf", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "221a719b-b3ab-488d-930f-be953880ad09", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.666178Z"}
+{"method": "GET", "path": "/assets/packages/shadcn_ui/fonts/GeistMono-Bold.otf", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "825836d6-c653-4482-b11a-a18fd16ad54a", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.666903Z"}
+{"method": "GET", "path": "/assets/packages/shadcn_ui/fonts/GeistMono-UltraLight.otf", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "27893e63-ad75-4b18-a658-0537e72d8012", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.667813Z"}
+{"method": "GET", "path": "/assets/packages/shadcn_ui/fonts/GeistMono-Regular.otf", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "c67c5da4-abd1-439b-8084-1837c6a71649", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.668535Z"}
+{"method": "GET", "path": "/assets/packages/shadcn_ui/fonts/GeistMono-Medium.otf", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "62d94d07-1266-41e3-a8d8-b6b4f6c26b16", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.671681Z"}
+{"method": "GET", "path": "/assets/packages/lucide_icons_flutter/assets/build_font/LucideVariable-w300.ttf", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "ed396a52-2ac5-4f29-9d42-0950761f9246", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.672454Z"}
+{"method": "GET", "path": "/assets/packages/lucide_icons_flutter/assets/build_font/LucideVariable-w200.ttf", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "dbf995b2-294e-4691-b4be-255441d5d809", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.673185Z"}
+{"method": "GET", "path": "/assets/packages/shadcn_ui/fonts/GeistMono-UltraBlack.otf", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "bf808541-f009-449a-8642-0496fe369980", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.675772Z"}
+{"method": "GET", "path": "/assets/packages/lucide_icons_flutter/assets/lucide.ttf", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "b88d417a-c133-4121-85ad-d576dfd28e5b", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.676890Z"}
+{"method": "GET", "path": "/assets/packages/shadcn_ui/fonts/GeistMono-SemiBold.otf", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "eb027abd-7577-40a2-9c66-4bd1d5acc960", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.677761Z"}
+{"method": "GET", "path": "/assets/packages/lucide_icons_flutter/assets/build_font/LucideVariable-w500.ttf", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "1341ea71-4a75-45c7-96af-dd39d82a9fc6", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.678598Z"}
+{"method": "GET", "path": "/assets/packages/lucide_icons_flutter/assets/build_font/LucideVariable-w600.ttf", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "e7c9e8c9-4ae7-4d82-926c-5045f21516f4", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.679364Z"}
+{"method": "GET", "path": "/assets/packages/lucide_icons_flutter/assets/build_font/LucideVariable-w400.ttf", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "d25fb12c-f15e-4edb-9913-50366e18c6ca", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.680062Z"}
+{"method": "GET", "path": "/assets/packages/shadcn_ui/fonts/GeistMono-Black.otf", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "4825e19b-824e-42b0-9b89-49484a18df0b", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.680743Z"}
+{"method": "GET", "path": "/assets/packages/cupertino_icons/assets/CupertinoIcons.ttf", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "95b6dbfe-0f3d-4984-9032-6e6301218cc0", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.681403Z"}
+{"method": "GET", "path": "/assets/packages/lucide_icons/assets/lucide.ttf", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "4bdf79f4-45b9-4e17-9139-3f95d593de60", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:48.682140Z"}
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44324 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/shadcn_ui/fonts/Geist-UltraLight.otf 1.1" 200 69988 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44334 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/shadcn_ui/fonts/Geist-Thin.otf 1.1" 200 67208 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52622 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/cupertino_icons/assets/CupertinoIcons.ttf 1.1" 200 1472 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52408 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/shadcn_ui/fonts/Geist-Light.otf 1.1" 200 69380 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52420 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/shadcn_ui/fonts/Geist-Medium.otf 1.1" 200 70852 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52434 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/shadcn_ui/fonts/Geist-Bold.otf 1.1" 200 71864 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52448 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/shadcn_ui/fonts/Geist-UltraBlack.otf 1.1" 200 72812 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52462 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/shadcn_ui/fonts/Geist-Black.otf 1.1" 200 72504 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52458 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/shadcn_ui/fonts/Geist-Regular.otf 1.1" 200 69192 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52498 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/shadcn_ui/fonts/Geist-SemiBold.otf 1.1" 200 72396 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52426 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/shadcn_ui/fonts/GeistMono-Thin.otf 1.1" 200 127964 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52510 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/shadcn_ui/fonts/GeistMono-UltraLight.otf 1.1" 200 128268 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52538 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/shadcn_ui/fonts/GeistMono-Medium.otf 1.1" 200 127760 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52524 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/shadcn_ui/fonts/GeistMono-Regular.otf 1.1" 200 126956 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52484 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/shadcn_ui/fonts/GeistMono-Light.otf 1.1" 200 128524 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52508 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/shadcn_ui/fonts/GeistMono-Bold.otf 1.1" 200 131744 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52576 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/shadcn_ui/fonts/GeistMono-SemiBold.otf 1.1" 200 130144 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52616 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/shadcn_ui/fonts/GeistMono-Black.otf 1.1" 200 132344 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52560 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/shadcn_ui/fonts/GeistMono-UltraBlack.otf 1.1" 200 133040 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52628 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/lucide_icons/assets/lucide.ttf 1.1" 200 395792 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52470 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/lucide_icons_flutter/assets/build_font/LucideVariable-w100.ttf 1.1" 200 409864 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52596 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/lucide_icons_flutter/assets/build_font/LucideVariable-w600.ttf 1.1" 200 421300 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52612 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/lucide_icons_flutter/assets/build_font/LucideVariable-w400.ttf 1.1" 200 425064 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52540 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/lucide_icons_flutter/assets/build_font/LucideVariable-w300.ttf 1.1" 200 426492 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52556 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/lucide_icons_flutter/assets/build_font/LucideVariable-w200.ttf 1.1" 200 435412 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52592 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/lucide_icons_flutter/assets/build_font/LucideVariable-w500.ttf 1.1" 200 418216 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+[2026-02-23 15:11:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52570 - - [23/Feb/2026:15:11:48 +0000] "GET /assets/packages/lucide_icons_flutter/assets/lucide.ttf 1.1" 200 748108 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+{"method": "GET", "path": "/assets/AssetManifest.bin.json", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "37eabf47-c3a5-4fdb-b762-0e00b7093f38", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:49.819445Z"}
+[2026-02-23 15:11:49 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44324 - - [23/Feb/2026:15:11:49 +0000] "GET /assets/AssetManifest.bin.json 1.1" 200 4446 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+2026-02-23 15:11:51,095 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 15:11:51,097 INFO sqlalchemy.engine.Engine SELECT date_reports.skills 
+FROM date_reports 
+WHERE date_reports.user_id = $1::VARCHAR ORDER BY date_reports.created_at DESC 
+ LIMIT $2::INTEGER
+SELECT date_reports.skills 
+FROM date_reports 
+WHERE date_reports.user_id = $1::VARCHAR ORDER BY date_reports.created_at DESC 
+ LIMIT $2::INTEGER
+2026-02-23 15:11:51,097 INFO sqlalchemy.engine.Engine [generated in 0.00019s] ('anonymous', 1)
+[generated in 0.00019s] ('anonymous', 1)
+2026-02-23 15:11:51,098 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 15:11:51,099 INFO sqlalchemy.engine.Engine SELECT date_reports.id, date_reports.user_id, date_reports.session_id, date_reports.score, date_reports.skills, date_reports.good_points, date_reports.to_improve, date_reports.action_items, date_reports.created_at 
+FROM date_reports 
+WHERE date_reports.user_id = $1::VARCHAR ORDER BY date_reports.created_at DESC
+SELECT date_reports.id, date_reports.user_id, date_reports.session_id, date_reports.score, date_reports.skills, date_reports.good_points, date_reports.to_improve, date_reports.action_items, date_reports.created_at 
+FROM date_reports 
+WHERE date_reports.user_id = $1::VARCHAR ORDER BY date_reports.created_at DESC
+2026-02-23 15:11:51,099 INFO sqlalchemy.engine.Engine [generated in 0.00012s] ('anonymous',)
+[generated in 0.00012s] ('anonymous',)
+2026-02-23 15:11:51,099 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 15:11:51,100 INFO sqlalchemy.engine.Engine SELECT analysis_logs.id, analysis_logs.user_id, analysis_logs.session_id, analysis_logs.feature, analysis_logs.input_type, analysis_logs.input_summary, analysis_logs.output_json, analysis_logs.llm_model, analysis_logs.latency_ms, analysis_logs.status, analysis_logs.error_message, analysis_logs.created_at 
+FROM analysis_logs 
+WHERE analysis_logs.user_id = $1::VARCHAR AND analysis_logs.feature = $2::VARCHAR ORDER BY analysis_logs.created_at DESC 
+ LIMIT $3::INTEGER
+SELECT analysis_logs.id, analysis_logs.user_id, analysis_logs.session_id, analysis_logs.feature, analysis_logs.input_type, analysis_logs.input_summary, analysis_logs.output_json, analysis_logs.llm_model, analysis_logs.latency_ms, analysis_logs.status, analysis_logs.error_message, analysis_logs.created_at 
+FROM analysis_logs 
+WHERE analysis_logs.user_id = $1::VARCHAR AND analysis_logs.feature = $2::VARCHAR ORDER BY analysis_logs.created_at DESC 
+ LIMIT $3::INTEGER
+2026-02-23 15:11:51,100 INFO sqlalchemy.engine.Engine [generated in 0.00011s] ('anonymous', 'voice_coach', 50)
+[generated in 0.00011s] ('anonymous', 'voice_coach', 50)
+2026-02-23 15:11:51,101 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 15:11:51,102 INFO sqlalchemy.engine.Engine SELECT user_personas.id, user_personas.user_id, user_personas.sync_pct, user_personas.emoji_usage, user_personas.sentence_length, user_personas.colloquialism, user_personas.training_files, user_personas.created_at, user_personas.updated_at 
+FROM user_personas 
+WHERE user_personas.user_id = $1::VARCHAR
+SELECT user_personas.id, user_personas.user_id, user_personas.sync_pct, user_personas.emoji_usage, user_personas.sentence_length, user_personas.colloquialism, user_personas.training_files, user_personas.created_at, user_personas.updated_at 
+FROM user_personas 
+WHERE user_personas.user_id = $1::VARCHAR
+2026-02-23 15:11:51,102 INFO sqlalchemy.engine.Engine [generated in 0.00011s] ('anonymous',)
+[generated in 0.00011s] ('anonymous',)
+2026-02-23 15:11:51,102 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 15:11:51,103 INFO sqlalchemy.engine.Engine SELECT matches.id, matches.user_id, matches.name, matches.context_tag, matches.status, matches.created_at, matches.updated_at 
+FROM matches 
+WHERE matches.user_id = $1::VARCHAR ORDER BY matches.created_at DESC
+SELECT matches.id, matches.user_id, matches.name, matches.context_tag, matches.status, matches.created_at, matches.updated_at 
+FROM matches 
+WHERE matches.user_id = $1::VARCHAR ORDER BY matches.created_at DESC
+2026-02-23 15:11:51,103 INFO sqlalchemy.engine.Engine [generated in 0.00011s] ('anonymous',)
+[generated in 0.00011s] ('anonymous',)
+2026-02-23 15:11:51,104 INFO sqlalchemy.engine.Engine ROLLBACK
+ROLLBACK
+2026-02-23 15:11:51,105 INFO sqlalchemy.engine.Engine ROLLBACK
+ROLLBACK
+{"request_id": "2fe64b29-f7e8-4eb4-a220-465237396c91", "feature": "insights", "user_id": "anonymous", "count": 1, "event": "list_reports", "level": "info", "logger": "modules.insights.service", "timestamp": "2026-02-23T15:11:51.105923Z"}
+{"method": "GET", "path": "/api/insights/reports", "status": 200, "duration_ms": 20, "event": "request_completed", "request_id": "2fe64b29-f7e8-4eb4-a220-465237396c91", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:51.106281Z"}
+[2026-02-23 15:11:51 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52634 - - [23/Feb/2026:15:11:51 +0000] "GET /api/insights/reports 1.1" 200 615 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+{"request_id": "03e1ce40-5fb6-47f9-be42-e175b1918bac", "feature": "insights", "user_id": "anonymous", "source": "db", "event": "get_latest_skills", "level": "info", "logger": "modules.insights.service", "timestamp": "2026-02-23T15:11:51.106897Z"}
+{"method": "GET", "path": "/api/insights/skills", "status": 200, "duration_ms": 23, "event": "request_completed", "request_id": "03e1ce40-5fb6-47f9-be42-e175b1918bac", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:51.107099Z"}
+[2026-02-23 15:11:51 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44334 - - [23/Feb/2026:15:11:51 +0000] "GET /api/insights/skills 1.1" 200 197 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+2026-02-23 15:11:51,108 INFO sqlalchemy.engine.Engine COMMIT
+COMMIT
+2026-02-23 15:11:51,108 INFO sqlalchemy.engine.Engine ROLLBACK
+ROLLBACK
+2026-02-23 15:11:51,108 INFO sqlalchemy.engine.Engine ROLLBACK
+ROLLBACK
+{"request_id": "907b4b5b-0808-4ace-9096-789a3aa5d0cf", "feature": "persona", "user_id": "anonymous", "event": "get_persona", "level": "info", "logger": "modules.persona.service", "timestamp": "2026-02-23T15:11:51.109315Z"}
+{"method": "GET", "path": "/api/persona", "status": 200, "duration_ms": 20, "event": "request_completed", "request_id": "907b4b5b-0808-4ace-9096-789a3aa5d0cf", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:51.109569Z"}
+[2026-02-23 15:11:51 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52662 - - [23/Feb/2026:15:11:51 +0000] "GET /api/persona 1.1" 200 204 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+{"request_id": "48f2a5fa-dcdb-4b69-9dac-3c781040532b", "feature": "insights", "user_id": "anonymous", "count": 3, "event": "list_voice_coach_logs", "level": "info", "logger": "modules.insights.service", "timestamp": "2026-02-23T15:11:51.110068Z"}
+{"method": "GET", "path": "/api/insights/voice-coach-logs", "status": 200, "duration_ms": 23, "event": "request_completed", "request_id": "48f2a5fa-dcdb-4b69-9dac-3c781040532b", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:51.110616Z"}
+[2026-02-23 15:11:51 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52648 - - [23/Feb/2026:15:11:51 +0000] "GET /api/insights/voice-coach-logs 1.1" 200 34019 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+{"request_id": "4807cfc3-7055-4481-b384-fe19495743ff", "feature": "match", "count": 1, "event": "list_matches", "level": "info", "logger": "modules.match.service", "timestamp": "2026-02-23T15:11:51.111060Z"}
+{"method": "GET", "path": "/api/matches", "status": 200, "duration_ms": 29, "event": "request_completed", "request_id": "4807cfc3-7055-4481-b384-fe19495743ff", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:51.111302Z"}
+[2026-02-23 15:11:51 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44324 - - [23/Feb/2026:15:11:51 +0000] "GET /api/matches 1.1" 200 309 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+2026-02-23 15:11:51,471 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 15:11:51,471 INFO sqlalchemy.engine.Engine SELECT matches.id, matches.user_id, matches.name, matches.context_tag, matches.status, matches.created_at, matches.updated_at 
+FROM matches 
+WHERE matches.user_id = $1::VARCHAR ORDER BY matches.created_at DESC
+SELECT matches.id, matches.user_id, matches.name, matches.context_tag, matches.status, matches.created_at, matches.updated_at 
+FROM matches 
+WHERE matches.user_id = $1::VARCHAR ORDER BY matches.created_at DESC
+2026-02-23 15:11:51,472 INFO sqlalchemy.engine.Engine [cached since 0.3686s ago] ('anonymous',)
+[cached since 0.3686s ago] ('anonymous',)
+2026-02-23 15:11:51,473 INFO sqlalchemy.engine.Engine ROLLBACK
+ROLLBACK
+{"request_id": "e03fb5ca-78ff-4625-8174-875378651811", "feature": "match", "count": 1, "event": "list_matches", "level": "info", "logger": "modules.match.service", "timestamp": "2026-02-23T15:11:51.473704Z"}
+{"method": "GET", "path": "/api/matches", "status": 200, "duration_ms": 2, "event": "request_completed", "request_id": "e03fb5ca-78ff-4625-8174-875378651811", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:51.474010Z"}
+[2026-02-23 15:11:51 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44324 - - [23/Feb/2026:15:11:51 +0000] "GET /api/matches 1.1" 200 309 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Safari/537.36 Edge/18.19582"
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "5478891b-6025-49c5-943d-23db3b7164d7", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:55.698847Z"}
+[2026-02-23 15:11:55 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44324 - - [23/Feb/2026:15:11:55 +0000] "GET / 1.1" 200 3042 "-" "Mozilla/5.0 (Linux; Android 8.0.0; SM-G965U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Mobile Safari/537.36"
+{"method": "GET", "path": "/splash/img/light-4x.png", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "78618103-bcf4-48ba-b594-b7c3aaa4ccd7", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:55.934306Z"}
+[2026-02-23 15:11:55 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52668 - - [23/Feb/2026:15:11:55 +0000] "GET /splash/img/light-4x.png 1.1" 200 94633 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Linux; Android 8.0.0; SM-G965U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Mobile Safari/537.36"
+{"method": "GET", "path": "/main.dart.js", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "e514be54-966d-4335-970c-4691f1928dac", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:55.989755Z"}
+{"method": "GET", "path": "/manifest.json", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "9ece5c74-fbeb-4d03-a21b-7433f3b9799f", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:55.993737Z"}
+[2026-02-23 15:11:55 +0000] [3450800] [INFO] ::ffff:127.0.0.1:52648 - - [23/Feb/2026:15:11:55 +0000] "GET /manifest.json 1.1" 200 919 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Linux; Android 8.0.0; SM-G965U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Mobile Safari/537.36"
+[2026-02-23 15:11:56 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44324 - - [23/Feb/2026:15:11:56 +0000] "GET /main.dart.js 1.1" 200 3295219 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Linux; Android 8.0.0; SM-G965U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Mobile Safari/537.36"
+{"method": "GET", "path": "/assets/FontManifest.json", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "caf2ff6a-bf73-4948-929d-0bcd14c6f968", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:57.487433Z"}
+[2026-02-23 15:11:57 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44324 - - [23/Feb/2026:15:11:57 +0000] "GET /assets/FontManifest.json 1.1" 200 2744 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Linux; Android 8.0.0; SM-G965U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Mobile Safari/537.36"
+{"method": "GET", "path": "/assets/AssetManifest.bin.json", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "95f09865-f856-41dc-8c2e-7ca074d8e507", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:11:58.180462Z"}
+[2026-02-23 15:11:58 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44324 - - [23/Feb/2026:15:11:58 +0000] "GET /assets/AssetManifest.bin.json 1.1" 200 4446 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Linux; Android 8.0.0; SM-G965U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Mobile Safari/537.36"
+2026-02-23 15:12:01,153 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 15:12:01,153 INFO sqlalchemy.engine.Engine SELECT matches.id, matches.user_id, matches.name, matches.context_tag, matches.status, matches.created_at, matches.updated_at 
+FROM matches 
+WHERE matches.user_id = $1::VARCHAR ORDER BY matches.created_at DESC
+SELECT matches.id, matches.user_id, matches.name, matches.context_tag, matches.status, matches.created_at, matches.updated_at 
+FROM matches 
+WHERE matches.user_id = $1::VARCHAR ORDER BY matches.created_at DESC
+2026-02-23 15:12:01,153 INFO sqlalchemy.engine.Engine [cached since 10.05s ago] ('anonymous',)
+[cached since 10.05s ago] ('anonymous',)
+2026-02-23 15:12:01,155 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 15:12:01,155 INFO sqlalchemy.engine.Engine SELECT date_reports.skills 
+FROM date_reports 
+WHERE date_reports.user_id = $1::VARCHAR ORDER BY date_reports.created_at DESC 
+ LIMIT $2::INTEGER
+SELECT date_reports.skills 
+FROM date_reports 
+WHERE date_reports.user_id = $1::VARCHAR ORDER BY date_reports.created_at DESC 
+ LIMIT $2::INTEGER
+2026-02-23 15:12:01,155 INFO sqlalchemy.engine.Engine [cached since 10.06s ago] ('anonymous', 1)
+[cached since 10.06s ago] ('anonymous', 1)
+2026-02-23 15:12:01,155 INFO sqlalchemy.engine.Engine ROLLBACK
+ROLLBACK
+{"request_id": "16cd22c4-0874-436e-802d-b9d674dce6d1", "feature": "match", "count": 1, "event": "list_matches", "level": "info", "logger": "modules.match.service", "timestamp": "2026-02-23T15:12:01.156303Z"}
+{"method": "GET", "path": "/api/matches", "status": 200, "duration_ms": 4, "event": "request_completed", "request_id": "16cd22c4-0874-436e-802d-b9d674dce6d1", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:12:01.156668Z"}
+[2026-02-23 15:12:01 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44324 - - [23/Feb/2026:15:12:01 +0000] "GET /api/matches 1.1" 200 309 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Linux; Android 8.0.0; SM-G965U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Mobile Safari/537.36"
+2026-02-23 15:12:01,158 INFO sqlalchemy.engine.Engine ROLLBACK
+ROLLBACK
+{"request_id": "08d01f8f-dae8-4ce3-95cf-3d03518dc4e7", "feature": "insights", "user_id": "anonymous", "source": "db", "event": "get_latest_skills", "level": "info", "logger": "modules.insights.service", "timestamp": "2026-02-23T15:12:01.158430Z"}
+{"method": "GET", "path": "/api/insights/skills", "status": 200, "duration_ms": 4, "event": "request_completed", "request_id": "08d01f8f-dae8-4ce3-95cf-3d03518dc4e7", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:12:01.158677Z"}
+[2026-02-23 15:12:01 +0000] [3450800] [INFO] ::ffff:127.0.0.1:43230 - - [23/Feb/2026:15:12:01 +0000] "GET /api/insights/skills 1.1" 200 197 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Linux; Android 8.0.0; SM-G965U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Mobile Safari/537.36"
+2026-02-23 15:12:01,162 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 15:12:01,162 INFO sqlalchemy.engine.Engine SELECT date_reports.id, date_reports.user_id, date_reports.session_id, date_reports.score, date_reports.skills, date_reports.good_points, date_reports.to_improve, date_reports.action_items, date_reports.created_at 
+FROM date_reports 
+WHERE date_reports.user_id = $1::VARCHAR ORDER BY date_reports.created_at DESC
+SELECT date_reports.id, date_reports.user_id, date_reports.session_id, date_reports.score, date_reports.skills, date_reports.good_points, date_reports.to_improve, date_reports.action_items, date_reports.created_at 
+FROM date_reports 
+WHERE date_reports.user_id = $1::VARCHAR ORDER BY date_reports.created_at DESC
+2026-02-23 15:12:01,163 INFO sqlalchemy.engine.Engine [cached since 10.06s ago] ('anonymous',)
+[cached since 10.06s ago] ('anonymous',)
+2026-02-23 15:12:01,164 INFO sqlalchemy.engine.Engine ROLLBACK
+ROLLBACK
+{"request_id": "6c1c54f4-c740-4d8f-9edc-f45f8517e20f", "feature": "insights", "user_id": "anonymous", "count": 1, "event": "list_reports", "level": "info", "logger": "modules.insights.service", "timestamp": "2026-02-23T15:12:01.164451Z"}
+{"method": "GET", "path": "/api/insights/reports", "status": 200, "duration_ms": 2, "event": "request_completed", "request_id": "6c1c54f4-c740-4d8f-9edc-f45f8517e20f", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:12:01.164698Z"}
+[2026-02-23 15:12:01 +0000] [3450800] [INFO] ::ffff:127.0.0.1:43230 - - [23/Feb/2026:15:12:01 +0000] "GET /api/insights/reports 1.1" 200 615 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Linux; Android 8.0.0; SM-G965U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Mobile Safari/537.36"
+2026-02-23 15:12:01,166 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 15:12:01,166 INFO sqlalchemy.engine.Engine SELECT analysis_logs.id, analysis_logs.user_id, analysis_logs.session_id, analysis_logs.feature, analysis_logs.input_type, analysis_logs.input_summary, analysis_logs.output_json, analysis_logs.llm_model, analysis_logs.latency_ms, analysis_logs.status, analysis_logs.error_message, analysis_logs.created_at 
+FROM analysis_logs 
+WHERE analysis_logs.user_id = $1::VARCHAR AND analysis_logs.feature = $2::VARCHAR ORDER BY analysis_logs.created_at DESC 
+ LIMIT $3::INTEGER
+SELECT analysis_logs.id, analysis_logs.user_id, analysis_logs.session_id, analysis_logs.feature, analysis_logs.input_type, analysis_logs.input_summary, analysis_logs.output_json, analysis_logs.llm_model, analysis_logs.latency_ms, analysis_logs.status, analysis_logs.error_message, analysis_logs.created_at 
+FROM analysis_logs 
+WHERE analysis_logs.user_id = $1::VARCHAR AND analysis_logs.feature = $2::VARCHAR ORDER BY analysis_logs.created_at DESC 
+ LIMIT $3::INTEGER
+2026-02-23 15:12:01,166 INFO sqlalchemy.engine.Engine [cached since 10.07s ago] ('anonymous', 'voice_coach', 50)
+[cached since 10.07s ago] ('anonymous', 'voice_coach', 50)
+2026-02-23 15:12:01,167 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 15:12:01,167 INFO sqlalchemy.engine.Engine SELECT user_personas.id, user_personas.user_id, user_personas.sync_pct, user_personas.emoji_usage, user_personas.sentence_length, user_personas.colloquialism, user_personas.training_files, user_personas.created_at, user_personas.updated_at 
+FROM user_personas 
+WHERE user_personas.user_id = $1::VARCHAR
+SELECT user_personas.id, user_personas.user_id, user_personas.sync_pct, user_personas.emoji_usage, user_personas.sentence_length, user_personas.colloquialism, user_personas.training_files, user_personas.created_at, user_personas.updated_at 
+FROM user_personas 
+WHERE user_personas.user_id = $1::VARCHAR
+2026-02-23 15:12:01,167 INFO sqlalchemy.engine.Engine [cached since 10.07s ago] ('anonymous',)
+[cached since 10.07s ago] ('anonymous',)
+2026-02-23 15:12:01,168 INFO sqlalchemy.engine.Engine COMMIT
+COMMIT
+{"request_id": "69e41c8e-a47d-4736-bcca-53040e445de0", "feature": "persona", "user_id": "anonymous", "event": "get_persona", "level": "info", "logger": "modules.persona.service", "timestamp": "2026-02-23T15:12:01.169418Z"}
+{"method": "GET", "path": "/api/persona", "status": 200, "duration_ms": 3, "event": "request_completed", "request_id": "69e41c8e-a47d-4736-bcca-53040e445de0", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:12:01.169644Z"}
+[2026-02-23 15:12:01 +0000] [3450800] [INFO] ::ffff:127.0.0.1:43230 - - [23/Feb/2026:15:12:01 +0000] "GET /api/persona 1.1" 200 204 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Linux; Android 8.0.0; SM-G965U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Mobile Safari/537.36"
+2026-02-23 15:12:01,170 INFO sqlalchemy.engine.Engine ROLLBACK
+ROLLBACK
+{"request_id": "06c559fb-d7a3-4356-ad34-f06bb42b2413", "feature": "insights", "user_id": "anonymous", "count": 3, "event": "list_voice_coach_logs", "level": "info", "logger": "modules.insights.service", "timestamp": "2026-02-23T15:12:01.170630Z"}
+{"method": "GET", "path": "/api/insights/voice-coach-logs", "status": 200, "duration_ms": 6, "event": "request_completed", "request_id": "06c559fb-d7a3-4356-ad34-f06bb42b2413", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:12:01.171228Z"}
+[2026-02-23 15:12:01 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44324 - - [23/Feb/2026:15:12:01 +0000] "GET /api/insights/voice-coach-logs 1.1" 200 34019 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Linux; Android 8.0.0; SM-G965U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Mobile Safari/537.36"
+2026-02-23 15:12:01,323 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 15:12:01,323 INFO sqlalchemy.engine.Engine SELECT matches.id, matches.user_id, matches.name, matches.context_tag, matches.status, matches.created_at, matches.updated_at 
+FROM matches 
+WHERE matches.user_id = $1::VARCHAR ORDER BY matches.created_at DESC
+SELECT matches.id, matches.user_id, matches.name, matches.context_tag, matches.status, matches.created_at, matches.updated_at 
+FROM matches 
+WHERE matches.user_id = $1::VARCHAR ORDER BY matches.created_at DESC
+2026-02-23 15:12:01,323 INFO sqlalchemy.engine.Engine [cached since 10.22s ago] ('anonymous',)
+[cached since 10.22s ago] ('anonymous',)
+2026-02-23 15:12:01,324 INFO sqlalchemy.engine.Engine ROLLBACK
+ROLLBACK
+{"request_id": "3d695178-1e7f-4ee5-924e-c604e1e5974d", "feature": "match", "count": 1, "event": "list_matches", "level": "info", "logger": "modules.match.service", "timestamp": "2026-02-23T15:12:01.324943Z"}
+{"method": "GET", "path": "/api/matches", "status": 200, "duration_ms": 3, "event": "request_completed", "request_id": "3d695178-1e7f-4ee5-924e-c604e1e5974d", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:12:01.325252Z"}
+[2026-02-23 15:12:01 +0000] [3450800] [INFO] ::ffff:127.0.0.1:44324 - - [23/Feb/2026:15:12:01 +0000] "GET /api/matches 1.1" 200 309 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Linux; Android 8.0.0; SM-G965U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.109 Mobile Safari/537.36"
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "1d6253de-58bd-4386-8693-52220187a8d6", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:29:48.533183Z"}
+[2026-02-23 15:29:48 +0000] [3450800] [INFO] ::ffff:127.0.0.1:34016 - - [23/Feb/2026:15:29:48 +0000] "GET / 1.1" 200 3042 "-" "Mozilla/5.0 (X11; Linux x86_64) Firefox/117.0"
+{"method": "GET", "path": "/wordpress/", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "07970a05-1ad2-488f-8be5-bdb5ff28aa3c", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:29:49.494798Z"}
+[2026-02-23 15:29:49 +0000] [3450800] [INFO] ::ffff:127.0.0.1:34016 - - [23/Feb/2026:15:29:49 +0000] "GET /wordpress/ 1.1" 200 3042 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0 Safari/537.36"
+{"method": "GET", "path": "/robots.txt", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "7c23ecd5-df43-4ddc-a301-28c9d018d7a3", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:36:04.863525Z"}
+[2026-02-23 15:36:04 +0000] [3450800] [INFO] ::ffff:127.0.0.1:51180 - - [23/Feb/2026:15:36:04 +0000] "GET /robots.txt 1.1" 200 3042 "-" "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)"
+{"method": "GET", "path": "/icons/Icon-192.png", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "e1c3f595-686b-4b4e-85d4-0ce9b20ed222", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:36:05.383864Z"}
+[2026-02-23 15:36:05 +0000] [3450800] [INFO] ::ffff:127.0.0.1:51180 - - [23/Feb/2026:15:36:05 +0000] "GET /icons/Icon-192.png 1.1" 200 5292 "-" "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)"
+{"method": "GET", "path": "/manifest.json", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "ab0a3c40-a531-4b86-864a-35a04c657c08", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:36:05.892210Z"}
+[2026-02-23 15:36:05 +0000] [3450800] [INFO] ::ffff:127.0.0.1:51180 - - [23/Feb/2026:15:36:05 +0000] "GET /manifest.json 1.1" 200 919 "-" "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)"
+{"method": "GET", "path": "/splash/img/light-1x.png", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "6ffb340a-c3e7-4d3f-94e6-4f30e16106fb", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:38:39.281239Z"}
+[2026-02-23 15:38:39 +0000] [3450800] [INFO] ::ffff:127.0.0.1:39234 - - [23/Feb/2026:15:38:39 +0000] "GET /splash/img/light-1x.png 1.1" 200 14885 "-" "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)"
+{"method": "GET", "path": "/favicon.png", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "f3799404-c76f-4e97-a5f8-2e307208e73e", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:38:39.331024Z"}
+[2026-02-23 15:38:39 +0000] [3450800] [INFO] ::ffff:127.0.0.1:39234 - - [23/Feb/2026:15:38:39 +0000] "GET /favicon.png 1.1" 200 917 "-" "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)"
+{"method": "GET", "path": "/flutter_bootstrap.js", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "2ce08ded-9f3d-43ee-ac9b-ef532b3a9771", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T15:38:40.346709Z"}
+[2026-02-23 15:38:40 +0000] [3450800] [INFO] ::ffff:127.0.0.1:39234 - - [23/Feb/2026:15:38:40 +0000] "GET /flutter_bootstrap.js 1.1" 200 9975 "-" "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)"
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "9fb8faf5-278e-4420-8852-bc9915b97103", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T16:00:57.094777Z"}
+[2026-02-23 16:00:57 +0000] [3450800] [INFO] ::ffff:127.0.0.1:55290 - - [23/Feb/2026:16:00:57 +0000] "GET / 1.1" 200 3042 "http://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "e3862ac6-9893-4bb6-9e8c-12d8980efe0d", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T16:00:57.624677Z"}
+[2026-02-23 16:00:57 +0000] [3450800] [INFO] ::ffff:127.0.0.1:55290 - - [23/Feb/2026:16:00:57 +0000] "GET / 1.1" 200 3042 "http://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/favicon.ico", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "6a50e2fc-30b8-4d30-a52c-8b148dc7c7f3", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T16:00:58.568145Z"}
+[2026-02-23 16:00:58 +0000] [3450800] [INFO] ::ffff:127.0.0.1:55290 - - [23/Feb/2026:16:00:58 +0000] "GET /favicon.ico 1.1" 200 3042 "http://dating-api.ask-lens.ai/favicon.ico" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "a561eb09-e83a-4653-b605-61dcf7484251", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T16:00:59.246480Z"}
+[2026-02-23 16:00:59 +0000] [3450800] [INFO] ::ffff:127.0.0.1:55290 - - [23/Feb/2026:16:00:59 +0000] "GET / 1.1" 200 3042 "http://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "cfde894d-3e0c-4533-b342-b61036c0cadb", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T16:00:59.492085Z"}
+[2026-02-23 16:00:59 +0000] [3450800] [INFO] ::ffff:127.0.0.1:55290 - - [23/Feb/2026:16:00:59 +0000] "GET / 1.1" 200 3042 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "c9429b59-011c-4177-948c-f80dd4479c7c", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T16:00:59.961400Z"}
+[2026-02-23 16:00:59 +0000] [3450800] [INFO] ::ffff:127.0.0.1:55290 - - [23/Feb/2026:16:00:59 +0000] "GET / 1.1" 200 3042 "http://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "079f112c-601c-4874-9317-dcf8fca218cf", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T16:53:19.649630Z"}
+[2026-02-23 16:53:19 +0000] [3450800] [INFO] ::ffff:127.0.0.1:42136 - - [23/Feb/2026:16:53:19 +0000] "GET / 1.1" 200 3042 "-" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36"
+{"method": "GET", "path": "/splash/img/light-1x.png", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "9a4f2f6a-abf8-4830-a991-4a8fc5650273", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T16:53:22.728236Z"}
+[2026-02-23 16:53:22 +0000] [3450800] [INFO] ::ffff:127.0.0.1:42136 - - [23/Feb/2026:16:53:22 +0000] "GET /splash/img/light-1x.png 1.1" 200 14885 "-" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36"
+{"method": "GET", "path": "/css/support_parent.css", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "b79800fb-82f9-4d2f-a6b7-08238a4200fb", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T16:53:25.088723Z"}
+[2026-02-23 16:53:25 +0000] [3450800] [INFO] ::ffff:127.0.0.1:42136 - - [23/Feb/2026:16:53:25 +0000] "GET /css/support_parent.css 1.1" 200 3042 "-" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36"
+{"method": "GET", "path": "/flutter_bootstrap.js", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "8a614ac5-d755-4a48-bc04-ccf4de29aa3e", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T16:53:27.308919Z"}
+[2026-02-23 16:53:27 +0000] [3450800] [INFO] ::ffff:127.0.0.1:42136 - - [23/Feb/2026:16:53:27 +0000] "GET /flutter_bootstrap.js 1.1" 200 9975 "-" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36"
+{"method": "GET", "path": "/manifest.json", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "a1f3ff1b-4050-42ab-9c8a-0204dc7175a7", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T16:53:29.292851Z"}
+[2026-02-23 16:53:29 +0000] [3450800] [INFO] ::ffff:127.0.0.1:42136 - - [23/Feb/2026:16:53:29 +0000] "GET /manifest.json 1.1" 200 919 "-" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36"
+{"method": "GET", "path": "/favicon.png", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "7690f4aa-7fe0-4e59-9003-b7b624291601", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T16:53:31.141213Z"}
+[2026-02-23 16:53:31 +0000] [3450800] [INFO] ::ffff:127.0.0.1:42136 - - [23/Feb/2026:16:53:31 +0000] "GET /favicon.png 1.1" 200 917 "-" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36"
+{"method": "GET", "path": "/js/lkk_ch.js", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "4c6d98af-ed51-416f-91ae-b0e9a60b3437", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T16:53:34.059861Z"}
+[2026-02-23 16:53:34 +0000] [3450800] [INFO] ::ffff:127.0.0.1:42136 - - [23/Feb/2026:16:53:34 +0000] "GET /js/lkk_ch.js 1.1" 200 3042 "-" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36"
+{"method": "GET", "path": "/js/twint_ch.js", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "be00e500-b222-4591-87fe-361f29c8c1a9", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T16:53:37.657301Z"}
+[2026-02-23 16:53:37 +0000] [3450800] [INFO] ::ffff:127.0.0.1:42136 - - [23/Feb/2026:16:53:37 +0000] "GET /js/twint_ch.js 1.1" 200 3042 "-" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36"
+{"method": "GET", "path": "/icons/Icon-192.png", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "29d94222-088b-49df-a9f2-7f78cad90e5b", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T16:53:37.824208Z"}
+[2026-02-23 16:53:37 +0000] [3450800] [INFO] ::ffff:127.0.0.1:42136 - - [23/Feb/2026:16:53:37 +0000] "GET /icons/Icon-192.png 1.1" 200 5292 "-" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36"
+{"method": "GET", "path": "/robots.txt", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "3490c37a-5990-48b4-a58b-b380ac6759f6", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T17:22:59.426889Z"}
+[2026-02-23 17:22:59 +0000] [3450800] [INFO] ::ffff:127.0.0.1:36816 - - [23/Feb/2026:17:22:59 +0000] "GET /robots.txt 1.1" 200 3042 "-" "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)"
+{"method": "GET", "path": "/sitemap.xml", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "920f06a1-658f-4831-87a8-f8316885458d", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T17:22:59.972696Z"}
+[2026-02-23 17:22:59 +0000] [3450800] [INFO] ::ffff:127.0.0.1:36816 - - [23/Feb/2026:17:22:59 +0000] "GET /sitemap.xml 1.1" 200 3042 "-" "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)"
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "02d08b10-df77-42cc-9be4-370b00fa0b06", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T17:24:43.164132Z"}
+[2026-02-23 17:24:43 +0000] [3450800] [INFO] ::ffff:127.0.0.1:54942 - - [23/Feb/2026:17:24:43 +0000] "GET / 1.1" 200 3042 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+{"method": "GET", "path": "/splash/img/dark-2x.png", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "97700e39-07c9-4802-bce7-7b0b6167e963", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T17:24:43.325774Z"}
+[2026-02-23 17:24:43 +0000] [3450800] [INFO] ::ffff:127.0.0.1:54942 - - [23/Feb/2026:17:24:43 +0000] "GET /splash/img/dark-2x.png 1.1" 200 40694 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+{"method": "GET", "path": "/main.dart.js", "status": 200, "duration_ms": 1, "event": "request_completed", "request_id": "c3c6d82b-abae-4499-88a3-48e9f9bee48e", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T17:24:43.357361Z"}
+[2026-02-23 17:24:43 +0000] [3450800] [INFO] ::ffff:127.0.0.1:54942 - - [23/Feb/2026:17:24:43 +0000] "GET /main.dart.js 1.1" 200 3295219 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-02-23 17:24:45,094 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 17:24:45,094 INFO sqlalchemy.engine.Engine SELECT matches.id, matches.user_id, matches.name, matches.context_tag, matches.status, matches.created_at, matches.updated_at 
+FROM matches 
+WHERE matches.user_id = $1::VARCHAR ORDER BY matches.created_at DESC
+SELECT matches.id, matches.user_id, matches.name, matches.context_tag, matches.status, matches.created_at, matches.updated_at 
+FROM matches 
+WHERE matches.user_id = $1::VARCHAR ORDER BY matches.created_at DESC
+2026-02-23 17:24:45,094 INFO sqlalchemy.engine.Engine [cached since 7974s ago] ('anonymous',)
+[cached since 7974s ago] ('anonymous',)
+2026-02-23 17:24:45,100 INFO sqlalchemy.engine.Engine ROLLBACK
+ROLLBACK
+{"request_id": "4f6d3961-5a02-46f7-829d-6743b8af9961", "feature": "match", "count": 1, "event": "list_matches", "level": "info", "logger": "modules.match.service", "timestamp": "2026-02-23T17:24:45.101359Z"}
+{"method": "GET", "path": "/api/matches", "status": 200, "duration_ms": 19, "event": "request_completed", "request_id": "4f6d3961-5a02-46f7-829d-6743b8af9961", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T17:24:45.101762Z"}
+[2026-02-23 17:24:45 +0000] [3450800] [INFO] ::ffff:127.0.0.1:54942 - - [23/Feb/2026:17:24:45 +0000] "GET /api/matches 1.1" 200 309 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-02-23 17:24:45,108 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 17:24:45,109 INFO sqlalchemy.engine.Engine SELECT date_reports.id, date_reports.user_id, date_reports.session_id, date_reports.score, date_reports.skills, date_reports.good_points, date_reports.to_improve, date_reports.action_items, date_reports.created_at 
+FROM date_reports 
+WHERE date_reports.user_id = $1::VARCHAR ORDER BY date_reports.created_at DESC
+SELECT date_reports.id, date_reports.user_id, date_reports.session_id, date_reports.score, date_reports.skills, date_reports.good_points, date_reports.to_improve, date_reports.action_items, date_reports.created_at 
+FROM date_reports 
+WHERE date_reports.user_id = $1::VARCHAR ORDER BY date_reports.created_at DESC
+2026-02-23 17:24:45,109 INFO sqlalchemy.engine.Engine [cached since 7974s ago] ('anonymous',)
+[cached since 7974s ago] ('anonymous',)
+2026-02-23 17:24:45,110 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 17:24:45,110 INFO sqlalchemy.engine.Engine SELECT user_personas.id, user_personas.user_id, user_personas.sync_pct, user_personas.emoji_usage, user_personas.sentence_length, user_personas.colloquialism, user_personas.training_files, user_personas.created_at, user_personas.updated_at 
+FROM user_personas 
+WHERE user_personas.user_id = $1::VARCHAR
+SELECT user_personas.id, user_personas.user_id, user_personas.sync_pct, user_personas.emoji_usage, user_personas.sentence_length, user_personas.colloquialism, user_personas.training_files, user_personas.created_at, user_personas.updated_at 
+FROM user_personas 
+WHERE user_personas.user_id = $1::VARCHAR
+2026-02-23 17:24:45,110 INFO sqlalchemy.engine.Engine [cached since 7974s ago] ('anonymous',)
+[cached since 7974s ago] ('anonymous',)
+2026-02-23 17:24:45,111 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 17:24:45,111 INFO sqlalchemy.engine.Engine SELECT date_reports.skills 
+FROM date_reports 
+WHERE date_reports.user_id = $1::VARCHAR ORDER BY date_reports.created_at DESC 
+ LIMIT $2::INTEGER
+SELECT date_reports.skills 
+FROM date_reports 
+WHERE date_reports.user_id = $1::VARCHAR ORDER BY date_reports.created_at DESC 
+ LIMIT $2::INTEGER
+2026-02-23 17:24:45,111 INFO sqlalchemy.engine.Engine [cached since 7974s ago] ('anonymous', 1)
+[cached since 7974s ago] ('anonymous', 1)
+2026-02-23 17:24:45,111 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 17:24:45,113 INFO sqlalchemy.engine.Engine SELECT analysis_logs.id, analysis_logs.user_id, analysis_logs.session_id, analysis_logs.feature, analysis_logs.input_type, analysis_logs.input_summary, analysis_logs.output_json, analysis_logs.llm_model, analysis_logs.latency_ms, analysis_logs.status, analysis_logs.error_message, analysis_logs.created_at 
+FROM analysis_logs 
+WHERE analysis_logs.user_id = $1::VARCHAR AND analysis_logs.feature = $2::VARCHAR ORDER BY analysis_logs.created_at DESC 
+ LIMIT $3::INTEGER
+SELECT analysis_logs.id, analysis_logs.user_id, analysis_logs.session_id, analysis_logs.feature, analysis_logs.input_type, analysis_logs.input_summary, analysis_logs.output_json, analysis_logs.llm_model, analysis_logs.latency_ms, analysis_logs.status, analysis_logs.error_message, analysis_logs.created_at 
+FROM analysis_logs 
+WHERE analysis_logs.user_id = $1::VARCHAR AND analysis_logs.feature = $2::VARCHAR ORDER BY analysis_logs.created_at DESC 
+ LIMIT $3::INTEGER
+2026-02-23 17:24:45,113 INFO sqlalchemy.engine.Engine [cached since 7974s ago] ('anonymous', 'voice_coach', 50)
+[cached since 7974s ago] ('anonymous', 'voice_coach', 50)
+2026-02-23 17:24:45,115 INFO sqlalchemy.engine.Engine ROLLBACK
+ROLLBACK
+2026-02-23 17:24:45,116 INFO sqlalchemy.engine.Engine COMMIT
+COMMIT
+2026-02-23 17:24:45,116 INFO sqlalchemy.engine.Engine ROLLBACK
+ROLLBACK
+{"request_id": "8d059cf0-4896-4099-8e13-b82703a87d78", "feature": "insights", "user_id": "anonymous", "count": 1, "event": "list_reports", "level": "info", "logger": "modules.insights.service", "timestamp": "2026-02-23T17:24:45.117026Z"}
+{"method": "GET", "path": "/api/insights/reports", "status": 200, "duration_ms": 29, "event": "request_completed", "request_id": "8d059cf0-4896-4099-8e13-b82703a87d78", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T17:24:45.117385Z"}
+[2026-02-23 17:24:45 +0000] [3450800] [INFO] ::ffff:127.0.0.1:54958 - - [23/Feb/2026:17:24:45 +0000] "GET /api/insights/reports 1.1" 200 615 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+{"request_id": "d687a387-2c94-457d-8964-e9acb4c9cd15", "feature": "persona", "user_id": "anonymous", "event": "get_persona", "level": "info", "logger": "modules.persona.service", "timestamp": "2026-02-23T17:24:45.118157Z"}
+{"method": "GET", "path": "/api/persona", "status": 200, "duration_ms": 27, "event": "request_completed", "request_id": "d687a387-2c94-457d-8964-e9acb4c9cd15", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T17:24:45.118385Z"}
+[2026-02-23 17:24:45 +0000] [3450800] [INFO] ::ffff:127.0.0.1:54964 - - [23/Feb/2026:17:24:45 +0000] "GET /api/persona 1.1" 200 204 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+{"request_id": "2967d9e3-60e8-4255-b0d3-1563396c706c", "feature": "insights", "user_id": "anonymous", "source": "db", "event": "get_latest_skills", "level": "info", "logger": "modules.insights.service", "timestamp": "2026-02-23T17:24:45.119176Z"}
+{"method": "GET", "path": "/api/insights/skills", "status": 200, "duration_ms": 27, "event": "request_completed", "request_id": "2967d9e3-60e8-4255-b0d3-1563396c706c", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T17:24:45.119399Z"}
+[2026-02-23 17:24:45 +0000] [3450800] [INFO] ::ffff:127.0.0.1:54968 - - [23/Feb/2026:17:24:45 +0000] "GET /api/insights/skills 1.1" 200 197 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-02-23 17:24:45,120 INFO sqlalchemy.engine.Engine ROLLBACK
+ROLLBACK
+{"request_id": "80ab8408-4089-4dff-b416-283277379b0d", "feature": "insights", "user_id": "anonymous", "count": 3, "event": "list_voice_coach_logs", "level": "info", "logger": "modules.insights.service", "timestamp": "2026-02-23T17:24:45.120586Z"}
+{"method": "GET", "path": "/api/insights/voice-coach-logs", "status": 200, "duration_ms": 32, "event": "request_completed", "request_id": "80ab8408-4089-4dff-b416-283277379b0d", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T17:24:45.121316Z"}
+[2026-02-23 17:24:45 +0000] [3450800] [INFO] ::ffff:127.0.0.1:54960 - - [23/Feb/2026:17:24:45 +0000] "GET /api/insights/voice-coach-logs 1.1" 200 34019 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-02-23 17:24:45,171 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 17:24:45,171 INFO sqlalchemy.engine.Engine SELECT matches.id, matches.user_id, matches.name, matches.context_tag, matches.status, matches.created_at, matches.updated_at 
+FROM matches 
+WHERE matches.user_id = $1::VARCHAR ORDER BY matches.created_at DESC
+SELECT matches.id, matches.user_id, matches.name, matches.context_tag, matches.status, matches.created_at, matches.updated_at 
+FROM matches 
+WHERE matches.user_id = $1::VARCHAR ORDER BY matches.created_at DESC
+2026-02-23 17:24:45,171 INFO sqlalchemy.engine.Engine [cached since 7974s ago] ('anonymous',)
+[cached since 7974s ago] ('anonymous',)
+2026-02-23 17:24:45,172 INFO sqlalchemy.engine.Engine ROLLBACK
+ROLLBACK
+{"request_id": "67a8ee1b-2cd4-4ca5-8bac-7076ca683cdb", "feature": "match", "count": 1, "event": "list_matches", "level": "info", "logger": "modules.match.service", "timestamp": "2026-02-23T17:24:45.173284Z"}
+{"method": "GET", "path": "/api/matches", "status": 200, "duration_ms": 3, "event": "request_completed", "request_id": "67a8ee1b-2cd4-4ca5-8bac-7076ca683cdb", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T17:24:45.173699Z"}
+[2026-02-23 17:24:45 +0000] [3450800] [INFO] ::ffff:127.0.0.1:54960 - - [23/Feb/2026:17:24:45 +0000] "GET /api/matches 1.1" 200 309 "https://dating-api.ask-lens.ai/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+{"method": "GET", "path": "/", "status": 200, "duration_ms": 0, "event": "request_completed", "request_id": "a5f49859-bb02-4341-8639-960a07259cfa", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T17:33:42.423665Z"}
+[2026-02-23 17:33:42 +0000] [3450800] [INFO] ::ffff:127.0.0.1:56920 - - [23/Feb/2026:17:33:42 +0000] "GET / 1.1" 200 3042 "-" "Mozilla/5.0 (X11; Linux i686; rv:109.0) Gecko/20100101 Firefox/120.0"
+{"method": "POST", "path": "/api/auth/session/validate", "status": 405, "duration_ms": 0, "event": "request_completed", "request_id": "7ed24b7b-914c-4181-bedc-6166f7d48de5", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T18:19:38.709596Z"}
+[2026-02-23 18:19:38 +0000] [3450800] [INFO] ::1:37944 - - [23/Feb/2026:18:19:38 +0000] "POST /api/auth/session/validate 1.1" 405 166 "-" "curl/8.5.0"
+2026-02-23 18:19:38,716 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+BEGIN (implicit)
+2026-02-23 18:19:38,717 INFO sqlalchemy.engine.Engine SELECT matches.id, matches.user_id, matches.name, matches.context_tag, matches.status, matches.created_at, matches.updated_at 
+FROM matches 
+WHERE matches.user_id = $1::VARCHAR ORDER BY matches.created_at DESC
+SELECT matches.id, matches.user_id, matches.name, matches.context_tag, matches.status, matches.created_at, matches.updated_at 
+FROM matches 
+WHERE matches.user_id = $1::VARCHAR ORDER BY matches.created_at DESC
+2026-02-23 18:19:38,717 INFO sqlalchemy.engine.Engine [cached since 1.127e+04s ago] ('anonymous',)
+[cached since 1.127e+04s ago] ('anonymous',)
+2026-02-23 18:19:38,718 INFO sqlalchemy.engine.Engine ROLLBACK
+ROLLBACK
+{"request_id": "ec9856f9-4343-4cfb-85d1-7bfba9afc39c", "feature": "match", "count": 1, "event": "list_matches", "level": "info", "logger": "modules.match.service", "timestamp": "2026-02-23T18:19:38.719198Z"}
+{"method": "GET", "path": "/api/matches", "status": 200, "duration_ms": 3, "event": "request_completed", "request_id": "ec9856f9-4343-4cfb-85d1-7bfba9afc39c", "level": "info", "logger": "api_server.middlewares.tracing", "timestamp": "2026-02-23T18:19:38.719505Z"}
+[2026-02-23 18:19:38 +0000] [3450800] [INFO] ::1:37952 - - [23/Feb/2026:18:19:38 +0000] "GET /api/matches 1.1" 200 309 "-" "curl/8.5.0"

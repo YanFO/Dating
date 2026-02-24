@@ -85,8 +85,9 @@ const Map<String, String> stringsZhTw = {
 
   // Profile Page
   'profile_title': '數位分身',
-  'profile_clone_status': 'AI 分身狀態',
+  'profile_clone_status': '語氣同步',
   'profile_sync': '85% 同步',
+  'profile_sync_suffix': '已學習',
   'profile_clone_desc': '訓練你的數位分身，讓它聽起來完全像你。上傳過去成功的聊天記錄，讓 AI 學習你獨特的用語、幽默感和節奏。',
   'profile_upload_chats': '上傳過去的聊天記錄',
   'profile_tone_title': '語氣調整',

@@ -10,7 +10,6 @@ import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../core/constants/app_theme_colors.dart';
 import '../../core/l10n/tr_extension.dart';
-import '../providers/core_providers.dart';
 import '../widgets/impulse_control_overlay.dart';
 import '../widgets/love_coach_chat_sheet.dart';
 import '../widgets/voice_coach_island.dart';
@@ -56,9 +55,8 @@ class _MainShellState extends ConsumerState<MainShell> {
           Column(
             children: [
               _buildHeader(c),
-              // 全域語音教練島：所有分頁可見
-              if (ref.watch(voiceCoachEnabledProvider))
-                const VoiceCoachIsland(),
+              // 語音教練島：僅在首頁與教練頁顯示
+              if (_currentIndex <= 1) const VoiceCoachIsland(),
               Expanded(
                 child: IndexedStack(
                   index: _currentIndex,
@@ -270,11 +268,16 @@ class _MainShellState extends ConsumerState<MainShell> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => DraggableScrollableSheet(
-        initialChildSize: 0.8,
-        minChildSize: 0.4,
-        maxChildSize: 0.95,
-        builder: (_, __) => const LoveCoachChatSheet(),
+      builder: (_) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: DraggableScrollableSheet(
+          initialChildSize: 0.8,
+          minChildSize: 0.4,
+          maxChildSize: 0.95,
+          builder: (_, __) => const LoveCoachChatSheet(),
+        ),
       ),
     );
   }

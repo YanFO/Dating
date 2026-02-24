@@ -13,6 +13,7 @@ import '../../../core/l10n/app_locale.dart';
 import '../../../core/l10n/l10n.dart';
 import '../../../core/l10n/tr_extension.dart';
 import '../../../data/models/icebreaker_models.dart';
+import '../../../data/models/match_models.dart';
 import '../../providers/camera_provider.dart';
 import '../../providers/icebreaker_provider.dart';
 import '../../providers/match_provider.dart';
@@ -27,6 +28,7 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   final _textController = TextEditingController();
   bool _hasResult = false;
+  String? _expandedMatchId;
 
   @override
   void initState() {
@@ -645,7 +647,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Icon(LucideIcons.messageSquare,
-                          size: 13, color: c.info),
+                          size: 13, color: c.textTertiary),
                       const SizedBox(width: 6),
                       Expanded(
                         child: Column(
@@ -703,6 +705,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   // ── Pipeline Section ────────────────────────────────────────────────
   Widget _buildPipelineSection(AppThemeColors c) {
     final matchesState = ref.watch(matchProvider);
+    final memoryState = ref.watch(memoryProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -726,12 +729,15 @@ class _HomePageState extends ConsumerState<HomePage> {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 8),
               children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 12),
+                  child: _buildAddLeadCard(c),
+                ),
                 ...matches.map((m) => Padding(
                       padding: const EdgeInsets.only(right: 12),
                       child: _buildMatchCard(
                           c, m.name, m.contextTag ?? '', m.matchId),
                     )),
-                _buildAddLeadCard(c),
               ],
             ),
             loading: () => ListView(
@@ -746,13 +752,28 @@ class _HomePageState extends ConsumerState<HomePage> {
             ),
           ),
         ),
+        // 展開式 Memory 面板
+        if (_expandedMatchId != null)
+          _buildExpandedMemoryPanel(c, matchesState, memoryState),
       ],
     );
   }
 
   Widget _buildMatchCard(
       AppThemeColors c, String name, String tag, String matchId) {
+    final isExpanded = _expandedMatchId == matchId;
     return GestureDetector(
+      onTap: () {
+        setState(() {
+          if (_expandedMatchId == matchId) {
+            _expandedMatchId = null;
+            ref.read(memoryProvider.notifier).clear();
+          } else {
+            _expandedMatchId = matchId;
+            ref.read(memoryProvider.notifier).loadMemory(matchId);
+          }
+        });
+      },
       onLongPress: () {
         showDialog(
           context: context,
@@ -777,56 +798,110 @@ class _HomePageState extends ConsumerState<HomePage> {
           ),
         );
       },
-      child: Container(
-        width: 140,
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: c.surface,
-          borderRadius: BorderRadius.circular(AppColors.radius2Xl),
-          border: Border.all(color: c.border),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: c.muted,
-                border: Border.all(color: c.borderLight),
-              ),
-              child: Icon(LucideIcons.user,
-                  size: 20, color: c.textTertiary),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              name,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: c.textPrimary,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Container(
+            width: 140,
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 24),
+            decoration: BoxDecoration(
+              color: isExpanded ? c.primary.withValues(alpha: 0.05) : c.surface,
+              borderRadius: BorderRadius.circular(AppColors.radius2Xl),
+              border: Border.all(
+                color: isExpanded ? c.primary : c.border,
+                width: isExpanded ? 2 : 1,
               ),
             ),
-            if (tag.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 8, vertical: 4),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: c.muted,
+                    border: Border.all(color: c.borderLight),
+                  ),
+                  child: Icon(LucideIcons.user,
+                      size: 20, color: c.textTertiary),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  name,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: c.textPrimary,
+                  ),
+                ),
+                if (tag.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: c.primary.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                          color: c.primary.withValues(alpha: 0.2)),
+                    ),
+                    child: Text(
+                      tag,
+                      style: TextStyle(fontSize: 10, color: c.primary),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          // Delete button – positioned top-right
+          Positioned(
+            top: 6,
+            right: 6,
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    backgroundColor: c.surface,
+                    title: Text('刪除 $name？',
+                        style: TextStyle(color: c.textPrimary)),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(ctx),
+                        child: Text('取消',
+                            style: TextStyle(color: c.textSecondary)),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          ref.read(matchProvider.notifier).deleteMatch(matchId);
+                          Navigator.pop(ctx);
+                          if (_expandedMatchId == matchId) {
+                            setState(() => _expandedMatchId = null);
+                          }
+                        },
+                        child: Text('刪除',
+                            style: TextStyle(color: Colors.redAccent)),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              child: Container(
+                width: 24,
+                height: 24,
                 decoration: BoxDecoration(
-                  color: c.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                      color: c.primary.withValues(alpha: 0.2)),
+                  shape: BoxShape.circle,
+                  color: c.muted,
+                  border: Border.all(color: c.border),
                 ),
-                child: Text(
-                  tag,
-                  style: TextStyle(fontSize: 10, color: c.primary),
-                ),
+                child: Icon(LucideIcons.x, size: 12, color: c.textSecondary),
               ),
-            ],
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -838,9 +913,9 @@ class _HomePageState extends ConsumerState<HomePage> {
         width: 140,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: c.background,
+          color: c.primary.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(AppColors.radius2Xl),
-          border: Border.all(color: c.borderLight),
+          border: Border.all(color: c.primary.withValues(alpha: 0.3)),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -850,20 +925,189 @@ class _HomePageState extends ConsumerState<HomePage> {
               height: 40,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: c.overlayLight,
+                color: c.primary.withValues(alpha: 0.15),
               ),
               child: Icon(LucideIcons.plusCircle,
-                  size: 20, color: c.textMuted),
+                  size: 20, color: c.primary),
             ),
             const SizedBox(height: 8),
             Text(
               ref.tr('pipeline_add'),
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 10, color: c.textMuted),
+              style: TextStyle(fontSize: 10, color: c.primary),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  // ── Expanded Memory Panel ───────────────────────────────────────────
+  Widget _buildExpandedMemoryPanel(
+    AppThemeColors c,
+    AsyncValue<List<MatchRecord>> matchesState,
+    AsyncValue<MemoryProfile?> memoryState,
+  ) {
+    final matchName = matchesState.valueOrNull
+            ?.where((m) => m.matchId == _expandedMatchId)
+            .firstOrNull
+            ?.name ??
+        '';
+
+    return AnimatedSize(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: c.surface,
+          borderRadius: BorderRadius.circular(AppColors.radius2Xl),
+          border: Border.all(color: c.primary.withValues(alpha: 0.3)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(LucideIcons.brain, size: 18, color: c.primary),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    '$matchName Memory',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      color: c.textPrimary,
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _expandedMatchId = null;
+                    ref.read(memoryProvider.notifier).clear();
+                  }),
+                  child: Icon(LucideIcons.x, size: 18, color: c.textMuted),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            memoryState.when(
+              data: (memory) {
+                if (memory == null || memory.isEmpty) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Center(
+                      child: Text(
+                        '尚無記憶資料，上傳聊天紀錄後將自動擷取',
+                        style: TextStyle(
+                            fontSize: 12, color: c.textMuted),
+                      ),
+                    ),
+                  );
+                }
+                return _buildMemoryContent(c, memory);
+              },
+              loading: () => const Padding(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                child: Center(child: CircularProgressIndicator()),
+              ),
+              error: (e, _) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Center(
+                  child: Text('Error: $e',
+                      style: TextStyle(fontSize: 12, color: c.textMuted)),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMemoryContent(AppThemeColors c, MemoryProfile memory) {
+    final sections = <_MemorySectionData>[];
+
+    // 1. 基本資訊
+    final basics = <_MemoryItem>[];
+    if (memory.birthday != null) {
+      basics.add(_MemoryItem(memory.birthday!, '生日'));
+    }
+    if (memory.mbtiOrZodiac != null) {
+      basics.add(_MemoryItem(memory.mbtiOrZodiac!, '人格'));
+    }
+    for (final a in memory.anniversaries) {
+      if (a is Map) {
+        basics.add(_MemoryItem('${a['date'] ?? ''}', a['label'] ?? '紀念日'));
+      }
+    }
+    for (final r in memory.routine) {
+      basics.add(_MemoryItem(r, '作息'));
+    }
+    if (basics.isNotEmpty) {
+      sections.add(_MemorySectionData('基本資訊', LucideIcons.cake, basics));
+    }
+
+    // 2. 飲食偏好
+    final diet = <_MemoryItem>[
+      ...memory.favoriteFood.map((e) => _MemoryItem(e, '喜歡')),
+      ...memory.favoriteRestaurant.map((e) => _MemoryItem(e, '愛店')),
+      ...memory.dislikedFood.map((e) => _MemoryItem(e, '不吃', isNegative: true)),
+      ...memory.dietaryRestrictions.map((e) => _MemoryItem(e, '禁忌', isNegative: true)),
+      ...memory.beverageCustomization.map((e) => _MemoryItem(e, '飲料')),
+    ];
+    if (diet.isNotEmpty) {
+      sections.add(_MemorySectionData('飲食偏好', LucideIcons.utensils, diet));
+    }
+
+    // 3. 地點與休閒
+    final leisure = <_MemoryItem>[
+      ...memory.favoritePlaces.map((e) => _MemoryItem(e, '地點')),
+      ...memory.travelWishlist.map((e) => _MemoryItem(e, '想去')),
+      ...memory.hobbies.map((e) => _MemoryItem(e, '嗜好')),
+      ...memory.entertainmentTastes.map((e) => _MemoryItem(e, '品味')),
+    ];
+    if (leisure.isNotEmpty) {
+      sections.add(_MemorySectionData('休閒娛樂', LucideIcons.mapPin, leisure));
+    }
+
+    // 4. 情感地雷
+    final emotional = <_MemoryItem>[
+      ...memory.landmines.map((e) => _MemoryItem(e, '地雷', isNegative: true)),
+      ...memory.petPeeves.map((e) => _MemoryItem(e, '煩躁', isNegative: true)),
+      ...memory.soothingMethods.map((e) => _MemoryItem(e, '安撫')),
+      ...memory.loveLanguages.map((e) => _MemoryItem(e, '愛之語')),
+    ];
+    if (emotional.isNotEmpty) {
+      sections.add(_MemorySectionData('情感地雷', LucideIcons.shield, emotional));
+    }
+
+    // 5. 送禮
+    final gifting = <_MemoryItem>[
+      ...memory.wishlist.map((e) => _MemoryItem(e, '想要')),
+      ...memory.favoriteBrands.map((e) => _MemoryItem(e, '品牌')),
+      ...memory.aestheticPreference.map((e) => _MemoryItem(e, '風格')),
+    ];
+    if (gifting.isNotEmpty) {
+      sections.add(_MemorySectionData('送禮偏好', LucideIcons.gift, gifting));
+    }
+
+    // 6. 其他
+    if (memory.otherNotes.isNotEmpty) {
+      sections.add(_MemorySectionData(
+          '其他備註', LucideIcons.stickyNote,
+          memory.otherNotes.map((e) => _MemoryItem(e, '備註')).toList()));
+    }
+
+    return Column(
+      children: sections.map((s) => _MemoryCollapsibleSection(
+        colors: c,
+        title: s.title,
+        icon: s.icon,
+        items: s.items,
+        itemCount: s.items.length,
+      )).toList(),
     );
   }
 
@@ -921,6 +1165,160 @@ class _HomePageState extends ConsumerState<HomePage> {
           ),
         ],
       ),
+    );
+  }
+}
+
+// ── Memory Section Data ──────────────────────────────────────────────
+class _MemoryItem {
+  final String value;
+  final String label;
+  final bool isNegative;
+  const _MemoryItem(this.value, this.label, {this.isNegative = false});
+}
+
+class _MemorySectionData {
+  final String title;
+  final IconData icon;
+  final List<_MemoryItem> items;
+  const _MemorySectionData(this.title, this.icon, this.items);
+}
+
+// ── Collapsible Memory Section ──────────────────────────────────────
+class _MemoryCollapsibleSection extends StatefulWidget {
+  final AppThemeColors colors;
+  final String title;
+  final IconData icon;
+  final List<_MemoryItem> items;
+  final int itemCount;
+
+  const _MemoryCollapsibleSection({
+    required this.colors,
+    required this.title,
+    required this.icon,
+    required this.items,
+    required this.itemCount,
+  });
+
+  @override
+  State<_MemoryCollapsibleSection> createState() =>
+      _MemoryCollapsibleSectionState();
+}
+
+class _MemoryCollapsibleSectionState
+    extends State<_MemoryCollapsibleSection> {
+  bool _expanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = widget.colors;
+    return Column(
+      children: [
+        // Section header (tappable)
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => setState(() => _expanded = !_expanded),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              children: [
+                Icon(widget.icon, size: 14, color: c.primary),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    widget.title,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: c.textPrimary,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: c.primary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    '${widget.itemCount}',
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                      color: c.primary,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 6),
+                AnimatedRotation(
+                  turns: _expanded ? 0.0 : -0.25,
+                  duration: const Duration(milliseconds: 200),
+                  child: Icon(LucideIcons.chevronDown,
+                      size: 16, color: c.textTertiary),
+                ),
+              ],
+            ),
+          ),
+        ),
+        // Collapsible content
+        AnimatedCrossFade(
+          firstChild: Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: widget.items.map((item) {
+                return Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: item.isNegative
+                        ? c.textTertiary.withValues(alpha: 0.08)
+                        : c.primary.withValues(alpha: 0.06),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: item.isNegative
+                          ? c.textTertiary.withValues(alpha: 0.15)
+                          : c.primary.withValues(alpha: 0.12),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        item.label,
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
+                          color: item.isNegative
+                              ? c.textTertiary
+                              : c.primary,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Flexible(
+                        child: Text(
+                          item.value,
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: c.textPrimary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          secondChild: const SizedBox.shrink(),
+          crossFadeState: _expanded
+              ? CrossFadeState.showFirst
+              : CrossFadeState.showSecond,
+          duration: const Duration(milliseconds: 200),
+        ),
+        Divider(color: c.border, height: 1),
+      ],
     );
   }
 }
@@ -1580,14 +1978,14 @@ class _IceCopyButtonState extends State<_IceCopyButton> {
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
         decoration: BoxDecoration(
           color: _copied
-              ? c.success.withValues(alpha: 0.12)
+              ? c.textTertiary.withValues(alpha: 0.12)
               : c.primary.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(AppColors.radiusSm),
         ),
         child: Icon(
           _copied ? LucideIcons.checkCheck : LucideIcons.copy,
           size: 14,
-          color: _copied ? c.success : c.primary,
+          color: _copied ? c.textTertiary : c.primary,
         ),
       ),
     );

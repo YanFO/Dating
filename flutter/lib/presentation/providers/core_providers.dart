@@ -8,10 +8,13 @@ final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
   throw UnimplementedError('SharedPreferences not initialized');
 });
 
-// API Client
+// API Client — token getter is wired up after auth provider is available
 final apiClientProvider = Provider<ApiClient>((ref) {
-  return ApiClient();
+  final prefs = ref.watch(sharedPreferencesProvider);
+  return ApiClient(
+    tokenGetter: () => prefs.getString('auth_session_token'),
+  );
 });
 
-// Voice Coach visibility
-final voiceCoachEnabledProvider = StateProvider<bool>((ref) => true);
+// Voice Coach visibility (disabled — real-time voice feature is temporarily disabled)
+final voiceCoachEnabledProvider = StateProvider<bool>((ref) => false);

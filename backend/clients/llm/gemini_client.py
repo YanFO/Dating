@@ -66,6 +66,47 @@ class GeminiClient:
         log.info("gemini_vision_call_done")
         return orjson.loads(content)
 
+    async def analyze_images(
+        self,
+        images_base64: list[str],
+        system_prompt: str,
+        user_prompt: str,
+        request_id: str,
+    ) -> list[dict]:
+        """发送多张图像至 Gemini 进行批量视觉分析，返回 JSON 数组。"""
+        log = logger.bind(request_id=request_id, method="analyze_images", model=self._model, image_count=len(images_base64))
+        log.info("gemini_multi_vision_call_start")
+
+        parts = []
+        for img_b64 in images_base64:
+            clean_b64 = img_b64
+            if "," in clean_b64:
+                clean_b64 = clean_b64.split(",", 1)[1]
+            image_bytes = base64.b64decode(clean_b64)
+            parts.append(types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg"))
+        parts.append(types.Part.from_text(text=user_prompt))
+
+        response = await asyncio.wait_for(
+            self._client.aio.models.generate_content(
+                model=self._model,
+                contents=parts,
+                config=types.GenerateContentConfig(
+                    system_instruction=system_prompt,
+                    response_mime_type="application/json",
+                    max_output_tokens=8192,
+                    temperature=0.7,
+                ),
+            ),
+            timeout=LLM_VISION_TIMEOUT * 2,
+        )
+        content = response.text
+        log.info("gemini_multi_vision_call_done")
+        result = orjson.loads(content)
+        # Ensure we always return a list
+        if isinstance(result, dict):
+            return [result]
+        return result
+
     async def analyze_text(
         self,
         system_prompt: str,

@@ -7,7 +7,7 @@
 from dataclasses import asdict
 
 import structlog
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
 from infra.database.models import AnalysisLog, DateReport as ReportRow
@@ -160,3 +160,23 @@ class InsightsService:
             ))
         log.info("list_voice_coach_logs", user_id=user_id, count=len(logs))
         return logs
+
+    async def delete_voice_coach_log(
+        self, user_id: str, log_id: str, request_id: str
+    ) -> bool:
+        """刪除指定語音教練對話紀錄，回傳是否成功刪除"""
+        log = logger.bind(request_id=request_id, feature="insights")
+        async with self._sf() as session:
+            stmt = (
+                delete(AnalysisLog)
+                .where(
+                    AnalysisLog.id == log_id,
+                    AnalysisLog.user_id == user_id,
+                    AnalysisLog.feature == "voice_coach",
+                )
+            )
+            result = await session.execute(stmt)
+            await session.commit()
+            deleted = result.rowcount > 0
+        log.info("delete_voice_coach_log", log_id=log_id, deleted=deleted)
+        return deleted

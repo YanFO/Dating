@@ -70,6 +70,21 @@ class VoiceCoachLogsNotifier
 
   VoiceCoachLogsNotifier(this._api) : super(const AsyncValue.data([]));
 
+  Future<void> deleteLog(String logId) async {
+    try {
+      final result = await _api
+          .delete<dynamic>(ApiEndpoints.insightsVoiceCoachLogById(logId));
+      result.fold(
+        (error) {},
+        (_) {
+          final current = state.valueOrNull ?? [];
+          state = AsyncValue.data(
+              current.where((l) => l.logId != logId).toList());
+        },
+      );
+    } catch (_) {}
+  }
+
   Future<void> loadLogs() async {
     state = const AsyncValue.loading();
     try {

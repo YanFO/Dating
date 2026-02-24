@@ -17,6 +17,8 @@ class InsightsPage extends ConsumerStatefulWidget {
 }
 
 class _InsightsPageState extends ConsumerState<InsightsPage> {
+  final Set<String> _expandedLogs = {};
+
   @override
   void initState() {
     super.initState();
@@ -235,7 +237,7 @@ class _InsightsPageState extends ConsumerState<InsightsPage> {
                           child: _buildFeedbackItem(
                             c: c,
                             icon: LucideIcons.info,
-                            iconColor: c.warning,
+                            iconColor: c.textTertiary,
                             text: point,
                           ),
                         )),
@@ -359,7 +361,7 @@ class _InsightsPageState extends ConsumerState<InsightsPage> {
                   _buildFeedbackItem(
                     c: c,
                     icon: LucideIcons.info,
-                    iconColor: c.warning,
+                    iconColor: c.textTertiary,
                     text: ref.tr('insights_interrupted'),
                   ),
                 ],
@@ -448,6 +450,7 @@ class _InsightsPageState extends ConsumerState<InsightsPage> {
   Widget _buildVoiceCoachLogCard(AppThemeColors c, VoiceCoachLog log) {
     final dateStr =
         log.createdAt.isNotEmpty ? _formatDate(log.createdAt) : '';
+    final isExpanded = _expandedLogs.contains(log.logId);
 
     // 建構交錯的對話時間軸：對話 → 教練回覆 → 教練分析
     final timelineItems = <_TimelineEntry>[];
@@ -478,60 +481,130 @@ class _InsightsPageState extends ConsumerState<InsightsPage> {
       }
     }
 
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: c.surface,
-        borderRadius: BorderRadius.circular(AppColors.radius2Xl),
-        border: Border.all(color: c.border),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // ── 標題列：日期 + 持續時間 ──
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Icon(LucideIcons.mic, size: 16, color: c.primary),
-                  const SizedBox(width: 8),
-                  Text(
-                    dateStr,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: c.textPrimary,
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  color: c.primary.withValues(alpha: 0.08),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  log.durationFormatted,
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: c.primary,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          if (isExpanded) {
+            _expandedLogs.remove(log.logId);
+          } else {
+            _expandedLogs.add(log.logId);
+          }
+        });
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: c.surface,
+          borderRadius: BorderRadius.circular(AppColors.radius2Xl),
+          border: Border.all(
+            color: isExpanded ? c.primary.withValues(alpha: 0.3) : c.border,
           ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // ── 標題列：日期 + 持續時間 + 展開箭頭 ──
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(LucideIcons.mic, size: 16, color: c.primary),
+                    const SizedBox(width: 8),
+                    Text(
+                      dateStr,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: c.textPrimary,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Container(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: c.primary.withValues(alpha: 0.08),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        log.durationFormatted,
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: c.primary,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                            backgroundColor: c.surface,
+                            title: Text('刪除此教練紀錄？',
+                                style: TextStyle(color: c.textPrimary)),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(ctx),
+                                child: Text('取消',
+                                    style: TextStyle(color: c.textSecondary)),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  ref
+                                      .read(voiceCoachLogsProvider.notifier)
+                                      .deleteLog(log.logId);
+                                  Navigator.pop(ctx);
+                                },
+                                child: Text('刪除',
+                                    style: TextStyle(color: Colors.redAccent)),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 24,
+                        height: 24,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: c.muted,
+                          border: Border.all(color: c.border),
+                        ),
+                        child: Icon(LucideIcons.x,
+                            size: 12, color: c.textSecondary),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    AnimatedRotation(
+                      turns: isExpanded ? 0.5 : 0,
+                      duration: const Duration(milliseconds: 200),
+                      child: Icon(
+                        LucideIcons.chevronDown,
+                        size: 16,
+                        color: c.textTertiary,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
 
-          if (timelineItems.isNotEmpty) ...[
-            const SizedBox(height: 16),
-            // ── 對話時間軸 ──
-            ...timelineItems
-                .map((entry) => _buildTimelineItem(c, entry)),
+            if (isExpanded && timelineItems.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              // ── 對話時間軸 ──
+              ...timelineItems
+                  .map((entry) => _buildTimelineItem(c, entry)),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
@@ -639,7 +712,7 @@ class _InsightsPageState extends ConsumerState<InsightsPage> {
                   runSpacing: 4,
                   children: [
                     if (update.emotion.isNotEmpty)
-                      _buildTag(c, update.emotion, c.info),
+                      _buildTag(c, update.emotion, c.textTertiary),
                     if (update.technique.isNotEmpty)
                       _buildTag(c, update.technique, c.primary),
                   ],

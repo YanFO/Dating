@@ -47,15 +47,17 @@ class ReplyRequest:
     relationship_stage: str = "early"
     user_gender: str = "male"
     target_gender: str = "female"
+    match_id: Optional[str] = None
 
 
 @dataclass
 class ReplyResponse:
-    """回覆分析回應，包含情緒分析、回覆選項、教練面板及階段指導。"""
+    """回覆分析回應，包含情緒分析、回覆選項、教練面板、階段指導及記憶擷取。"""
     emotion_analysis: EmotionAnalysis
     reply_options: list[ReplyOption] = field(default_factory=list)
     coach_panel: Optional[CoachPanel] = None
     stage_coaching: Optional[StageCoaching] = None
+    memory_extraction: Optional[dict] = None
 
     def to_dict(self) -> dict:
         """將回應物件轉換為字典格式。"""

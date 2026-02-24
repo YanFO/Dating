@@ -42,28 +42,28 @@ class _VoiceCoachIslandState extends ConsumerState<VoiceCoachIsland>
     super.dispose();
   }
 
-  /// 切換語音教練會話狀態（開始/錄音/停止錄音）
-  void _toggleSession() {
-    final vcState = ref.read(voiceCoachSessionProvider);
-    final notifier = ref.read(voiceCoachSessionProvider.notifier);
+  // /// 切換語音教練會話狀態（開始/錄音/停止錄音）
+  // void _toggleSession() {
+  //   final vcState = ref.read(voiceCoachSessionProvider);
+  //   final notifier = ref.read(voiceCoachSessionProvider.notifier);
+  //
+  //   if (vcState.status == VoiceCoachStatus.disconnected ||
+  //       vcState.status == VoiceCoachStatus.error) {
+  //     notifier.startSession();
+  //   } else if (vcState.status == VoiceCoachStatus.connected) {
+  //     if (vcState.isRecording) {
+  //       notifier.stopRecording();
+  //     } else {
+  //       notifier.startRecording();
+  //     }
+  //   }
+  // }
 
-    if (vcState.status == VoiceCoachStatus.disconnected ||
-        vcState.status == VoiceCoachStatus.error) {
-      notifier.startSession();
-    } else if (vcState.status == VoiceCoachStatus.connected) {
-      if (vcState.isRecording) {
-        notifier.stopRecording();
-      } else {
-        notifier.startRecording();
-      }
-    }
-  }
-
-  /// 結束語音教練會話並關閉面板
-  void _endSession() {
-    ref.read(voiceCoachSessionProvider.notifier).endSession();
-    ref.read(voiceCoachEnabledProvider.notifier).state = false;
-  }
+  // /// 結束語音教練會話並關閉面板
+  // void _endSession() {
+  //   ref.read(voiceCoachSessionProvider.notifier).endSession();
+  //   ref.read(voiceCoachEnabledProvider.notifier).state = false;
+  // }
 
   /// 根據目前狀態取得顯示文字
   String _statusText(VoiceCoachState vcState) {
@@ -116,99 +116,79 @@ class _VoiceCoachIslandState extends ConsumerState<VoiceCoachIsland>
 
   /// 情緒標籤對應的顏色
   Color _emotionColor(String emotion, AppThemeColors c) {
-    switch (emotion) {
-      case '開心':
-      case '興奮':
-      case '放鬆':
-        return c.success;
-      case '無聊':
-      case '不耐煩':
-        return c.warning;
-      case '緊張':
-      case '害羞':
-        return c.info;
-      default:
-        return c.textTertiary;
-    }
+    return c.textTertiary;
   }
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    final vcState = ref.watch(voiceCoachSessionProvider);
-    final isActive =
-        vcState.status == VoiceCoachStatus.connected && vcState.isRecording;
-    final hasCoachingData = vcState.inputTranscripts.isNotEmpty ||
-        vcState.emotion.isNotEmpty ||
-        vcState.coachingSuggestions.isNotEmpty ||
-        vcState.suggestions.isNotEmpty;
+    // ── 即時語音功能暫時停用，僅顯示靜態 disabled UI ──
+    // final vcState = ref.watch(voiceCoachSessionProvider);
+    // final isActive =
+    //     vcState.status == VoiceCoachStatus.connected && vcState.isRecording;
+    // final hasCoachingData = vcState.inputTranscripts.isNotEmpty ||
+    //     vcState.emotion.isNotEmpty ||
+    //     vcState.coachingSuggestions.isNotEmpty ||
+    //     vcState.suggestions.isNotEmpty;
 
-    // 連線錯誤時 3 秒後自動關閉面板
-    ref.listen(voiceCoachSessionProvider, (prev, next) {
-      if (next.status == VoiceCoachStatus.error &&
-          prev?.status != VoiceCoachStatus.error) {
-        Future.delayed(const Duration(seconds: 3), () {
-          if (mounted) _endSession();
-        });
-      }
-    });
+    // // 連線錯誤時 3 秒後自動關閉面板
+    // ref.listen(voiceCoachSessionProvider, (prev, next) {
+    //   if (next.status == VoiceCoachStatus.error &&
+    //       prev?.status != VoiceCoachStatus.error) {
+    //     Future.delayed(const Duration(seconds: 3), () {
+    //       if (mounted) _endSession();
+    //     });
+    //   }
+    // });
 
-    // 當有新的辨識內容時自動捲動到底部
-    if (vcState.inputTranscripts.isNotEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (_transcriptScrollController.hasClients) {
-          _transcriptScrollController.animateTo(
-            _transcriptScrollController.position.maxScrollExtent,
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.easeOut,
-          );
-        }
-      });
-    }
+    // // 當有新的辨識內容時自動捲動到底部
+    // if (vcState.inputTranscripts.isNotEmpty) {
+    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+    //     if (_transcriptScrollController.hasClients) {
+    //       _transcriptScrollController.animateTo(
+    //         _transcriptScrollController.position.maxScrollExtent,
+    //         duration: const Duration(milliseconds: 200),
+    //         curve: Curves.easeOut,
+    //       );
+    //     }
+    //   });
+    // }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // ── 控制列（始終顯示）──
-          _buildControlBar(c, vcState, isActive),
+          // ── 控制列（顯示為 disabled 狀態，無法點擊）──
+          _buildDisabledControlBar(c),
 
-          // ── 展開面板（錄音中且有資料時顯示）──
-          if (isActive && hasCoachingData) ...[
-            const SizedBox(height: 8),
-            _buildExpandedPanel(c, vcState),
-          ],
+          // // ── 展開面板（錄音中且有資料時顯示）──
+          // if (isActive && hasCoachingData) ...[
+          //   const SizedBox(height: 8),
+          //   _buildExpandedPanel(c, vcState),
+          // ],
 
-          // ── 純文字建議後備顯示（無結構化資料時）──
-          if (!hasCoachingData && vcState.suggestions.isNotEmpty) ...[
-            const SizedBox(height: 8),
-            _buildFallbackSuggestion(c, vcState),
-          ],
+          // // ── 純文字建議後備顯示（無結構化資料時）──
+          // if (!hasCoachingData && vcState.suggestions.isNotEmpty) ...[
+          //   const SizedBox(height: 8),
+          //   _buildFallbackSuggestion(c, vcState),
+          // ],
         ],
       ),
     );
   }
 
-  /// 建構控制列：圖示 + 狀態文字 + 波形動畫 + 關閉按鈕
-  Widget _buildControlBar(
-      AppThemeColors c, VoiceCoachState vcState, bool isActive) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppColors.radiusLg),
-        onTap: _toggleSession,
+  /// 建構停用狀態的控制列：保留 UI 外觀但無法點擊互動
+  Widget _buildDisabledControlBar(AppThemeColors c) {
+    return Opacity(
+      opacity: 0.5,
+      child: IgnorePointer(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
-            color: isActive
-                ? c.primary.withValues(alpha: 0.15)
-                : c.surfaceLight.withValues(alpha: 0.9),
+            color: c.surfaceLight.withValues(alpha: 0.9),
             borderRadius: BorderRadius.circular(AppColors.radiusLg),
-            border: Border.all(
-              color:
-                  isActive ? c.primary.withValues(alpha: 0.4) : c.borderLight,
-            ),
+            border: Border.all(color: c.borderLight),
           ),
           child: Row(
             children: [
@@ -230,8 +210,7 @@ class _VoiceCoachIslandState extends ConsumerState<VoiceCoachIsland>
                     color: c.primary.withValues(alpha: 0.3),
                   ),
                 ),
-                child:
-                    Icon(_statusIcon(vcState), size: 16, color: c.primary),
+                child: Icon(LucideIcons.mic, size: 16, color: c.primary),
               ),
               const SizedBox(width: 12),
               // 標題 + 狀態文字
@@ -249,72 +228,13 @@ class _VoiceCoachIslandState extends ConsumerState<VoiceCoachIsland>
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      _statusText(vcState),
+                      'Coming Soon',
                       style: TextStyle(
                         fontSize: 10,
-                        color: vcState.status == VoiceCoachStatus.error
-                            ? c.warning
-                            : c.primary.withValues(alpha: 0.8),
+                        color: c.textTertiary,
                       ),
                     ),
                   ],
-                ),
-              ),
-              // 波形動畫（錄音中時顯示）
-              if (isActive)
-                AnimatedBuilder(
-                  animation: _animController,
-                  builder: (context, child) {
-                    return Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: List.generate(3, (index) {
-                        final delay = index * 0.2;
-                        final value =
-                            (((_animController.value + delay) % 1.0) * 2 - 1)
-                                .abs();
-                        return Container(
-                          width: 2,
-                          height: 6 + value * 6,
-                          margin: const EdgeInsets.only(left: 2),
-                          decoration: BoxDecoration(
-                            color: c.primary.withValues(alpha: 0.8),
-                            borderRadius: BorderRadius.circular(1),
-                          ),
-                        );
-                      }),
-                    );
-                  },
-                ),
-              const SizedBox(width: 12),
-              // 結束按鈕
-              GestureDetector(
-                onTap: _endSession,
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: c.primary.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: c.primary.withValues(alpha: 0.3),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(LucideIcons.square, size: 10, color: c.primary),
-                      const SizedBox(width: 4),
-                      Text(
-                        ref.tr('vc_end_session'),
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                          color: c.primary,
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
               ),
             ],
@@ -323,6 +243,136 @@ class _VoiceCoachIslandState extends ConsumerState<VoiceCoachIsland>
       ),
     );
   }
+
+  // /// 建構控制列：圖示 + 狀態文字 + 波形動畫 + 關閉按鈕（已停用）
+  // Widget _buildControlBar(
+  //     AppThemeColors c, VoiceCoachState vcState, bool isActive) {
+  //   return Material(
+  //     color: Colors.transparent,
+  //     child: InkWell(
+  //       borderRadius: BorderRadius.circular(AppColors.radiusLg),
+  //       onTap: _toggleSession,
+  //       child: Container(
+  //         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+  //         decoration: BoxDecoration(
+  //           color: isActive
+  //               ? c.primary.withValues(alpha: 0.15)
+  //               : c.surfaceLight.withValues(alpha: 0.9),
+  //           borderRadius: BorderRadius.circular(AppColors.radiusLg),
+  //           border: Border.all(
+  //             color:
+  //                 isActive ? c.primary.withValues(alpha: 0.4) : c.borderLight,
+  //           ),
+  //         ),
+  //         child: Row(
+  //           children: [
+  //             Container(
+  //               width: 36,
+  //               height: 36,
+  //               decoration: BoxDecoration(
+  //                 shape: BoxShape.circle,
+  //                 gradient: LinearGradient(
+  //                   begin: Alignment.topLeft,
+  //                   end: Alignment.bottomRight,
+  //                   colors: [
+  //                     c.primary.withValues(alpha: 0.2),
+  //                     Colors.transparent,
+  //                   ],
+  //                 ),
+  //                 border: Border.all(
+  //                   color: c.primary.withValues(alpha: 0.3),
+  //                 ),
+  //               ),
+  //               child:
+  //                   Icon(_statusIcon(vcState), size: 16, color: c.primary),
+  //             ),
+  //             const SizedBox(width: 12),
+  //             Expanded(
+  //               child: Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   Text(
+  //                     ref.tr('voice_coach_title'),
+  //                     style: TextStyle(
+  //                       fontSize: 12,
+  //                       fontWeight: FontWeight.w500,
+  //                       color: c.textPrimary,
+  //                     ),
+  //                   ),
+  //                   const SizedBox(height: 2),
+  //                   Text(
+  //                     _statusText(vcState),
+  //                     style: TextStyle(
+  //                       fontSize: 10,
+  //                       color: vcState.status == VoiceCoachStatus.error
+  //                           ? c.textTertiary
+  //                           : c.primary.withValues(alpha: 0.8),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //             if (isActive)
+  //               AnimatedBuilder(
+  //                 animation: _animController,
+  //                 builder: (context, child) {
+  //                   return Row(
+  //                     mainAxisSize: MainAxisSize.min,
+  //                     crossAxisAlignment: CrossAxisAlignment.end,
+  //                     children: List.generate(3, (index) {
+  //                       final delay = index * 0.2;
+  //                       final value =
+  //                           (((_animController.value + delay) % 1.0) * 2 - 1)
+  //                               .abs();
+  //                       return Container(
+  //                         width: 2,
+  //                         height: 6 + value * 6,
+  //                         margin: const EdgeInsets.only(left: 2),
+  //                         decoration: BoxDecoration(
+  //                           color: c.primary.withValues(alpha: 0.8),
+  //                           borderRadius: BorderRadius.circular(1),
+  //                         ),
+  //                       );
+  //                     }),
+  //                   );
+  //                 },
+  //               ),
+  //             const SizedBox(width: 12),
+  //             GestureDetector(
+  //               onTap: _endSession,
+  //               child: Container(
+  //                 padding:
+  //                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+  //                 decoration: BoxDecoration(
+  //                   color: c.primary.withValues(alpha: 0.12),
+  //                   borderRadius: BorderRadius.circular(12),
+  //                   border: Border.all(
+  //                     color: c.primary.withValues(alpha: 0.3),
+  //                   ),
+  //                 ),
+  //                 child: Row(
+  //                   mainAxisSize: MainAxisSize.min,
+  //                   children: [
+  //                     Icon(LucideIcons.square, size: 10, color: c.primary),
+  //                     const SizedBox(width: 4),
+  //                     Text(
+  //                       ref.tr('vc_end_session'),
+  //                       style: TextStyle(
+  //                         fontSize: 10,
+  //                         fontWeight: FontWeight.w600,
+  //                         color: c.primary,
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   /// 建構展開面板：對話辨識 + 情緒分析 + 建議卡片
   Widget _buildExpandedPanel(AppThemeColors c, VoiceCoachState vcState) {
@@ -516,14 +566,14 @@ class _VoiceCoachIslandState extends ConsumerState<VoiceCoachIsland>
           const SizedBox(height: 6),
           Row(
             children: [
-              Icon(LucideIcons.compass, size: 11, color: c.info),
+              Icon(LucideIcons.compass, size: 11, color: c.textTertiary),
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
                   '${ref.tr('vc_direction')}：${vcState.direction}',
                   style: TextStyle(
                     fontSize: 10,
-                    color: c.info,
+                    color: c.textTertiary,
                     height: 1.3,
                   ),
                   maxLines: 2,
@@ -625,14 +675,14 @@ class _VcCopyButtonState extends State<_VcCopyButton> {
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
         decoration: BoxDecoration(
           color: _copied
-              ? c.success.withValues(alpha: 0.12)
+              ? c.textTertiary.withValues(alpha: 0.12)
               : c.primary.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(6),
         ),
         child: Icon(
           _copied ? LucideIcons.checkCheck : LucideIcons.copy,
           size: 12,
-          color: _copied ? c.success : c.primary,
+          color: _copied ? c.textTertiary : c.primary,
         ),
       ),
     );

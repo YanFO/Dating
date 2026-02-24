@@ -18,7 +18,7 @@ from modules.reply.models import (
     ReplyResponse,
     StageCoaching,
 )
-from modules.reply.prompts import build_reply_system_prompt
+from modules.reply.prompts import build_memory_context, build_reply_system_prompt
 from services.id_service import generate_cuid
 
 logger = structlog.get_logger()
@@ -32,21 +32,21 @@ MOCK_REPLY_RESPONSE = ReplyResponse(
     reply_options=[
         ReplyOption(
             text="哈哈真的～對了你週末都在幹嘛？",
-            intent="維持友善",
+            intent="話題延伸",
             strategy="輕鬆接話 + 開放式提問維持對話",
             framework_technique="無",
         ),
         ReplyOption(
             text="感覺你應該是週末到處吃美食的人吧？😏",
-            intent="推進好感 / 柔性框架冷讀",
+            intent="引發好奇",
             strategy="用冷讀術猜測對方興趣，展現觀察力，讓對方想回應。",
             framework_technique="冷讀假設",
         ),
         ReplyOption(
             text="外表高冷但其實很有趣齁 😏 有反差的人比較吸引我",
-            intent="推進好感 / 高框架推拉",
+            intent="建立共鳴",
             strategy="先拉（有反差很有趣），用篩選者姿態暗示你在評估對方。",
-            framework_technique="推拉 + 框架設定",
+            framework_technique="自然自我揭露",
         ),
     ],
     coach_panel=CoachPanel(
@@ -81,12 +81,13 @@ DEFAULT_USER_ID = "anonymous"
 class ReplyService:
     """回覆教練服務，透過 LLM 分析聊天內容並產生回覆建議。"""
 
-    def __init__(self, llm_client, feature_flags, session_factory: async_sessionmaker, fallback_client=None):
+    def __init__(self, llm_client, feature_flags, session_factory: async_sessionmaker, fallback_client=None, match_service=None):
         """初始化回覆服務，設定 LLM 客戶端、DB session 與功能旗標。"""
         self._llm = llm_client
         self._fallback = fallback_client
         self._flags = feature_flags
         self._sf = session_factory  # SQLAlchemy async session 工廠
+        self._match_service = match_service  # 用於查詢/更新 match memory
 
     async def _write_log(
         self, request: ReplyRequest, result_dict: dict | None,
@@ -133,7 +134,7 @@ class ReplyService:
     async def analyze(
         self, request: ReplyRequest, request_id: str
     ) -> ReplyResponse:
-        """執行回覆分析，回傳情緒分析與回覆建議。"""
+        """執行回覆分析，回傳情緒分析與回覆建議。若帶 match_id 則注入記憶並自動擷取。"""
         log = logger.bind(request_id=request_id, feature="reply")
 
         if self._flags.ENABLE_MOCK_MODE:
@@ -148,11 +149,26 @@ class ReplyService:
             request.user_gender,
             request.target_gender,
         )
+
+        # 若有 match_id，查詢記憶並注入 system prompt
+        if request.match_id and self._match_service:
+            try:
+                memory_data = await self._match_service.get_memory_for_prompt(
+                    request.match_id, request_id,
+                )
+                memory_context = build_memory_context(memory_data)
+                if memory_context:
+                    system_prompt += memory_context
+                    log.info("memory_injected", match_id=request.match_id)
+            except Exception as e:
+                log.warning("memory_injection_failed", error=str(e), match_id=request.match_id)
+
         user_prompt = self._build_user_prompt(request)
         log.info(
             "calling_llm",
             has_screenshot=bool(request.screenshot_base64),
             relationship_stage=request.relationship_stage,
+            match_id=request.match_id,
         )
 
         # 計時 LLM 呼叫
@@ -163,6 +179,17 @@ class ReplyService:
             result = self._parse_response(raw)
             # 寫入分析日誌（成功）
             await self._write_log(request, raw, latency_ms, request_id)
+
+            # 若有 match_id 且 LLM 回傳 memory_extraction，自動 merge 到 DB
+            if request.match_id and self._match_service and result.memory_extraction:
+                try:
+                    await self._match_service.merge_extracted_memories(
+                        DEFAULT_USER_ID, request.match_id, result.memory_extraction, request_id,
+                    )
+                    log.info("memory_extracted_and_merged", match_id=request.match_id)
+                except Exception as e:
+                    log.warning("memory_merge_failed", error=str(e), match_id=request.match_id)
+
             return result
         except Exception as e:
             latency_ms = int((time.monotonic() - t0) * 1000)
@@ -210,9 +237,11 @@ class ReplyService:
             technique_used=sc_raw.get("technique_used", ""),
             stage_warnings=sc_raw.get("stage_warnings", []),
         ) if sc_raw else None
+        memory_extraction = raw.get("memory_extraction")
         return ReplyResponse(
             emotion_analysis=emotion_analysis,
             reply_options=reply_options,
             coach_panel=coach_panel,
             stage_coaching=stage_coaching,
+            memory_extraction=memory_extraction,
         )

@@ -6,6 +6,7 @@
 
 from quart import Blueprint
 
+from api_server.routers.auth_router import bp as auth_bp
 from api_server.routers.icebreaker import bp as icebreaker_bp
 from api_server.routers.insights import bp as insights_bp
 from api_server.routers.jobs import bp as jobs_bp
@@ -18,6 +19,7 @@ from config.constants import API_PREFIX
 bp = Blueprint("api", __name__, url_prefix=API_PREFIX)
 
 # 註冊各功能模組路由
+bp.register_blueprint(auth_bp)
 bp.register_blueprint(icebreaker_bp)
 bp.register_blueprint(reply_bp)
 bp.register_blueprint(jobs_bp)

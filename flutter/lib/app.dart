@@ -4,14 +4,27 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'core/constants/app_colors.dart';
 import 'core/constants/app_colors_light.dart';
+import 'presentation/providers/auth_provider.dart';
 import 'presentation/providers/theme_provider.dart';
 import 'presentation/router/app_router.dart';
 
-class DatingLensApp extends ConsumerWidget {
+class DatingLensApp extends ConsumerStatefulWidget {
   const DatingLensApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<DatingLensApp> createState() => _DatingLensAppState();
+}
+
+class _DatingLensAppState extends ConsumerState<DatingLensApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Validate stored session token on app start
+    Future.microtask(() => ref.read(authProvider.notifier).init());
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final themeMode = ref.watch(themeProvider);
     return MaterialApp.router(
       title: 'Dating Lens',

@@ -86,6 +86,45 @@ class OpenAIClient:
         log.info("openai_vision_call_done")
         return self._extract_json(content)
 
+    async def analyze_images(
+        self,
+        images_base64: list[str],
+        system_prompt: str,
+        user_prompt: str,
+        request_id: str,
+    ) -> list[dict]:
+        """发送多张图像至 OpenAI 进行批量视觉分析，返回 JSON 数组。"""
+        log = logger.bind(request_id=request_id, method="analyze_images", model=self._model, image_count=len(images_base64))
+        log.info("openai_multi_vision_call_start")
+
+        combined_prompt = f"{system_prompt}\n\n{user_prompt}" if self._is_reasoning else user_prompt
+
+        content_parts: list[dict] = [{"type": "text", "text": combined_prompt}]
+        for img_b64 in images_base64:
+            image_url = img_b64 if img_b64.startswith("data:") else f"data:image/jpeg;base64,{img_b64}"
+            content_parts.append({
+                "type": "image_url",
+                "image_url": {"url": image_url, "detail": "high"},
+            })
+
+        messages = []
+        if not self._is_reasoning:
+            messages.append({"role": "system", "content": system_prompt})
+        messages.append({"role": "user", "content": content_parts})
+
+        timeout = 120.0 if self._is_reasoning else LLM_VISION_TIMEOUT * 2
+        response = await asyncio.wait_for(
+            self._client.chat.completions.create(**self._build_params(messages)),
+            timeout=timeout,
+        )
+        content = response.choices[0].message.content
+        log.info("openai_multi_vision_call_done")
+        result = self._extract_json(content)
+        # Ensure we always return a list
+        if isinstance(result, dict):
+            return [result]
+        return result
+
     async def analyze_text(
         self,
         system_prompt: str,

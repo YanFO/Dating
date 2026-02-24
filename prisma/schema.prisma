@@ -62,6 +62,53 @@ model Match {
   @@map("matches")
 }
 
+// ─── Match Memory（每個約會對象的結構化記憶）─────
+
+model MatchMemory {
+  id       String @id @default(cuid())
+  userId   String @map("user_id")
+  matchId  String @unique @map("match_id")
+
+  // 1. 基本資訊與重要節日
+  birthday       String?  @db.VarChar(10)
+  anniversaries  Json     @default("[]")
+  mbtiOrZodiac   String?  @map("mbti_or_zodiac") @db.VarChar(32)
+  routine        Json     @default("[]")
+
+  // 2. 飲食偏好
+  favoriteFood          Json @default("[]") @map("favorite_food")
+  favoriteRestaurant    Json @default("[]") @map("favorite_restaurant")
+  dislikedFood          Json @default("[]") @map("disliked_food")
+  dietaryRestrictions   Json @default("[]") @map("dietary_restrictions")
+  beverageCustomization Json @default("[]") @map("beverage_customization")
+
+  // 3. 地點與休閒娛樂
+  favoritePlaces      Json @default("[]") @map("favorite_places")
+  travelWishlist      Json @default("[]") @map("travel_wishlist")
+  hobbies             Json @default("[]") @map("hobbies")
+  entertainmentTastes Json @default("[]") @map("entertainment_tastes")
+
+  // 4. 情感地雷與情緒撫慰
+  landmines       Json @default("[]") @map("landmines")
+  petPeeves       Json @default("[]") @map("pet_peeves")
+  soothingMethods Json @default("[]") @map("soothing_methods")
+  loveLanguages   Json @default("[]") @map("love_languages")
+
+  // 5. 物質與送禮
+  wishlist            Json @default("[]") @map("wishlist")
+  favoriteBrands      Json @default("[]") @map("favorite_brands")
+  aestheticPreference Json @default("[]") @map("aesthetic_preference")
+
+  // 6. 其他
+  otherNotes Json @default("[]") @map("other_notes")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  @@index([userId])
+  @@map("match_memories")
+}
+
 // ─── 約會報告（Insights 頁雷達圖 + Post-Date Report）
 
 model DateReport {

@@ -19,9 +19,6 @@ logger = structlog.get_logger()
 
 bp = Blueprint("persona", __name__, url_prefix="/persona")
 
-# Phase 1 無認證，所有請求使用預設用戶 ID
-DEFAULT_USER_ID = "anonymous"
-
 
 @bp.route("", methods=["GET"])
 async def get_persona():
@@ -32,7 +29,7 @@ async def get_persona():
             "success": true,
             "request_id": "...",
             "data": {
-                "user_id": "anonymous",
+                "user_id": "...",
                 "sync_pct": 0.0,
                 "emoji_usage": 50.0,
                 "sentence_length": 50.0,
@@ -43,7 +40,7 @@ async def get_persona():
     request_id = g.request_id
     service = current_app.config["persona_service"]
     # 取得用戶人格設定（若不存在會自動建立預設值）
-    persona = await service.get_persona(DEFAULT_USER_ID, request_id)
+    persona = await service.get_persona(g.auth.user_id, request_id)
     return success_response(persona.to_dict(), request_id)
 
 
@@ -63,7 +60,7 @@ async def update_tone():
             "success": true,
             "request_id": "...",
             "data": {
-                "user_id": "anonymous",
+                "user_id": "...",
                 "sync_pct": 0.0,
                 "emoji_usage": 70.0,
                 "sentence_length": 30.0,
@@ -78,7 +75,7 @@ async def update_tone():
     service = current_app.config["persona_service"]
     # 更新三個語調滑桿的值
     persona = await service.update_tone(
-        user_id=DEFAULT_USER_ID,
+        user_id=g.auth.user_id,
         emoji_usage=req.emoji_usage,
         sentence_length=req.sentence_length,
         colloquialism=req.colloquialism,
@@ -112,5 +109,5 @@ async def sandbox_rewrite():
 
     service = current_app.config["persona_service"]
     # 呼叫 LLM 改寫訊息
-    result = await service.sandbox_rewrite(DEFAULT_USER_ID, req.text, request_id)
+    result = await service.sandbox_rewrite(g.auth.user_id, req.text, request_id)
     return success_response(result.to_dict(), request_id)

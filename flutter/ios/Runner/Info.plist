@@ -46,10 +46,10 @@
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
 		<key>NSCameraUsageDescription</key>
-	<string>Used to take photos of dating profiles for AI analysis</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Used to select photos of dating profiles for AI analysis</string>
-	<key>UIStatusBarHidden</key>
+		<string>Used to take photos of dating profiles for AI analysis</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Used to select photos of dating profiles for AI analysis</string>
+		<key>UIStatusBarHidden</key>
 		<false/>
 		<key>LSApplicationQueriesSchemes</key>
 		<array>
@@ -57,5 +57,20 @@
 			<string>http</string>
 			<string>mailto</string>
 		</array>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>com.googleusercontent.apps.315860625911-qfecvc0j0vmnmja55jf4i5nk478ha009</string>
+				</array>
+			</dict>
+		</array>
+		<key>GIDClientID</key>
+		<string>315860625911-qfecvc0j0vmnmja55jf4i5nk478ha009.apps.googleusercontent.com</string>
+		<key>GIDServerClientID</key>
+		<string>315860625911-d94mos54u50nsv7tkbb888obdlrqbabs.apps.googleusercontent.com</string>
 	</dict>
 </plist>

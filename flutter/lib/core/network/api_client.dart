@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
@@ -12,8 +12,9 @@ typedef ApiResult<T> = Future<Either<ApiException, T>>;
 
 class ApiClient {
   late final Dio _dio;
+  String? Function()? _tokenGetter;
 
-  ApiClient() {
+  ApiClient({String? Function()? tokenGetter}) : _tokenGetter = tokenGetter {
     _dio = Dio(
       BaseOptions(
         baseUrl: ApiEndpoints.baseUrl,
@@ -25,10 +26,14 @@ class ApiClient {
     );
 
     _dio.interceptors.addAll([
+      _AuthInterceptor(this),
       _LoggingInterceptor(),
       _RetryInterceptor(_dio),
     ]);
   }
+
+  /// Update the token getter (called when auth state changes).
+  set tokenGetter(String? Function()? getter) => _tokenGetter = getter;
 
   Dio get dio => _dio;
 
@@ -120,7 +125,8 @@ class ApiClient {
 
   ApiResult<T> uploadFile<T>(
     String path, {
-    required File file,
+    required Uint8List bytes,
+    required String filename,
     required String fieldName,
     Map<String, dynamic>? extraFields,
     T Function(dynamic)? fromJson,
@@ -128,12 +134,54 @@ class ApiClient {
   }) async {
     try {
       final formData = FormData.fromMap({
-        fieldName: await MultipartFile.fromFile(
-          file.path,
-          filename: file.path.split(Platform.pathSeparator).last,
+        fieldName: MultipartFile.fromBytes(
+          bytes,
+          filename: filename,
         ),
         ...?extraFields,
       });
+
+      final response = await _dio.post<dynamic>(
+        path,
+        data: formData,
+        options: Options(
+          contentType: ApiConfig.contentTypeMultipart,
+        ),
+        onSendProgress: onSendProgress,
+      );
+      return Right(_parseResponse(response.data, fromJson));
+    } on DioException catch (e) {
+      return Left(_handleDioException(e));
+    } catch (e) {
+      return Left(ApiException.unknown(e.toString()));
+    }
+  }
+
+  ApiResult<T> uploadFiles<T>(
+    String path, {
+    required List<Uint8List> bytesList,
+    required List<String> filenames,
+    required String fieldName,
+    Map<String, dynamic>? extraFields,
+    T Function(dynamic)? fromJson,
+    void Function(int, int)? onSendProgress,
+  }) async {
+    try {
+      final formData = FormData();
+      for (var i = 0; i < bytesList.length; i++) {
+        formData.files.add(MapEntry(
+          fieldName,
+          MultipartFile.fromBytes(
+            bytesList[i],
+            filename: filenames[i],
+          ),
+        ));
+      }
+      if (extraFields != null) {
+        extraFields.forEach((key, value) {
+          formData.fields.add(MapEntry(key, value.toString()));
+        });
+      }
 
       final response = await _dio.post<dynamic>(
         path,
@@ -221,6 +269,21 @@ class ApiClient {
 
   void dispose() {
     _dio.close();
+  }
+}
+
+class _AuthInterceptor extends Interceptor {
+  final ApiClient _client;
+
+  _AuthInterceptor(this._client);
+
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    final token = _client._tokenGetter?.call();
+    if (token != null && token.isNotEmpty) {
+      options.headers['Authorization'] = 'Bearer $token';
+    }
+    handler.next(options);
   }
 }
 

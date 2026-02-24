@@ -40,6 +40,20 @@ class Settings(BaseSettings):
     GOOGLE_SEARCH_CX: Optional[str] = None
     GOOGLE_GEMINI_MODEL: Optional[str] = None
 
+    # Auth Database (shared lens_account)
+    AUTH_DATABASE_URL: str = Field(default="", description="Auth DB connection string")
+
+    # Google OAuth
+    AUTH_GOOGLE_ID: str = Field(default="", description="Google Web Client ID")
+    GOOGLE_MOBILE_CLIENT_IDS: str = Field(default="", description="Comma-separated mobile client IDs")
+
+    # Apple Sign In
+    APPLE_TEAM_ID: str = Field(default="")
+    APPLE_BUNDLE_ID: str = Field(default="")
+    APPLE_KEY_ID: str = Field(default="")
+    APPLE_SERVICE_ID: str = Field(default="")
+    APPLE_PRIVATE_KEY_PATH: str = Field(default="")
+
     # OpenAI Realtime（語音教練）
     OPENAI_REALTIME_URL: str = Field(
         default="wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview",

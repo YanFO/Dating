@@ -204,7 +204,7 @@ class ReplyResultPanel extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(LucideIcons.xCircle, size: 14, color: c.warning),
+                      Icon(LucideIcons.xCircle, size: 14, color: c.textTertiary),
                       const SizedBox(width: 6),
                       Expanded(
                         child: Text(d,

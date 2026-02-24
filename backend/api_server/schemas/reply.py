@@ -20,6 +20,7 @@ class ReplyAnalyzeRequest(BaseModel):
     relationship_stage: str = "early"
     user_gender: str = "male"
     target_gender: str = "female"
+    match_id: Optional[str] = None
 
     @field_validator("relationship_stage")
     @classmethod
@@ -61,4 +62,5 @@ class ReplyAnalyzeRequest(BaseModel):
             relationship_stage=self.relationship_stage,
             user_gender=self.user_gender,
             target_gender=self.target_gender,
+            match_id=self.match_id,
         )

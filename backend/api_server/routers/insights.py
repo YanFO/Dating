@@ -12,14 +12,11 @@
 import structlog
 from quart import Blueprint, current_app, g
 
-from api_server.schemas.common import success_response
+from api_server.schemas.common import error_response, success_response
 
 logger = structlog.get_logger()
 
 bp = Blueprint("insights", __name__, url_prefix="/insights")
-
-# Phase 1 無認證，所有請求使用預設用戶 ID
-DEFAULT_USER_ID = "anonymous"
 
 
 @bp.route("/skills", methods=["GET"])
@@ -43,7 +40,7 @@ async def get_skills():
     request_id = g.request_id
     service = current_app.config["insights_service"]
     # 查詢該用戶最新的技能分數
-    skills = await service.get_latest_skills(DEFAULT_USER_ID, request_id)
+    skills = await service.get_latest_skills(g.auth.user_id, request_id)
     return success_response(skills.to_dict(), request_id)
 
 
@@ -58,7 +55,7 @@ async def list_reports():
             "data": [
                 {
                     "report_id": "rpt_...",
-                    "user_id": "anonymous",
+                    "user_id": "...",
                     "score": 85,
                     "skills": {
                         "emotional_value": 0.83,
@@ -79,7 +76,7 @@ async def list_reports():
     request_id = g.request_id
     service = current_app.config["insights_service"]
     # 列出該用戶所有約會報告
-    reports = await service.list_reports(DEFAULT_USER_ID, request_id)
+    reports = await service.list_reports(g.auth.user_id, request_id)
     return success_response([r.to_dict() for r in reports], request_id)
 
 
@@ -114,5 +111,25 @@ async def list_voice_coach_logs():
     request_id = g.request_id
     service = current_app.config["insights_service"]
     # 列出該用戶所有語音教練對話紀錄
-    logs = await service.list_voice_coach_logs(DEFAULT_USER_ID, request_id)
+    logs = await service.list_voice_coach_logs(g.auth.user_id, request_id)
     return success_response([log.to_dict() for log in logs], request_id)
+
+
+@bp.route("/voice-coach-logs/<log_id>", methods=["DELETE"])
+async def delete_voice_coach_log(log_id: str):
+    """刪除指定語音教練對話紀錄
+
+    Path Params:
+        log_id (str): 要刪除的紀錄 ID
+
+    Response 204: 無內容
+    Response 404: 找不到紀錄
+    """
+    request_id = g.request_id
+    service = current_app.config["insights_service"]
+    deleted = await service.delete_voice_coach_log(
+        g.auth.user_id, log_id, request_id
+    )
+    if deleted:
+        return "", 204
+    return error_response("NOT_FOUND", f"Voice coach log {log_id} not found", request_id, 404)

@@ -33,5 +33,10 @@ python-dotenv==1.0.1
 # WebSocket client (for OpenAI Realtime relay)
 websockets==15.0.1
 
+# Auth (Google OAuth + Apple Sign In)
+google-auth==2.38.0
+PyJWT[crypto]==2.10.1
+cuid2==2.0.1
+
 # Utilities
 orjson==3.10.12

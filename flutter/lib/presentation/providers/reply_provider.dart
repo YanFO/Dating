@@ -21,6 +21,7 @@ class ReplyNotifier extends StateNotifier<AsyncValue<ReplyResult?>> {
     String relationshipStage = 'early',
     String userGender = 'male',
     String targetGender = 'female',
+    String? matchId,
   }) async {
     state = const AsyncValue.loading();
     try {
@@ -38,6 +39,7 @@ class ReplyNotifier extends StateNotifier<AsyncValue<ReplyResult?>> {
           'relationship_stage': relationshipStage,
           'user_gender': userGender,
           'target_gender': targetGender,
+          if (matchId != null) 'match_id': matchId,
         },
       );
 

@@ -7,6 +7,7 @@
 - users: 用戶帳號
 - user_personas: 數位人格（語調滑桿）
 - matches: 約會管線
+- match_memories: 每個約會對象的結構化記憶
 - date_reports: 約會報告（含雷達圖快照）
 - love_coach_conversations: Love Coach 聊天對話
 - love_coach_messages: Love Coach 聊天訊息
@@ -82,6 +83,57 @@ class Match(Base):
     )
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()  # 最後更新時間
+    )
+
+
+# ─── Match Memory（每個約會對象的結構化記憶）─────
+
+class MatchMemory(Base):
+    """Match 記憶檔案，儲存每個約會對象的結構化記憶（一對一）"""
+    __tablename__ = "match_memories"
+
+    id: Mapped[str] = mapped_column(String(30), primary_key=True)
+    user_id: Mapped[str] = mapped_column(String(30), nullable=False, index=True)
+    match_id: Mapped[str] = mapped_column(String(30), unique=True, nullable=False)
+
+    # 1. 基本資訊與重要節日
+    birthday: Mapped[str | None] = mapped_column(String(10), nullable=True)
+    anniversaries: Mapped[dict | None] = mapped_column(JSONB, default=list)
+    mbti_or_zodiac: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    routine: Mapped[dict | None] = mapped_column(JSONB, default=list)
+
+    # 2. 飲食偏好
+    favorite_food: Mapped[dict | None] = mapped_column(JSONB, default=list)
+    favorite_restaurant: Mapped[dict | None] = mapped_column(JSONB, default=list)
+    disliked_food: Mapped[dict | None] = mapped_column(JSONB, default=list)
+    dietary_restrictions: Mapped[dict | None] = mapped_column(JSONB, default=list)
+    beverage_customization: Mapped[dict | None] = mapped_column(JSONB, default=list)
+
+    # 3. 地點與休閒娛樂
+    favorite_places: Mapped[dict | None] = mapped_column(JSONB, default=list)
+    travel_wishlist: Mapped[dict | None] = mapped_column(JSONB, default=list)
+    hobbies: Mapped[dict | None] = mapped_column(JSONB, default=list)
+    entertainment_tastes: Mapped[dict | None] = mapped_column(JSONB, default=list)
+
+    # 4. 情感地雷與情緒撫慰
+    landmines: Mapped[dict | None] = mapped_column(JSONB, default=list)
+    pet_peeves: Mapped[dict | None] = mapped_column(JSONB, default=list)
+    soothing_methods: Mapped[dict | None] = mapped_column(JSONB, default=list)
+    love_languages: Mapped[dict | None] = mapped_column(JSONB, default=list)
+
+    # 5. 物質與送禮
+    wishlist: Mapped[dict | None] = mapped_column(JSONB, default=list)
+    favorite_brands: Mapped[dict | None] = mapped_column(JSONB, default=list)
+    aesthetic_preference: Mapped[dict | None] = mapped_column(JSONB, default=list)
+
+    # 6. 其他
+    other_notes: Mapped[dict | None] = mapped_column(JSONB, default=list)
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
 

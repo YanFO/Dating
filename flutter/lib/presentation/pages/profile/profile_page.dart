@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_theme_colors.dart';
 import '../../../core/l10n/l10n.dart';
 import '../../../core/l10n/tr_extension.dart';
+import '../../providers/auth_provider.dart';
+import '../../providers/camera_provider.dart';
 import '../../providers/core_providers.dart';
+import '../../providers/match_provider.dart';
 import '../../providers/persona_provider.dart';
 import '../../providers/theme_provider.dart';
 
@@ -25,6 +30,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   bool _sandboxExpanded = true;
   final _sandboxController = TextEditingController();
   bool _personaLoaded = false;
+  bool _importing = false;
 
   @override
   void initState() {
@@ -74,6 +80,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             ),
           ),
           const SizedBox(height: 24),
+          _buildAccountCard(c),
+          const SizedBox(height: 16),
           _buildPersonaCard(c),
           const SizedBox(height: 16),
           _buildToneAdjustments(c),
@@ -86,6 +94,210 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         ],
       ),
     );
+  }
+
+  Widget _buildAccountCard(AppThemeColors c) {
+    final authState = ref.watch(authProvider);
+
+    if (!authState.isAuthenticated) {
+      // Not signed in — show sign-in prompt
+      return Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: c.surface,
+          borderRadius: BorderRadius.circular(AppColors.radius2Xl),
+          border: Border.all(color: c.border),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: c.overlayLight,
+              ),
+              child: Icon(LucideIcons.userCircle, size: 24, color: c.textSecondary),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Guest Mode',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: c.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    'Sign in to sync your data',
+                    style: TextStyle(fontSize: 12, color: c.textSecondary),
+                  ),
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () => context.go('/login'),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: c.primary,
+                  borderRadius: BorderRadius.circular(AppColors.radiusMd),
+                ),
+                child: const Text(
+                  'Sign In',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // Signed in — show user info
+    final user = authState.user!;
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: c.surface,
+        borderRadius: BorderRadius.circular(AppColors.radius2Xl),
+        border: Border.all(color: c.border),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 24,
+                backgroundColor: c.primary.withValues(alpha: 0.2),
+                backgroundImage:
+                    user.image != null ? NetworkImage(user.image!) : null,
+                child: user.image == null
+                    ? Text(
+                        (user.name ?? user.email).substring(0, 1).toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: c.primary,
+                        ),
+                      )
+                    : null,
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      user.name ?? 'User',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: c.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      user.email,
+                      style: TextStyle(fontSize: 12, color: c.textSecondary),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: _ActionButton(
+                  label: 'Log Out',
+                  icon: LucideIcons.logOut,
+                  color: c.textSecondary,
+                  onTap: () => _handleLogout(c),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _ActionButton(
+                  label: 'Delete Account',
+                  icon: LucideIcons.trash2,
+                  color: c.error,
+                  onTap: () => _handleDeleteAccount(c),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _handleLogout(AppThemeColors c) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: c.surface,
+        title: Text('Log Out', style: TextStyle(color: c.textPrimary, fontSize: 16)),
+        content: Text('Are you sure you want to log out?',
+            style: TextStyle(color: c.textSecondary, fontSize: 14)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text('Cancel', style: TextStyle(color: c.textSecondary)),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text('Log Out', style: TextStyle(color: c.primary)),
+          ),
+        ],
+      ),
+    );
+    if (confirm == true) {
+      await ref.read(authProvider.notifier).logout();
+    }
+  }
+
+  Future<void> _handleDeleteAccount(AppThemeColors c) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: c.surface,
+        title: Text('Delete Account',
+            style: TextStyle(color: c.error, fontSize: 16)),
+        content: Text(
+          'This will permanently delete all your data. This action cannot be undone.',
+          style: TextStyle(color: c.textSecondary, fontSize: 14),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text('Cancel', style: TextStyle(color: c.textSecondary)),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text('Delete', style: TextStyle(color: c.error)),
+          ),
+        ],
+      ),
+    );
+    if (confirm == true) {
+      final success = await ref.read(authProvider.notifier).deleteAccount();
+      if (mounted && success) {
+        _showTopSnack('Account deleted successfully');
+      } else if (mounted) {
+        _showTopSnack('Failed to delete account', isError: true);
+      }
+    }
   }
 
   Widget _buildPersonaCard(AppThemeColors c) {
@@ -158,7 +370,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        '${syncPct.toInt()}% Sync',
+                        '${syncPct.toInt()}% ${ref.tr('profile_sync_suffix')}',
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
@@ -182,7 +394,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           ),
           const SizedBox(height: 24),
           GestureDetector(
-            onTap: () {},
+            behavior: HitTestBehavior.opaque,
+            onTap: _importing ? null : _showImportOptions,
             child: Container(
               width: double.infinity,
               height: 112,
@@ -191,29 +404,54 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 borderRadius: BorderRadius.circular(AppColors.radiusLg),
                 border: Border.all(color: c.borderLight),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 32,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: c.overlayLight,
+              child: _importing
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: c.primary,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            '分析中...',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: c.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: c.overlayLight,
+                          ),
+                          child: Icon(LucideIcons.upload,
+                              size: 18, color: c.textSecondary),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          ref.tr('profile_upload_chats'),
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: c.textSecondary,
+                          ),
+                        ),
+                      ],
                     ),
-                    child: Icon(LucideIcons.upload, size: 18, color: c.textSecondary),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    ref.tr('profile_upload_chats'),
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: c.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
             ),
           ),
         ],
@@ -587,6 +825,194 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     );
   }
 
+  void _showImportOptions() {
+    final c = context.colors;
+    showModalBottomSheet<String>(
+      context: context,
+      backgroundColor: c.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: Icon(LucideIcons.camera, color: c.textPrimary),
+                title: Text(ref.tr('camera'),
+                    style: TextStyle(color: c.textPrimary)),
+                onTap: () => Navigator.pop(ctx, 'camera'),
+              ),
+              ListTile(
+                leading: Icon(LucideIcons.image, color: c.textPrimary),
+                title: Text(ref.tr('gallery'),
+                    style: TextStyle(color: c.textPrimary)),
+                onTap: () => Navigator.pop(ctx, 'gallery'),
+              ),
+              ListTile(
+                leading: Icon(LucideIcons.type, color: c.textPrimary),
+                title: Text('貼上聊天文字',
+                    style: TextStyle(color: c.textPrimary)),
+                onTap: () => Navigator.pop(ctx, 'text'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ).then((choice) {
+      if (choice == null) return;
+      if (choice == 'text') {
+        _showTextImportDialog();
+      } else if (choice == 'camera') {
+        _importFromCamera();
+      } else {
+        _importFromGallery();
+      }
+    });
+  }
+
+  Future<void> _importFromCamera() async {
+    final picker = ref.read(imagePickerProvider);
+    final picked =
+        await picker.pickImage(source: ImageSource.camera, imageQuality: 85);
+    if (picked == null) return;
+
+    setState(() => _importing = true);
+    final bytes = await picked.readAsBytes();
+    final match = await ref.read(matchProvider.notifier).importChat(
+          imageBytes: bytes,
+          imageFilename: picked.name,
+        );
+    setState(() => _importing = false);
+
+    if (!mounted) return;
+    if (match != null) {
+      _showTopSnack('已建立聊天對象：${match.name}');
+    } else {
+      _showTopSnack('分析失敗，請再試一次', isError: true);
+    }
+  }
+
+  Future<void> _importFromGallery() async {
+    final picker = ref.read(imagePickerProvider);
+    final pickedList = await picker.pickMultiImage(imageQuality: 85);
+    if (pickedList.isEmpty) return;
+
+    setState(() => _importing = true);
+
+    List<dynamic>? results;
+    if (pickedList.length == 1) {
+      final bytes = await pickedList.first.readAsBytes();
+      final match = await ref.read(matchProvider.notifier).importChat(
+            imageBytes: bytes,
+            imageFilename: pickedList.first.name,
+          );
+      results = match != null ? [match] : null;
+    } else {
+      final bytesList = <dynamic>[];
+      final filenames = <String>[];
+      for (final picked in pickedList) {
+        bytesList.add(await picked.readAsBytes());
+        filenames.add(picked.name);
+      }
+      results = await ref.read(matchProvider.notifier).importChatMulti(
+            imageBytesList: bytesList.cast(),
+            filenames: filenames,
+          );
+    }
+
+    setState(() => _importing = false);
+
+    if (!mounted) return;
+    if (results != null && results.isNotEmpty) {
+      final names = results.map((m) => m.name).join('、');
+      _showTopSnack('已建立聊天對象：$names');
+    } else {
+      _showTopSnack('分析失敗，請再試一次', isError: true);
+    }
+  }
+
+  void _showTextImportDialog() {
+    final c = context.colors;
+    final controller = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: c.surface,
+        title: Text('貼上聊天記錄',
+            style: TextStyle(fontSize: 16, color: c.textPrimary)),
+        content: TextField(
+          controller: controller,
+          maxLines: 8,
+          style: TextStyle(fontSize: 14, color: c.textPrimary),
+          decoration: InputDecoration(
+            hintText: '將聊天內容貼在這裡...',
+            hintStyle: TextStyle(fontSize: 12, color: c.textMuted),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(color: c.border),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(color: c.border),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(color: c.primary),
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text('取消', style: TextStyle(color: c.textSecondary)),
+          ),
+          TextButton(
+            onPressed: () {
+              final text = controller.text.trim();
+              if (text.isNotEmpty) {
+                Navigator.pop(ctx, text);
+              }
+            },
+            child: Text('分析', style: TextStyle(color: c.primary)),
+          ),
+        ],
+      ),
+    ).then((text) async {
+      if (text == null || text.toString().isEmpty) return;
+      setState(() => _importing = true);
+      final match = await ref.read(matchProvider.notifier).importChat(
+            chatText: text.toString(),
+          );
+      setState(() => _importing = false);
+
+      if (!mounted) return;
+      if (match != null) {
+        _showTopSnack('已建立聊天對象：${match.name}');
+      } else {
+        _showTopSnack('分析失敗，請再試一次', isError: true);
+      }
+    });
+  }
+
+  void _showTopSnack(String message, {bool isError = false}) {
+    final c = context.colors;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message, style: const TextStyle(color: Colors.white)),
+        backgroundColor: isError ? Colors.redAccent : c.primary,
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.only(
+          bottom: MediaQuery.of(context).size.height - 150,
+          left: 16,
+          right: 16,
+        ),
+      ),
+    );
+  }
+
   void _saveTone() {
     ref.read(personaProvider.notifier).updateTone(
           emojiUsage: _emojiUsage,
@@ -628,27 +1054,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               ),
             ),
             onTap: () => ref.read(themeProvider.notifier).toggle(),
-          ),
-          // Voice Coach toggle
-          _buildSettingsRowWithTrailing(
-            c: c,
-            icon: LucideIcons.mic,
-            label: ref.tr('settings_voice_coach'),
-            trailing: SizedBox(
-              height: 24,
-              child: Switch(
-                value: ref.watch(voiceCoachEnabledProvider),
-                onChanged: (_) {
-                  ref.read(voiceCoachEnabledProvider.notifier).state =
-                      !ref.read(voiceCoachEnabledProvider);
-                },
-                activeTrackColor: c.primary,
-              ),
-            ),
-            onTap: () {
-              ref.read(voiceCoachEnabledProvider.notifier).state =
-                  !ref.read(voiceCoachEnabledProvider);
-            },
           ),
           _buildSettingsRow(c, LucideIcons.settings,
               ref.tr('profile_account_settings')),
@@ -703,6 +1108,49 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               ),
             ),
             trailing,
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ActionButton extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _ActionButton({
+    required this.label,
+    required this.icon,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(AppColors.radiusMd),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 14, color: color),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: color,
+              ),
+            ),
           ],
         ),
       ),

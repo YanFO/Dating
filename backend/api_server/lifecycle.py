@@ -7,6 +7,7 @@ shutdown 負責優雅釋放資源。
 
 import structlog
 
+from clients.auth_db_client import init_auth_pool, close_auth_pool
 from clients.llm.gemini_client import GeminiClient
 from clients.llm.openai_client import OpenAIClient
 from config.feature_flags import FeatureFlags
@@ -35,6 +36,11 @@ def register_lifecycle(app):
         settings = app.config["SETTINGS"]
         flags = app.config.get("FEATURE_FLAGS", FeatureFlags())
         logger.info("startup_begin", env=settings.ENV)
+
+        # --- Auth Database (shared lens_account) ---
+        if settings.AUTH_DATABASE_URL:
+            await init_auth_pool(settings.AUTH_DATABASE_URL)
+            logger.info("auth_db_pool_initialized")
 
         # --- PostgreSQL (primary relational data) ---
         pg_engine = create_pg_engine(settings)
@@ -76,11 +82,17 @@ def register_lifecycle(app):
         app.config["icebreaker_service"] = IcebreakerService(
             gemini_client, flags, pg_session_factory, fallback_client=openai_client,
         )
+        match_service = MatchService(
+            pg_session_factory,
+            llm_client=gemini_client,
+            fallback_client=openai_client,
+        )
+        app.config["match_service"] = match_service
         app.config["reply_service"] = ReplyService(
             gemini_client, flags, pg_session_factory, fallback_client=openai_client,
+            match_service=match_service,
         )
         app.config["job_service"] = JobService(pg_session_factory)
-        app.config["match_service"] = MatchService(pg_session_factory)
         app.config["persona_service"] = PersonaService(
             gemini_client, flags, pg_session_factory, fallback_client=openai_client,
         )
@@ -114,6 +126,9 @@ def register_lifecycle(app):
     @app.after_serving
     async def shutdown():
         logger.info("shutdown_begin")
+
+        # Auth Database
+        await close_auth_pool()
 
         # 語音教練：關閉所有活躍會話
         voice_coach_svc = app.config.get("voice_coach_service")

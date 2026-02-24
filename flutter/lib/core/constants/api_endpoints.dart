@@ -7,7 +7,7 @@ abstract final class ApiEndpoints {
     if (kIsWeb) {
       return Uri.base.origin; // e.g. http://localhost:8000
     }
-    return 'http://localhost:9999';
+    return 'https://dating-api.ask-lens.ai';
   }
 
   static const String apiPrefix = '/api';
@@ -33,6 +33,8 @@ abstract final class ApiEndpoints {
   // Match pipeline endpoints
   static const String matches = '$apiPrefix/matches';
   static String matchById(String id) => '$matches/$id';
+  static String matchMemory(String matchId) => '$matches/$matchId/memory';
+  static const String matchImportChat = '$matches/import-chat';
 
   // Persona endpoints
   static const String persona = '$apiPrefix/persona';
@@ -49,6 +51,17 @@ abstract final class ApiEndpoints {
   static const String insightsReports = '$apiPrefix/insights/reports';
   static const String insightsVoiceCoachLogs =
       '$apiPrefix/insights/voice-coach-logs';
+  static String insightsVoiceCoachLogById(String id) =>
+      '$insightsVoiceCoachLogs/$id';
+
+  // Auth endpoints
+  static const String auth = '$apiPrefix/auth';
+  static const String authGoogleMobile = '$auth/mobile/google';
+  static const String authGoogleWeb = '$auth/web/google';
+  static const String authAppleMobile = '$auth/mobile/apple';
+  static const String authSessionValidate = '$auth/session/validate';
+  static const String authLogout = '$auth/logout';
+  static const String authDeleteUser = '$auth/user';
 
   // WebSocket endpoints
   static String voiceCoachWs(String sessionId) {

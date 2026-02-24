@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ import '../../../core/l10n/tr_extension.dart';
 import '../../../data/models/reply_models.dart';
 import '../../providers/camera_provider.dart';
 import '../../providers/core_providers.dart';
+import '../../providers/match_provider.dart';
 import '../../providers/reply_provider.dart';
 
 class CoachPage extends ConsumerStatefulWidget {
@@ -27,6 +29,7 @@ class _CoachPageState extends ConsumerState<CoachPage> {
   final Set<String> _selectedContextKeys = {'coach_ctx_new_match'};
   final _chatTextController = TextEditingController();
   bool _hasResult = false;
+  String? _selectedMatchId;
 
   static const _contextKeys = [
     'coach_ctx_new_match',
@@ -39,6 +42,14 @@ class _CoachPageState extends ConsumerState<CoachPage> {
     'coach_ctx_dating': 'flirting',
     'coach_ctx_revive': 'couple',
   };
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      ref.read(matchProvider.notifier).loadMatches();
+    });
+  }
 
   @override
   void dispose() {
@@ -63,6 +74,7 @@ class _CoachPageState extends ConsumerState<CoachPage> {
           relationshipStage: stage,
           userGender: 'male',
           targetGender: 'female',
+          matchId: _selectedMatchId,
         );
   }
 
@@ -109,12 +121,122 @@ class _CoachPageState extends ConsumerState<CoachPage> {
     );
   }
 
+  // ── Match Selector (inline dropdown) ────────────────────────────────
+  Widget _buildMatchSelector(AppThemeColors c) {
+    final matchesState = ref.watch(matchProvider);
+    final matches = matchesState.valueOrNull ?? [];
+    if (matches.isEmpty) return const SizedBox.shrink();
+
+    final selectedName = _selectedMatchId == null
+        ? '不指定'
+        : matches
+            .where((m) => m.matchId == _selectedMatchId)
+            .map((m) => m.name)
+            .firstOrNull ?? '不指定';
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                '聊天對象',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: c.textSecondary,
+                ),
+              ),
+              const Spacer(),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: c.surface,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: _selectedMatchId != null ? c.primary : c.borderLight,
+                  ),
+                ),
+                child: PopupMenuButton<String?>(
+                  onSelected: (value) => setState(() => _selectedMatchId = value),
+                  offset: const Offset(0, 36),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  color: c.surface,
+                  itemBuilder: (_) => [
+                    PopupMenuItem<String?>(
+                      value: null,
+                      child: Text(
+                        '不指定',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: _selectedMatchId == null
+                              ? c.primary
+                              : c.textPrimary,
+                          fontWeight: _selectedMatchId == null
+                              ? FontWeight.w600
+                              : FontWeight.normal,
+                        ),
+                      ),
+                    ),
+                    ...matches.map((m) => PopupMenuItem<String?>(
+                          value: m.matchId,
+                          child: Text(
+                            m.name,
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: _selectedMatchId == m.matchId
+                                  ? c.primary
+                                  : c.textPrimary,
+                              fontWeight: _selectedMatchId == m.matchId
+                                  ? FontWeight.w600
+                                  : FontWeight.normal,
+                            ),
+                          ),
+                        )),
+                  ],
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        selectedName,
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: _selectedMatchId != null
+                              ? c.primary
+                              : c.textSecondary,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Icon(
+                        LucideIcons.chevronDown,
+                        size: 14,
+                        color: _selectedMatchId != null
+                            ? c.primary
+                            : c.textSecondary,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+        ],
+      ),
+    );
+  }
+
   // ── Input View ──────────────────────────────────────────────────────
   Widget _buildInputView(
       AppThemeColors c, AsyncValue<ReplyResult?> replyState) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        _buildMatchSelector(c),
         _buildUploadArea(c),
         const SizedBox(height: 16),
         // Chat text input
@@ -250,7 +372,7 @@ class _CoachPageState extends ConsumerState<CoachPage> {
           if (image != null)
             ClipRRect(
               borderRadius: BorderRadius.circular(AppColors.radiusSm),
-              child: Image.network(image.path,
+              child: Image.file(File(image.path),
                   width: 48, height: 48, fit: BoxFit.cover),
             ),
           if (image != null) const SizedBox(width: 12),
@@ -278,7 +400,7 @@ class _CoachPageState extends ConsumerState<CoachPage> {
                         c, '${(ea.confidence * 100).toInt()}%', c.primary),
                     ..._extractKeywords(ea.subtext)
                         .take(3)
-                        .map((kw) => _emotionTag(c, kw, c.info)),
+                        .map((kw) => _emotionTag(c, kw, c.textTertiary)),
                   ],
                 ),
               ],
@@ -444,7 +566,7 @@ class _CoachPageState extends ConsumerState<CoachPage> {
         lower.contains('stable')) {
       return '\u{2728}'; // ✨
     }
-    return '\u{1F4A1}'; // 💡
+    return '\u{1F497}'; // 💗
   }
 
   // ── Stage coaching bar ──────────────────────────────────────────────
@@ -452,20 +574,20 @@ class _CoachPageState extends ConsumerState<CoachPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
-        color: c.info.withValues(alpha: 0.08),
+        color: c.textTertiary.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(AppColors.radiusMd),
-        border: Border.all(color: c.info.withValues(alpha: 0.2)),
+        border: Border.all(color: c.textTertiary.withValues(alpha: 0.2)),
       ),
       child: Row(
         children: [
-          Icon(LucideIcons.compass, size: 14, color: c.info),
+          Icon(LucideIcons.compass, size: 14, color: c.textTertiary),
           const SizedBox(width: 8),
           Text(
             '${ref.tr('coach_stage')}: ${stage.currentStage.toUpperCase()}',
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w600,
-              color: c.info,
+              color: c.textTertiary,
             ),
           ),
           const SizedBox(width: 8),
@@ -473,7 +595,7 @@ class _CoachPageState extends ConsumerState<CoachPage> {
             child: Text(
               stage.techniqueUsed,
               style: TextStyle(
-                  fontSize: 11, color: c.info.withValues(alpha: 0.8)),
+                  fontSize: 11, color: c.textTertiary.withValues(alpha: 0.8)),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -521,12 +643,12 @@ class _CoachPageState extends ConsumerState<CoachPage> {
           ],
           if (panel.dos.isNotEmpty) ...[
             _buildDoDontSection(c, ref.tr('coach_dos'), panel.dos,
-                LucideIcons.checkCircle2, c.success),
+                LucideIcons.checkCircle2, c.primary),
             const SizedBox(height: 8),
           ],
           if (panel.donts.isNotEmpty)
             _buildDoDontSection(c, ref.tr('coach_donts'), panel.donts,
-                LucideIcons.xCircle, c.warning),
+                LucideIcons.xCircle, c.primary),
         ],
       ),
     );
@@ -619,7 +741,7 @@ class _CoachPageState extends ConsumerState<CoachPage> {
       borderRadius: BorderRadius.circular(AppColors.radius2Xl),
       child: Stack(
         children: [
-          Image.network(image.path,
+          Image.file(File(image.path),
               width: double.infinity, height: 192, fit: BoxFit.cover),
           Positioned(
             top: 8,
@@ -831,7 +953,7 @@ class _CopyButtonState extends State<_CopyButton> {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
           color: _copied
-              ? c.success.withValues(alpha: 0.12)
+              ? c.textTertiary.withValues(alpha: 0.12)
               : c.primary.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(AppColors.radiusSm),
         ),
@@ -841,7 +963,7 @@ class _CopyButtonState extends State<_CopyButton> {
             Icon(
               _copied ? LucideIcons.checkCheck : LucideIcons.copy,
               size: 12,
-              color: _copied ? c.success : c.primary,
+              color: _copied ? c.textTertiary : c.primary,
             ),
             const SizedBox(width: 4),
             Text(
@@ -851,7 +973,7 @@ class _CopyButtonState extends State<_CopyButton> {
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.w500,
-                color: _copied ? c.success : c.primary,
+                color: _copied ? c.textTertiary : c.primary,
               ),
             ),
           ],

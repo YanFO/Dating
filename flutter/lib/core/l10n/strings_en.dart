@@ -91,8 +91,9 @@ const Map<String, String> stringsEn = {
 
   // Profile Page
   'profile_title': 'Digital Persona',
-  'profile_clone_status': 'AI Clone Status',
+  'profile_clone_status': 'Tone Sync',
   'profile_sync': '85% Sync',
+  'profile_sync_suffix': 'Learned',
   'profile_clone_desc':
       'Train your digital clone to sound exactly like you. Upload past successful chats so the AI learns your unique slang, humor, and pacing.',
   'profile_upload_chats': 'Upload Past Chats',

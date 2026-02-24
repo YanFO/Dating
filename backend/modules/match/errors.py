@@ -17,3 +17,8 @@ class MatchNotFound(MatchError):
 class InvalidMatchInput(MatchError):
     """Match 輸入資料不合法"""
     pass
+
+
+class MemoryNotFound(MatchError):
+    """找不到指定的 match memory 記錄"""
+    pass
