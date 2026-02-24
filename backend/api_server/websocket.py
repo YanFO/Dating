@@ -6,6 +6,7 @@ import orjson
 import structlog
 from quart import Quart, websocket
 
+from services.auth_service import verify_ws_token
 from services.id_service import generate_request_id
 
 logger = structlog.get_logger()
@@ -22,9 +23,27 @@ def register_websocket_routes(app: Quart) -> None:
 
     @app.websocket("/ws/voice-coach/<session_id>")
     async def voice_coach_ws(session_id: str):
-        """语音教练 WebSocket 端点，中继客户端音频到 OpenAI 并推送实时反馈。"""
+        """语音教练 WebSocket 端点，中继客户端音频到 OpenAI 并推送实时反馈。
+
+        認證方式：客戶端須在連線時透過 query parameter `token` 提供 sessionToken。
+        例：ws://host/ws/voice-coach/<sid>?token=<sessionToken>
+        """
         request_id = generate_request_id()
         log = logger.bind(request_id=request_id, session_id=session_id)
+
+        # ── 認證：從 query parameter 取得 token 並驗證 ──
+        token = websocket.args.get("token")
+        auth = await verify_ws_token(token)
+        if not auth.is_authenticated:
+            log.warning("voice_coach_ws_auth_failed")
+            await websocket.send(
+                orjson.dumps(
+                    {"type": "error", "payload": {"message": "Authentication required"}}
+                ).decode()
+            )
+            return
+        user_id = auth.user_id
+        log = log.bind(user_id=user_id)
 
         voice_service = app.config.get("voice_coach_service")
         stream_service = app.config.get("stream_service")
@@ -39,7 +58,7 @@ def register_websocket_routes(app: Quart) -> None:
 
         log.info("voice_coach_ws_connected")
 
-        session = await voice_service.create_session(session_id, request_id)
+        session = await voice_service.create_session(session_id, request_id, user_id=user_id)
 
         queue = await stream_service.subscribe(session_id)
 

@@ -14,15 +14,5 @@ module.exports = {
         ENV: "prod",
       },
     },
-    {
-      name: "dating-lens-worker-cpu",
-      cwd: "/home/ubuntu/Dating_Lens/backend",
-      script: ".venv/bin/python",
-      args: ["worker_main.py", "--queue", "cpu_queue"],
-      autorestart: true,
-      env: {
-        ENV: "dev",
-      },
-    },
   ],
 };

@@ -23,5 +23,5 @@ async def analyze():
     req = IcebreakerAnalyzeRequest(**body)
 
     service = current_app.config["icebreaker_service"]
-    result = await service.analyze(req.to_domain_model(), request_id)
+    result = await service.analyze(req.to_domain_model(), request_id, user_id=g.auth.user_id)
     return success_response(result.to_dict(), request_id)

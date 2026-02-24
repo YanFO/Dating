@@ -55,7 +55,7 @@ async def chat():
 
     # 取得對話 ID 與串流生成器
     conversation_id, stream = await service.chat_stream(
-        req.to_domain_model(), request_id
+        req.to_domain_model(), request_id, user_id=g.auth.user_id
     )
 
     async def generate():
@@ -109,8 +109,7 @@ async def list_conversations():
     if not service:
         return error_response("SERVICE_UNAVAILABLE", "Love Coach 功能未啟用", request_id, 503)
 
-    # Phase 1：使用匿名用戶 ID
-    conversations = await service.get_conversations("anonymous")
+    conversations = await service.get_conversations(g.auth.user_id)
     return success_response(
         [c.to_dict() for c in conversations],
         request_id,
@@ -135,8 +134,7 @@ async def get_conversation_messages(conversation_id: str):
         return error_response("SERVICE_UNAVAILABLE", "Love Coach 功能未啟用", request_id, 503)
 
     try:
-        # Phase 1：使用匿名用戶 ID（授權檢查仍然必要）
-        messages = await service.get_conversation_messages(conversation_id, "anonymous")
+        messages = await service.get_conversation_messages(conversation_id, g.auth.user_id)
         return success_response(
             [m.to_dict() for m in messages],
             request_id,
@@ -163,8 +161,7 @@ async def delete_conversation(conversation_id: str):
         return error_response("SERVICE_UNAVAILABLE", "Love Coach 功能未啟用", request_id, 503)
 
     try:
-        # Phase 1：使用匿名用戶 ID（授權檢查仍然必要）
-        await service.delete_conversation(conversation_id, "anonymous")
+        await service.delete_conversation(conversation_id, g.auth.user_id)
         return success_response({"deleted": True}, request_id)
     except ConversationNotFoundError:
         return error_response("NOT_FOUND", "對話不存在", request_id, 404)

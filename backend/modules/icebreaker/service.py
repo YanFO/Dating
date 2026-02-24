@@ -77,10 +77,6 @@ MOCK_ICEBREAKER_RESPONSE = IcebreakerResponse(
     ],
 )
 
-# 匿名用戶 ID（Phase 1 無驗證）
-DEFAULT_USER_ID = "anonymous"
-
-
 class IcebreakerService:
     """破冰服務，透過 LLM 分析場景並產生搭訕建議。"""
 
@@ -93,7 +89,8 @@ class IcebreakerService:
 
     async def _write_log(
         self, request: IcebreakerRequest, result_dict: dict | None,
-        latency_ms: int, request_id: str, status: str = "success", error_msg: str | None = None,
+        latency_ms: int, request_id: str, user_id: str = "anonymous",
+        status: str = "success", error_msg: str | None = None,
     ):
         """將分析請求/回應寫入 analysis_logs 表"""
         input_type = "image" if request.image_base64 else "text"
@@ -102,7 +99,7 @@ class IcebreakerService:
             async with self._sf() as session:
                 row = LogRow(
                     id=generate_cuid(),
-                    user_id=DEFAULT_USER_ID,
+                    user_id=user_id,
                     feature="icebreaker",
                     input_type=input_type,
                     input_summary=input_summary[:500],
@@ -134,10 +131,10 @@ class IcebreakerService:
         )
 
     async def analyze(
-        self, request: IcebreakerRequest, request_id: str
+        self, request: IcebreakerRequest, request_id: str, user_id: str = "anonymous"
     ) -> IcebreakerResponse:
         """執行破冰分析，回傳場景分析與搭訕建議。"""
-        log = logger.bind(request_id=request_id, feature="icebreaker")
+        log = logger.bind(request_id=request_id, feature="icebreaker", user_id=user_id)
 
         if self._flags.ENABLE_MOCK_MODE:
             log.info("returning_mock_response")
@@ -156,12 +153,12 @@ class IcebreakerService:
             latency_ms = int((time.monotonic() - t0) * 1000)
             result = self._parse_response(raw)
             # 非同步寫入日誌（成功）
-            await self._write_log(request, raw, latency_ms, request_id)
+            await self._write_log(request, raw, latency_ms, request_id, user_id=user_id)
             return result
         except Exception as e:
             latency_ms = int((time.monotonic() - t0) * 1000)
             # 寫入錯誤日誌
-            await self._write_log(request, None, latency_ms, request_id, status="error", error_msg=str(e))
+            await self._write_log(request, None, latency_ms, request_id, user_id=user_id, status="error", error_msg=str(e))
             raise
 
     def _build_user_prompt(self, request: IcebreakerRequest) -> str:

@@ -54,6 +54,7 @@ class _SessionState:
     """
 
     session_id: str
+    user_id: str = "anonymous"
     openai_ws: Optional[websockets.asyncio.client.ClientConnection] = None
     listener_task: Optional[asyncio.Task] = None
     created_at: float = field(default_factory=time.monotonic)
@@ -97,14 +98,14 @@ class VoiceCoachService:
     # ── 會話建立 ──────────────────────────────────────────────
 
     async def create_session(
-        self, session_id: str, request_id: str
+        self, session_id: str, request_id: str, user_id: str = "anonymous"
     ) -> VoiceCoachSession:
-        """建立新的語音教練會話，連接 OpenAI Realtime API 並啟動監聽。
+        """建立新的語音教練會話，連接 OpenAI Realtime API 並啟動監聯。
 
         Raises:
             OpenAIConnectionFailed: 無法連線至 OpenAI Realtime API
         """
-        log = logger.bind(request_id=request_id, session_id=session_id)
+        log = logger.bind(request_id=request_id, session_id=session_id, user_id=user_id)
         log.info("voice_coach_session_creating")
 
         headers = {
@@ -153,6 +154,7 @@ class VoiceCoachService:
 
         state = _SessionState(
             session_id=session_id,
+            user_id=user_id,
             openai_ws=openai_ws,
             listener_task=asyncio.create_task(
                 self._listen_openai(session_id, openai_ws)
@@ -445,7 +447,7 @@ class VoiceCoachService:
             async with self._sf() as session:
                 row = AnalysisLog(
                     id=generate_cuid(),
-                    user_id="anonymous",
+                    user_id=state.user_id,
                     session_id=state.session_id,
                     feature="voice_coach",
                     input_type="audio",

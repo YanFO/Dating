@@ -56,7 +56,7 @@ class LoveCoachService:
     # ─── 串流聊天（核心功能）────────────────────────
 
     async def chat_stream(
-        self, request: LoveCoachChatRequest, request_id: str
+        self, request: LoveCoachChatRequest, request_id: str, user_id: str = "anonymous"
     ) -> tuple[str, AsyncGenerator[str, None]]:
         """串流聊天回覆，回傳 (conversation_id, text_chunk_generator)。
 
@@ -85,7 +85,7 @@ class LoveCoachService:
 
         # 載入或建立對話
         conversation_id = await self._ensure_conversation(
-            request.conversation_id, request.message, request_id
+            request.conversation_id, request.message, request_id, user_id=user_id
         )
 
         # 儲存使用者訊息
@@ -258,7 +258,8 @@ class LoveCoachService:
     # ─── 內部方法 ──────────────────────────────────
 
     async def _ensure_conversation(
-        self, conversation_id: Optional[str], first_message: str, request_id: str
+        self, conversation_id: Optional[str], first_message: str, request_id: str,
+        user_id: str = "anonymous",
     ) -> str:
         """確保對話存在：如有 ID 則載入，否則新建。
 
@@ -268,6 +269,7 @@ class LoveCoachService:
             conversation_id: 可選的既有對話 ID
             first_message: 當前使用者訊息（用於生成標題）
             request_id: 請求追蹤 ID
+            user_id: 使用者 ID
 
         Returns:
             str: 對話 ID
@@ -293,7 +295,7 @@ class LoveCoachService:
 
             conv = LoveCoachConversation(
                 id=new_id,
-                user_id="anonymous",  # Phase 1：無驗證，使用匿名用戶
+                user_id=user_id,
                 title=title,
                 status="active",
             )

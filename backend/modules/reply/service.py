@@ -74,10 +74,6 @@ MOCK_REPLY_RESPONSE = ReplyResponse(
     ),
 )
 
-# 匿名用戶 ID（Phase 1 無驗證）
-DEFAULT_USER_ID = "anonymous"
-
-
 class ReplyService:
     """回覆教練服務，透過 LLM 分析聊天內容並產生回覆建議。"""
 
@@ -91,7 +87,8 @@ class ReplyService:
 
     async def _write_log(
         self, request: ReplyRequest, result_dict: dict | None,
-        latency_ms: int, request_id: str, status: str = "success", error_msg: str | None = None,
+        latency_ms: int, request_id: str, user_id: str = "anonymous",
+        status: str = "success", error_msg: str | None = None,
     ):
         """將分析請求/回應寫入 analysis_logs 表"""
         input_type = "screenshot" if request.screenshot_base64 else "text"
@@ -100,7 +97,7 @@ class ReplyService:
             async with self._sf() as session:
                 row = LogRow(
                     id=generate_cuid(),
-                    user_id=DEFAULT_USER_ID,
+                    user_id=user_id,
                     feature="reply",
                     input_type=input_type,
                     input_summary=input_summary[:500],
@@ -132,10 +129,10 @@ class ReplyService:
         )
 
     async def analyze(
-        self, request: ReplyRequest, request_id: str
+        self, request: ReplyRequest, request_id: str, user_id: str = "anonymous"
     ) -> ReplyResponse:
         """執行回覆分析，回傳情緒分析與回覆建議。若帶 match_id 則注入記憶並自動擷取。"""
-        log = logger.bind(request_id=request_id, feature="reply")
+        log = logger.bind(request_id=request_id, feature="reply", user_id=user_id)
 
         if self._flags.ENABLE_MOCK_MODE:
             log.info("returning_mock_response")
@@ -178,13 +175,13 @@ class ReplyService:
             latency_ms = int((time.monotonic() - t0) * 1000)
             result = self._parse_response(raw)
             # 寫入分析日誌（成功）
-            await self._write_log(request, raw, latency_ms, request_id)
+            await self._write_log(request, raw, latency_ms, request_id, user_id=user_id)
 
             # 若有 match_id 且 LLM 回傳 memory_extraction，自動 merge 到 DB
             if request.match_id and self._match_service and result.memory_extraction:
                 try:
                     await self._match_service.merge_extracted_memories(
-                        DEFAULT_USER_ID, request.match_id, result.memory_extraction, request_id,
+                        user_id, request.match_id, result.memory_extraction, request_id,
                     )
                     log.info("memory_extracted_and_merged", match_id=request.match_id)
                 except Exception as e:
@@ -194,7 +191,7 @@ class ReplyService:
         except Exception as e:
             latency_ms = int((time.monotonic() - t0) * 1000)
             # 寫入錯誤日誌
-            await self._write_log(request, None, latency_ms, request_id, status="error", error_msg=str(e))
+            await self._write_log(request, None, latency_ms, request_id, user_id=user_id, status="error", error_msg=str(e))
             raise
 
     def _build_user_prompt(self, request: ReplyRequest) -> str:

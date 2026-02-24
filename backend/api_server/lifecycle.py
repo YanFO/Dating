@@ -26,8 +26,8 @@ from services.stream_service import StreamService
 
 logger = structlog.get_logger()
 
-# 匿名用戶 ID（Phase 1 無驗證，用於 seed 數據）
-DEFAULT_USER_ID = "anonymous"
+# Seed 數據用的預設用戶 ID（僅用於 startup seed，不在業務邏輯中使用）
+SEED_USER_ID = "anonymous"
 
 
 def register_lifecycle(app):
@@ -109,7 +109,7 @@ def register_lifecycle(app):
 
         # 確保預設用戶有 Insights seed 數據
         insights_svc: InsightsService = app.config["insights_service"]
-        await insights_svc.ensure_seed_data(DEFAULT_USER_ID)
+        await insights_svc.ensure_seed_data(SEED_USER_ID)
 
         if flags.ENABLE_VOICE_COACH:
             app.config["voice_coach_service"] = VoiceCoachService(
